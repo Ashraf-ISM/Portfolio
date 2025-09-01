@@ -54,7 +54,7 @@ I love combining **geophysics, coding, and data science** to analyze the Earth's
 
 - 📧 Email: [23mc0049@iitism.ac.in](mailto:23mc0049@iitism.ac.in)  
 - 🌐 Portfolio: [ashraf-portfolio](https://ash-geophysics.netlify.app/#)  
-- 🐱 GitHub: [ashraf-iit-ism](https://github.com/ashraf-iit-ism)  
+- 🐱 GitHub: [ashraf-iit-ism](https://github.com/Ashraf-ISM)  
 - LinkedIn: [LinkedIn Profile](https://www.linkedin.com/in/ashraf-iit-ism/) 
 
 ---
