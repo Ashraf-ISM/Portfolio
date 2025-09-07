@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARKSPY - Petrophysics Analysis Documentation</title>
+    <style>
+        /* Modern CSS Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Variables for easy theme management */
+        :root {
+            --bg-color: #12121c;
+            --sidebar-bg: #1a1a2e;
+            --content-bg: #1e1e32;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0b0;
+            --accent-primary: #4a90e2;
+            --accent-secondary: #8a2be2;
+            --border-color: #33334a;
+            --code-bg: #25253a;
+            --header-font: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            --body-font: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            --code-font: 'Fira Code', 'Consolas', 'Menlo', 'monospace';
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            line-height: 1.7;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--sidebar-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* --- Sidebar Navigation --- */
+        #sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 0;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        #sidebar h1 {
+            font-family: var(--header-font);
+            font-size: 1.5rem;
+            color: white;
+            padding: 0 1.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        #sidebar nav ul {
+            list-style: none;
+        }
+
+        #sidebar nav a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        #sidebar nav a:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left-color: var(--accent-secondary);
+        }
+
+        #sidebar nav a.active {
+            color: white;
+            font-weight: 600;
+            background-color: rgba(74, 144, 226, 0.1);
+            border-left-color: var(--accent-primary);
+        }
+
+        /* --- Main Content --- */
+        main {
+            margin-left: 280px;
+            padding: 3rem 4rem;
+            width: calc(100% - 280px);
+        }
+
+        section {
+            padding-top: 3rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2rem;
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: var(--header-font);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        h3 {
+            font-family: var(--header-font);
+            font-size: 1.8rem;
+            color: var(--accent-primary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        h4 {
+            font-family: var(--header-font);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid var(--accent-secondary);
+            padding-left: 10px;
+        }
+        
+        h5 {
+            font-family: var(--header-font);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p, li {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            padding-left: 2rem;
+        }
+
+        strong, b {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Code Blocks --- */
+        pre {
+            background-color: var(--code-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: var(--code-font);
+            font-size: 0.9rem;
+            overflow-x: auto;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        code {
+            font-family: var(--code-font);
+        }
+        
+        p > code, li > code {
+            background-color: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            color: #ff9d00;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.5;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+        .copy-btn:hover {
+            background-color: var(--accent-primary);
+        }
+        .copy-btn:active {
+            background-color: var(--accent-secondary);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+            }
+            #sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            main {
+                margin-left: 0;
+                width: 100%;
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            main {
+                padding: 1.5rem;
+            }
+            h2 { font-size: 2rem; }
+            h3 { font-size: 1.6rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside id="sidebar">
+        <h1>DARKSPY Docs</h1>
+        <nav id="toc">
+            <ul>
+                <li><a href="#introduction" class="active">Introduction</a></li>
+                <li><a href="#system-requirements">System Requirements</a></li>
+                <li><a href="#installation-guide">Installation Guide</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#user-interface-overview">User Interface</a></li>
+                <li><a href="#data-loading-module">Data Loading</a></li>
+                <li><a href="#well-data-and-statistics">Well Data & Stats</a></li>
+                <li><a href="#basic-visualization">Basic Visualization</a></li>
+                <li><a href="#formation-evaluation">Formation Evaluation</a></li>
+                <li><a href="#quality-control-tools">Quality Control</a></li>
+                <li><a href="#statistical-analysis">Statistical Analysis</a></li>
+                <li><a href="#export-and-reporting">Export & Reporting</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#contact-information">Contact Information</a></li>
+                <li><a href="#appendices">Appendices</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+        <header style="text-align: center; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
+            <h1 style="font-size: 3rem; color: #fff;">DARKSPY</h1>
+            <p style="font-size: 1.5rem; color: var(--accent-primary);">Petrophysics Analysis Desktop Application</p>
+            <p style="color: var(--text-secondary);">Version 1.0 | Developed at IIT (ISM) Dhanbad | Sep - Nov 2024</p>
+        </header>
+
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>
+                <strong>DARKSPY</strong> (Data Analysis and Reservoir Knowledge System for PetroPhYsics) is a comprehensive desktop application designed to facilitate the analysis and visualization of well log data. Built with Python and PyQt5, this application provides geoscientists, engineers, and students with powerful tools to load, visualize, interpret, and analyze subsurface geological data through an intuitive graphical interface.
+            </p>
+            <h3>Key Features</h3>
+            <ul>
+                <li>Industry-standard LAS file format support</li>
+                <li>CSV and XLSX data import/export capabilities</li>
+                <li>Multi-track well log visualization</li>
+                <li>Formation evaluation tools (V-shale, porosity, water saturation)</li>
+                <li>Advanced statistical analysis and quality control</li>
+                <li>Machine learning-based outlier detection</li>
+                <li>Professional-grade plotting and visualization</li>
+                <li>Comprehensive help system and documentation</li>
+            </ul>
+            <h3>Target Users</h3>
+            <ul>
+                <li>Petroleum engineers and geoscientists</li>
+                <li>Students in petroleum engineering and geology</li>
+                <li>Researchers working with well log data</li>
+                <li>Professionals in oil and gas industry</li>
+                <li>Academic institutions teaching petrophysics</li>
+            </ul>
+        </section>
+
+        <section id="system-requirements">
+            <h2>System Requirements</h2>
+            <h4>Minimum Requirements</h4>
+            <ul>
+                <li><strong>Operating System</strong>: Windows 10/11, macOS 10.14+, or Linux Ubuntu 18.04+</li>
+                <li><strong>Python Version</strong>: Python 3.7 or higher</li>
+                <li><strong>RAM</strong>: 4 GB minimum (8 GB recommended)</li>
+                <li><strong>Storage</strong>: 500 MB free disk space</li>
+                <li><strong>Display</strong>: 1024x768 resolution minimum (1920x1080 recommended)</li>
+            </ul>
+            <h4>Required Python Libraries</h4>
+            <pre><code>PyQt5 >= 5.15.0
+numpy >= 1.19.0
+pandas >= 1.2.0
+matplotlib >= 3.3.0
+scipy >= 1.6.0
+seaborn >= 0.11.0
+plotly >= 5.0.0
+lasio >= 0.28
+scikit-learn >= 0.24.0</code></pre>
+        </section>
+
+        <section id="installation-guide">
+            <h2>Installation Guide</h2>
+            <h4>Method 1: Direct Installation (Recommended)</h4>
+            <ol>
+                <li>Download the DARKSPY installer package</li>
+                <li>Run the installer executable</li>
+                <li>Follow the installation wizard prompts</li>
+                <li>Launch DARKSPY from the desktop shortcut</li>
+            </ol>
+            <h4>Method 2: Python Source Installation</h4>
+            <ol>
+                <li>Ensure Python 3.7+ is installed on your system</li>
+                <li>Download the source code from the repository</li>
+                <li>Install required dependencies:</li>
+                <pre><code class="language-bash">pip install -r requirements.txt</code></pre>
+                <li>Run the application:</li>
+                <pre><code class="language-bash">python main.py</code></pre>
+            </ol>
+            <h4>Method 3: Virtual Environment Setup</h4>
+            <pre><code class="language-bash"># Create virtual environment
+python -m venv darkspy_env
+
+# Activate virtual environment
+# Windows:
+darkspy_env\Scripts\activate
+# macOS/Linux:
+source darkspy_env/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run application
+python main.py</code></pre>
+        </section>
+
+        <section id="getting-started">
+            <h2>Getting Started</h2>
+            <h3>First Launch</h3>
+            <ol>
+                <li>Double-click the DARKSPY desktop icon or run from command line.</li>
+                <li>The main application window will open with the "Data Loading" tab active.</li>
+                <li>Review the "Motive" dialog that explains the application's purpose.</li>
+                <li>Access the Help menu for detailed guidance.</li>
+            </ol>
+            <h3>Quick Start Workflow</h3>
+            <ol>
+                <li><strong>Load Data</strong>: Import your LAS, CSV, or XLSX files.</li>
+                <li><strong>Review Statistics</strong>: Check data quality and basic statistics.</li>
+                <li><strong>Visualize</strong>: Create well log plots and cross-plots.</li>
+                <li><strong>Analyze</strong>: Perform formation evaluation and quality control.</li>
+                <li><strong>Export</strong>: Save results and plots for reporting.</li>
+            </ol>
+        </section>
+        
+        <section id="user-interface-overview">
+            <h2>User Interface Overview</h2>
+            <h3>Main Window Components</h3>
+            <p>The DARKSPY interface consists of four primary tabs:</p>
+            <h4>1. Data Loading Tab</h4>
+            <ul>
+                <li>File import interface with drag-and-drop support</li>
+                <li>Formation tops data upload</li>
+                <li>LAS file header information display</li>
+                <li>Well log unit conversion tools</li>
+            </ul>
+            <h4>2. Well Data and Stats Tab</h4>
+            <ul>
+                <li>Raw data table display</li>
+                <li>Comprehensive statistical analysis</li>
+                <li>Data filtering and sorting capabilities</li>
+                <li>Export functionality for processed data</li>
+            </ul>
+            <h4>3. Basic Visualization Tab</h4>
+            <ul>
+                <li>Multi-track well log displays</li>
+                <li>Cross-plot analysis tools</li>
+                <li>Histogram generation</li>
+                <li>Triple combo and multitrack plotting options</li>
+            </ul>
+            <h4>4. Formation Evaluation Tab</h4>
+            <ul>
+                <li>Quality control tools</li>
+                <li>V-shale calculation</li>
+                <li>Porosity analysis</li>
+                <li>Water saturation calculation</li>
+                <li>Reservoir flagging and net pay determination</li>
+            </ul>
+        </section>
+        
+        <section id="data-loading-module">
+            <h2>Data Loading Module</h2>
+            <h3>Supported File Formats</h3>
+            <h4>LAS Files (.las)</h4>
+            <ul>
+                <li>Industry-standard Log ASCII Standard format</li>
+                <li>Automatic header parsing and curve identification</li>
+                <li>Support for LAS 2.0 and 3.0 formats</li>
+            </ul>
+            <h4>CSV Files (.csv) & Excel Files (.xlsx, .xls)</h4>
+            <ul>
+                <li>Automatic data type detection</li>
+                <li>Support for different delimiter types and multiple sheets</li>
+            </ul>
+            <h3>Loading Data Process</h3>
+            <ol>
+                <li><strong>Select File</strong>: Click "Browse Files" or use drag-and-drop.</li>
+                <li><strong>File Validation</strong>: DARKSPY automatically validates the file format and checks data integrity.</li>
+                <li><strong>Data Preview</strong>: A preview is shown in the data table, flagging missing values.</li>
+            </ol>
+        </section>
+
+        <section id="well-data-and-statistics">
+            <h2>Well Data and Statistics</h2>
+            <h3>Data Table Features</h3>
+            <ul>
+                <li>Comprehensive table showing all loaded curves.</li>
+                <li>Sortable columns and real-time data filtering.</li>
+            </ul>
+            <h3>Statistical Analysis</h3>
+            <p>The statistics panel provides count, mean, standard deviation, min/max, and percentiles (25th, 50th, 75th).</p>
+        </section>
+        
+        <section id="basic-visualization">
+            <h2>Basic Visualization</h2>
+            <h3>Multi-track Log Display</h3>
+            <p>Create professional log plots with configurable tracks for gamma ray, resistivity, porosity, and custom curves. Features include depth correlation, logarithmic/linear scaling, and color-coded curves.</p>
+            <h3>Cross-Plot Analysis</h3>
+            <p>Generate insightful cross-plots like Neutron vs. Density for lithology or Porosity vs. Resistivity for saturation analysis. Includes regression fitting and correlation metrics.</p>
+            <h3>Histogram Analysis</h3>
+            <p>Analyze data distributions with customizable histograms, bin sizes, and statistical overlays.</p>
+        </section>
+        
+        <section id="formation-evaluation">
+            <h2>Formation Evaluation</h2>
+            <h3>Quality Control Module</h3>
+            <p>The quality control system uses the <strong>Isolation Forest</strong> algorithm, an unsupervised machine learning method, to identify outliers and anomalies in your data. Results are displayed in an interactive scatter plot where inliers are blue and outliers are orange.</p>
+            <h3>V-Shale Analysis</h3>
+            <p>Calculates the volume of shale using gamma ray logs with the linear model:</p>
+            <pre><code>Vsh = (GR - GR_min) / (GR_max - GR_min)</code></pre>
+            <p>The application supports Linear, Larionov, and Steiber models with configurable baselines.</p>
+            <h3>Porosity Analysis</h3>
+            <p>Provides multiple methods for calculating effective porosity, including neutron, density, and combined neutron-density, with automatic shale corrections.</p>
+            <h3>Water Saturation Analysis</h3>
+            <p>Implements Archie's equation for water saturation with user-defined parameters:</p>
+            <pre><code>Sw = [(a * Rw) / (φ^m * Rt)]^(1/n)</code></pre>
+            <h3>Reservoir Evaluation</h3>
+            <p>Identifies reservoir-quality rock using user-defined cutoffs for V-shale, water saturation, and porosity. It automatically calculates net pay and presents results in a five-track display.</p>
+        </section>
+        
+        <section id="quality-control-tools">
+            <h2>Quality Control Tools</h2>
+            <p>Includes automated checks for range validation, data continuity, and unit consistency. It also provides both statistical (Z-score, IQR) and machine learning (Isolation Forest, LOF) methods for advanced outlier detection.</p>
+        </section>
+        
+        <section id="statistical-analysis">
+            <h2>Statistical Analysis</h2>
+            <h3>Descriptive Statistics</h3>
+            <p>Calculates a full suite of descriptive statistics for each curve, including mean, median, mode, standard deviation, variance, skewness, and kurtosis.</p>
+            <h3>Correlation Analysis</h3>
+            <p>Offers both <strong>Pearson (linear)</strong> and <strong>Spearman (rank-based)</strong> correlation analysis to explore relationships between well log curves, complete with matrix visualizations.</p>
+        </section>
+        
+        <section id="export-and-reporting">
+            <h2>Export and Reporting</h2>
+            <h3>Data and Plot Export</h3>
+            <p>Export processed data to various formats including <strong>CSV, XLSX, LAS, and JSON</strong>. Plots can be saved in high-resolution formats like <strong>PNG, PDF, and SVG</strong> for publications and reports.</p>
+            <h3>Report Generation</h3>
+            <p>Generate automated or custom reports that compile summary statistics, QC results, and formation evaluation summaries into a professional, print-ready document.</p>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            <h5>Installation Problems</h5>
+            <p><strong>Issue:</strong> Application won't start. <br/> <strong>Solution:</strong> Verify Python 3.7+ is installed, check all dependencies with <code>pip install -r requirements.txt</code>, and restart your computer.</p>
+            
+            <h5>Data Loading Issues</h5>
+            <p><strong>Issue:</strong> LAS file won't load. <br/> <strong>Solution:</strong> Verify the file is a valid LAS format, check for corruption, and ensure file permissions are correct.</p>
+            
+            <h5>Visualization Problems</h5>
+            <p><strong>Issue:</strong> Plots not displaying correctly. <br/> <strong>Solution:</strong> Update your graphics drivers and the matplotlib library. Ensure the selected data curves contain valid numerical values.</p>
+        </section>
+
+        <section id="contact-information">
+            <h2>Contact Information</h2>
+            <h5>Development Team</h5>
+            <p><strong>Institution:</strong> Indian Institute of Technology (ISM) Dhanbad <br/>
+               <strong>Lead Developer:</strong> Md Ashraf <br/>
+               <strong>Email:</strong> <a href="mailto:mdashraf620@gmail.com">mdashraf620@gmail.com</a>
+            </p>
+            <h5>Reporting Issues</h5>
+            <p>When reporting bugs, please include your OS, Python version, a detailed description of the problem, steps to reproduce, and any relevant error messages or log files.</p>
+        </section>
+        
+        <section id="appendices">
+            <h2>Appendices</h2>
+            <h3>Appendix A: Keyboard Shortcuts</h3>
+            <ul>
+                <li><strong>Ctrl+O:</strong> Open file</li>
+                <li><strong>Ctrl+S:</strong> Save current work</li>
+                <li><strong>Ctrl+E:</strong> Export data</li>
+                <li><strong>F1:</strong> Open help documentation</li>
+            </ul>
+            <h3>Appendix C: Supported Units</h3>
+            <ul>
+                <li><strong>Depth:</strong> feet, meters</li>
+                <li><strong>Resistivity:</strong> ohm-m</li>
+                <li><strong>Porosity:</strong> fraction, percent</li>
+                <li><strong>Gamma Ray:</strong> API units</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>This documentation is part of the DARKSPY project developed at IIT(ISM) Dhanbad.</p>
+            <p>Document Version: 1.0 | Last Updated: November 2024</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Add Copy Buttons to Code Blocks ---
+            const codeBlocks = document.querySelectorAll('pre');
+            codeBlocks.forEach(block => {
+                const code = block.querySelector('code');
+                if (code) {
+                    const btn = document.createElement('button');
+                    btn.className = 'copy-btn';
+                    btn.textContent = 'Copy';
+                    btn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(code.innerText).then(() => {
+                            btn.textContent = 'Copied!';
+                            setTimeout(() => {
+                                btn.textContent = 'Copy';
+                            }, 2000);
+                        });
+                    });
+                    block.appendChild(btn);
+                }
+            });
+
+            // --- Active Section Highlighting on Scroll ---
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('#toc a');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3 // Trigger when 30% of the section is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+        });
+    </script>
+</body>
+</html>

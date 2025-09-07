@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARKSPY - Petrophysics Analysis Desktop Application</title>
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-orange: #ea580c;
+            --dark-gray: #374151;
+            --light-gray: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --gradient-bg: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background: var(--gradient-bg);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Section */
+        .header-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 4rem 2rem;
+            box-shadow: var(--shadow-lg);
+            border-left: 6px solid var(--primary-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            transform: translate(50%, -50%);
+        }
+
+        .project-badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 0.7rem 2rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--dark-gray);
+            font-weight: 400;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .meta-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            font-weight: 800;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-item {
+            background: var(--white);
+            border: 2px solid #e5e7eb;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .tech-item:hover {
+            border-color: var(--secondary-blue);
+            background: var(--secondary-blue);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Features Overview Section */
+        .features-overview {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--secondary-blue);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--dark-gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-highlights {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-highlights li {
+            padding: 0.3rem 0;
+            color: var(--dark-gray);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .feature-highlights li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-blue);
+            font-weight: bold;
+        }
+
+        /* Screenshots Section */
+        .screenshots-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 3rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+            background: var(--light-gray);
+            padding: 0.5rem;
+            border-radius: 15px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-primary);
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .screenshot-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+        }
+
+        .screenshot-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border-color: var(--secondary-blue);
+        }
+
+        .screenshot-image {
+            width: 100%;
+            height: 280px;
+            background: var(--gradient-primary);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .screenshot-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .screenshot-card:hover .screenshot-image img {
+            transform: scale(1.05);
+        }
+
+        .placeholder-content {
+            text-align: center;
+            color: var(--white);
+            z-index: 2;
+            position: relative;
+        }
+
+        .placeholder-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            opacity: 0.9;
+            font-size: 2rem;
+        }
+
+        .placeholder-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .placeholder-subtext {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .screenshot-content {
+            padding: 2.5rem;
+        }
+
+        .screenshot-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .title-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+        }
+
+        .screenshot-description {
+            color: var(--dark-gray);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-tag {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .card-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .metric-item {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            margin-top: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Technical Details Section */
+        .technical-details {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 3rem;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .detail-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid #e5e7eb;
+        }
+
+        .detail-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .detail-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Action Section */
+        .action-section {
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            padding: 4rem 3rem;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            z-index: 1;
+        }
+
+        .action-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .action-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .action-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 1.2rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            border: 2px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--accent-orange);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #dc2626;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border-color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Modal */
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            max-width: 95%;
+            max-height: 95%;
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.7);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -60px;
+            right: 0;
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.7);
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--accent-orange);
+            transform: rotate(90deg);
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .screenshots-grid { grid-template-columns: 1fr; }
+            .main-title { font-size: 2.2rem; }
+            .project-meta { grid-template-columns: 1fr; }
+            .filter-tabs { flex-wrap: wrap; }
+            .action-buttons { flex-direction: column; align-items: center; }
+            .features-grid { grid-template-columns: 1fr; }
+            .details-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .header-section { padding: 2rem 1rem; }
+            .screenshots-section { padding: 2rem 1rem; }
+            .action-section { padding: 2rem 1rem; }
+            .main-title { font-size: 1.8rem; }
+            .section-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Enhanced Header -->
+        <div class="header-section fade-in">
+            <div class="project-badge">Applied Geophysics • Desktop Application</div>
+            <h1 class="main-title">DARKSPY - Petrophysics Analysis Suite</h1>
+            <p class="subtitle">
+                A comprehensive desktop application developed with Python and PyQt5 for advanced petrophysical well log analysis. DARKSPY provides geoscientists, engineers, and students with powerful tools to load, visualize, interpret, and analyze subsurface geological data through an intuitive graphical interface, streamlining complex workflows and enabling meaningful insights from well log data.
+            </p>
+            
+            <div class="tech-stack">
+                <div class="tech-item">Python 3.x</div>
+                <div class="tech-item">PyQt5</div>
+                <div class="tech-item">Qt Designer</div>
+                <div class="tech-item">NumPy</div>
+                <div class="tech-item">Matplotlib</div>
+                <div class="tech-item">Pandas</div>
+                <div class="tech-item">SciPy</div>
+                <div class="tech-item">Lasio</div>
+                <div class="tech-item">Seaborn</div>
+                <div class="tech-item">Plotly</div>
+                <div class="tech-item">Scikit-learn</div>
+            </div>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Institution</div>
+                    <div class="meta-value">IIT (ISM) Dhanbad</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Development Period</div>
+                    <div class="meta-value">Sept - Nov 2024</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Application Type</div>
+                    <div class="meta-value">Desktop GUI</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Programming Language</div>
+                    <div class="meta-value">Python</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Overview -->
+        <div class="features-overview fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Core Features & Capabilities</h2>
+                <p class="section-description">
+                    DARKSPY integrates multiple specialized modules for comprehensive petrophysical analysis
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Data Management System</h3>
+                    <p class="feature-description">
+                        Comprehensive data handling with support for industry-standard formats including LAS, CSV, and XLSX files with automated validation and quality control.
+                    </p>
+                    <ul class="feature-highlights">
+                        <li>LAS file format support</li>
+                        <li>CSV/XLSX import/export</li>
+                        <li>Automated data validation</li>
+                        <li>Header information parsing</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Advanced Visualization</h3>
+                    <p class="feature-description">
+                        Multi-track well log displays, cross-plots, histograms, and formation evaluation charts with customizable scales and professional presentation quality.
+                    </p>
+                    <ul class="feature-highlights">
+                        <li>Multi-track log displays</li>
+                        <li>Cross-plot analysis</li>
+                        <li>Statistical histograms</li>
+                        <li>Customizable scaling</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3 class="feature-title">Formation Evaluation</h3>
+                    <p class="feature-description">
+                        Comprehensive formation evaluation tools including V-shale analysis, porosity calculations, water saturation, and reservoir quality assessment.
+                    </p>
+                    <ul class="feature-highlights">
+                        <li>V-shale calculation</li>
+                        <li>Porosity analysis</li>
+                        <li>Water saturation (Archie's equation)</li>
+                        <li>Reservoir flagging</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Quality Control</h3>
+                    <p class="feature-description">
+                        Advanced outlier detection using machine learning algorithms, data cleaning tools, and statistical analysis for reliable interpretations.
+                    </p>
+                    <ul class="feature-highlights">
+                        <li>Isolation Forest outlier detection</li>
+                        <li>Statistical analysis</li>
+                        <li>Data cleaning tools</li>
+                        <li>Quality control metrics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screenshots Section -->
+        <div class="screenshots-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Application Interface Gallery</h2>
+                <p class="section-description">
+                    Explore the comprehensive features and professional interface designed for petroleum engineering workflows
+                </p>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="filterScreenshots('all')">All Features</button>
+                <button class="tab-btn" onclick="filterScreenshots('data')">Data Management</button>
+                <button class="tab-btn" onclick="filterScreenshots('visualization')">Visualization</button>
+                <button class="tab-btn" onclick="filterScreenshots('analysis')">Analysis Tools</button>
+                <button class="tab-btn" onclick="filterScreenshots('formation')">Formation Evaluation</button>
+            </div>
+
+            <div class="screenshots-grid">
+                <!-- Data Loading Interface -->
+                 
+                <div class="screenshot-card" data-category="all data" onclick="openModal('data-loading')">
+                    <div class="screenshot-image">
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">💾</div>
+                            <div class="placeholder-text">Data Loading Interface</div>
+                            <div class="placeholder-subtext">LAS/CSV File Import System</div>
+                        </div>
+                    </div>
+                    <div class="screenshot-content">
+                        <h3 class="screenshot-title">
+                            <div class="title-icon">💾</div>
+                            Data Loading & Import System
+                        </h3>
+                        <p class="screenshot-description">
+                            Professional data loading interface with drag-and-drop functionality, file format validation, and comprehensive header information display. Supports LAS, CSV, and XLSX formats with automated parsing.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">LAS Format</span>
+                            <span class="feature-tag">CSV/XLSX Support</span>
+                            <span class="feature-tag">Drag & Drop</span>
+                            <span class="feature-tag">Header Parsing</span>
+                        </div>
+                        <div class="card-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">3+</div>
+                                <div class="metric-label">File Formats</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Auto</div>
+                                <div class="metric-label">Validation</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Real-time</div>
+                                <div class="metric-label">Preview</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Well Data Statistics -->
+                <div class="screenshot-card" data-category="all data analysis" onclick="openModal('data-stats')">
+                    <div class="screenshot-image">
+
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">📊</div>
+                            <div class="placeholder-text">Data Statistics Dashboard</div>
+                            <div class="placeholder-subtext">Comprehensive Statistical Analysis</div>
+                        </div>
+                    </div>
+                    <div class="screenshot-content">
+                        <h3 class="screenshot-title">
+                            <div class="title-icon">📊</div>
+                            Well Data Statistics Module
+                        </h3>
+                        <p class="screenshot-description">
+                            Detailed statistical analysis dashboard displaying data tables with real-time calculations including count, mean, standard deviation, percentiles, and data distribution metrics for all well log parameters.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">Statistical Analysis</span>
+                            <span class="feature-tag">Data Tables</span>
+                            <span class="feature-tag">Percentiles</span>
+                            <span class="feature-tag">Distribution Analysis</span>
+                        </div>
+                        <div class="card-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">15+</div>
+                                <div class="metric-label">Statistics</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Real-time</div>
+                                <div class="metric-label">Updates</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Export</div>
+                                <div class="metric-label">Ready</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formation Evaluation Interface -->
+                <div class="screenshot-card" data-category="all formation analysis" onclick="openModal('formation-eval')">
+                    <div class="screenshot-image">
+                        <img src="../GUI-IMAGE/vshale.png" alt="Data Loading Interface Screenshot">   
+
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">🔬</div>
+                            <div class="placeholder-text">Formation Evaluation</div>
+                            <div class="placeholder-subtext">V-shale & Gamma Ray Analysis</div>
+                        </div>
+                    </div>
+                    <div class="screenshot-content">
+                        <h3 class="screenshot-title">
+                            <div class="title-icon">🔬</div>
+                            Formation Evaluation Module
+                        </h3>
+                        <p class="screenshot-description">
+                            Advanced formation evaluation interface featuring V-shale calculations, gamma ray analysis with percentile cutoffs, and real-time parameter adjustment for accurate lithology determination and reservoir characterization.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">V-shale Calculation</span>
+                            <span class="feature-tag">Gamma Ray Analysis</span>
+                            <span class="feature-tag">Percentile Cutoffs</span>
+                            <span class="feature-tag">Real-time Processing</span>
+                        </div>
+                        <div class="card-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">Linear</div>
+                                <div class="metric-label">V-shale Model</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">P5-P95</div>
+                                <div class="metric-label">Percentiles</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Interactive</div>
+                                <div class="metric-label">Controls</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-track Well Log Display -->
+                <div class="screenshot-card" data-category="all visualization" onclick="openModal('multitrack')">
+                    <div class="screenshot-image">
+                        <img src="../GUI-IMAGE/multiplot.png" alt="Data Loading Interface Screenshot">   
+
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">📈</div>
+                            <div class="placeholder-text">Multi-track Log Display</div>
+                            <div class="placeholder-subtext">Professional Well Log Visualization</div>
+                        </div>
+                    </div>
+                    <div class="screenshot-content">
+                        <h3 class="screenshot-title">
+                            <div class="title-icon">📈</div>
+                            Multi-track Well Log Visualization
+                        </h3>
+                        <p class="screenshot-description">
+                            Industry-standard multi-track well log display with gamma ray, resistivity, and porosity curves. Features customizable track layouts, depth correlation, and professional log presentation with color-coded parameters.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">Multi-track Display</span>
+                            <span class="feature-tag">Depth Correlation</span>
+                            <span class="feature-tag">Color Coding</span>
+                            <span class="feature-tag">Professional Layout</span>
+                        </div>
+                        <div class="card-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">8+</div>
+                                <div class="metric-label">Log Curves</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Custom</div>
+                                <div class="metric-label">Scaling</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">HD</div>
+                                <div class="metric-label">Quality</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reservoir Evaluation -->
+                <div class="screenshot-card" data-category="all formation analysis" onclick="openModal('reservoir-eval')">
+                    <div class="screenshot-image">
+                        <img src="../GUI-IMAGE/reservoir-flag.png" alt="Data Loading Interface Screenshot">   
+
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">🎯</div>
+                            <div class="placeholder-text">Reservoir Evaluation</div>
+                            <div class="placeholder-subtext">Multi-parameter Analysis</div>
+                        </div>
+                    </div>
+                    <div class="screenshot-content">
+                        <h3 class="screenshot-title">
+                            <div class="title-icon">🎯</div>
+                            Comprehensive Reservoir Evaluation
+                        </h3>
+                        <p class="screenshot-description">
+                            Advanced reservoir evaluation module displaying V-shale, water saturation, effective porosity, reservoir flagging, and net pay calculations with customizable cutoff values and real-time parameter adjustment.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">Water Saturation</span>
+                            <span class="feature-tag">Effective Porosity</span>
+                            <span class="feature-tag">Reservoir Flagging</span>
+                            <span class="feature-tag">Net Pay Calculation</span>
+                        </div>
+                        <div class="card-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">5</div>
+                                <div class="metric-label">Parameters</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Custom</div>
+                                <div class="metric-label">Cutoffs</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Real-time</div>
+                                <div class="metric-label">Updates</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quality Control & Outlier Detection -->
+                <div class="screenshot-card" data-category="all analysis" onclick="openModal('outlier-detection')">
+                    <div class="screenshot-image">
+                         <img src="../GUI-IMAGE/outlier-detection.png" alt="Data Loading Interface Screenshot">   
+
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">🔍</div>
+                            <div class="placeholder-text">Outlier Detection</div>
+                            <div class="placeholder-subtext">Machine Learning QC</div>
+                        </div>
+                    </div>
+                    <div class="screenshot-content">
+                        <h3 class="screenshot-title">
+                            <div class="title-icon">🔍</div>
+                            Advanced Outlier Detection System
+                        </h3>
+                        <p class="screenshot-description">
+                            Machine learning-based outlier detection using Isolation Forest algorithm with interactive scatter plots, anomaly highlighting, and data quality assessment for reliable petrophysical interpretations.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">Isolation Forest</span>
+                            <span class="feature-tag">ML-based QC</span>
+                            <span class="feature-tag">Interactive Plots</span>
+                            <span class="feature-tag">Anomaly Detection</span>
+                        </div>
+                        <div class="card-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">ML</div>
+                                <div class="metric-label">Algorithm</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Auto</div>
+                                <div class="metric-label">Detection</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Visual</div>
+                                <div class="metric-label">Feedback</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistical Analysis - Histograms -->
+                <div class="screenshot-card" data-category="all analysis visualization" onclick="openModal('histograms')">
+                    <div class="screenshot-image">
+                        <img src="../GUI-IMAGE/histogram.png" alt="Data Loading Interface Screenshot">   
+
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">📊</div>
+                            <div class="placeholder-text">Statistical Histograms</div>
+                            <div class="placeholder-subtext">Distribution Analysis</div>
+                        </div>
+                    </div>
+                    <div class="screenshot-content">
+                        <h3 class="screenshot-title">
+                            <div class="title-icon">📊</div>
+                            Statistical Histogram Analysis
+                        </h3>
+                        <p class="screenshot-description">
+                            Professional histogram generation with customizable bin sizes, color schemes, and statistical overlays. Features distribution analysis for all well log parameters with export capabilities for reporting.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">Custom Binning</span>
+                            <span class="feature-tag">Color Schemes</span>
+                            <span class="feature-tag">Distribution Analysis</span>
+                            <span class="feature-tag">Export Ready</span>
+                        </div>
+                        <div class="card-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">Custom</div>
+                                <div class="metric-label">Bin Size</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Multi</div>
+                                <div class="metric-label">Colors</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">HD</div>
+                                <div class="metric-label">Export</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Help & Documentation */
+                <div class="screenshot-card" data-category="all" onclick="openModal('help-system')">
+                    <div class="screenshot-image">
+                        <div class="placeholder-content">
+                            <div class="placeholder-icon">❓</div>
+                            <div class="placeholder-text">Help & Documentation</div>
+                            <div class="placeholder-subtext">Comprehensive User Guide</div>
+                        </div>
+                    </div>
+                    <div class="screenshot-content">
+                        <h3 class="screenshot-title">
+                            <div class="title-icon">❓</div>
+                            Integrated Help System
+                        </h3>
+                        <p class="screenshot-description">
+                            Comprehensive built-in help system with step-by-step guides, troubleshooting tips, feature descriptions, and contact information for seamless user experience and quick problem resolution.
+                        </p>
+                        <div class="feature-tags">
+                            <span class="feature-tag">User Guides</span>
+                            <span class="feature-tag">Troubleshooting</span>
+                            <span class="feature-tag">Feature Help</span>
+                            <span class="feature-tag">Contact Info</span>
+                        </div>
+                        <div class="card-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">Built-in</div>
+                                <div class="metric-label">Help</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Step-by-step</div>
+                                <div class="metric-label">Guides</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">Support</div>
+                                <div class="metric-label">Contact</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Implementation Details -->
+        <div class="technical-details fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Technical Implementation</h2>
+                <p class="section-description">
+                    Detailed breakdown of the technical architecture and implementation approach
+                </p>
+            </div>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <h3 class="detail-title">🏗️ Architecture & Design</h3>
+                    <ul class="detail-list">
+                        <li><span>GUI Framework</span><strong>PyQt5</strong></li>
+                        <li><span>Design Tool</span><strong>Qt Designer</strong></li>
+                        <li><span>Architecture Pattern</span><strong>MVC</strong></li>
+                        <li><span>Code Structure</span><strong>Modular</strong></li>
+                        <li><span>UI Components</span><strong>Custom Widgets</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-card">
+                    <h3 class="detail-title">📊 Data Processing</h3>
+                    <ul class="detail-list">
+                        <li><span>Data Handling</span><strong>Pandas</strong></li>
+                        <li><span>Numerical Computing</span><strong>NumPy</strong></li>
+                        <li><span>Statistical Analysis</span><strong>SciPy</strong></li>
+                        <li><span>LAS File Support</span><strong>Lasio</strong></li>
+                        <li><span>Machine Learning</span><strong>Scikit-learn</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-card">
+                    <h3 class="detail-title">📈 Visualization Engine</h3>
+                    <ul class="detail-list">
+                        <li><span>Primary Plotting</span><strong>Matplotlib</strong></li>
+                        <li><span>Statistical Plots</span><strong>Seaborn</strong></li>
+                        <li><span>Interactive Charts</span><strong>Plotly</strong></li>
+                        <li><span>Custom Widgets</span><strong>PyQt5 Integration</strong></li>
+                        <li><span>Export Formats</span><strong>PNG, PDF, SVG</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-card">
+                    <h3 class="detail-title">🔧 Key Features</h3>
+                    <ul class="detail-list">
+                        <li><span>File Support</span><strong>LAS, CSV, XLSX</strong></li>
+                        <li><span>Analysis Modules</span><strong>8+ Specialized Tools</strong></li>
+                        <li><span>Outlier Detection</span><strong>ML-based QC</strong></li>
+                        <li><span>Real-time Updates</span><strong>Dynamic Interface</strong></li>
+                        <li><span>Export Options</span><strong>Multiple Formats</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Action Section -->
+        <div class="action-section fade-in">
+            <div class="action-content">
+                <h2 class="action-title">Access DARKSPY Resources</h2>
+                <p class="action-subtitle">
+                    Explore the complete desktop application, view source code implementation, or access comprehensive documentation and user guides
+                </p>
+                <div class="action-buttons">
+                    <a href="https://github.com/Ashraf-ISM/Petrophysics-Gui/tree/Product-Development" class="action-btn btn-primary" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        View Source Code
+                    </a>
+                    <a href="#download" class="action-btn btn-secondary" onclick="alert('Download link will be available soon!')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/>
+                        </svg>
+                        Download Application
+                    </a>
+                    <a href="../user-doc.html" class="action-btn btn-secondary" >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
+                        </svg>
+                        User Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Modal -->
+    <div class="fullscreen-modal" id="fullscreenModal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">&times;</div>
+            <img class="modal-image" id="modalImage" src="" alt="DARKSPY Application Screenshot">
+        </div>
+    </div>
+
+    <script>
+        // Screenshot data mapping to your actual screenshots
+        const screenshotData = {
+            'data-loading': '../GUI-IMAGE/data-loading.png',
+            'data-stats': '../GUI-IMAGE/well-data-stat.png',
+            'formation-eval': "../GUI-IMAG",
+            'outlier-detection': 'https://via.placeholder.com/1200x800/3b82f6/ffffff?text=Quality+Control+-+ML-based+Outlier+Detection',
+            'histograms': 'https://via.placeholder.com/1200x800/1e3a8a/ffffff?text=Statistical+Histograms+-+Distribution+Analysis',
+            'help-system': 'https://via.placeholder.com/1200x800/3b82f6/ffffff?text=Help+System+-+Comprehensive+User+Documentation'
+        };
+
+        // Enhanced filter functionality
+        function filterScreenshots(category) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            const cards = document.querySelectorAll('.screenshot-card');
+
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter cards with smooth animations
+            cards.forEach(card => {
+                const isVisible = category === 'all' || card.dataset.category.includes(category);
+                
+                if (isVisible) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0) scale(1)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px) scale(0.95)';
+                    setTimeout(() => {
+                        if (card.style.opacity === '0') {
+                            card.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            });
+        }
+
+        // Enhanced modal functionality
+        function openModal(screenshotId) {
+            const modal = document.getElementById('fullscreenModal');
+            const modalImage = document.getElementById('modalImage');
+            
+            modalImage.src = screenshotData[screenshotId];
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Add fade-in animation
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('fullscreenModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        // Enhanced scroll animations
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Modal background click
+        document.getElementById('fullscreenModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize enhanced features
+        document.addEventListener('DOMContentLoaded', function() {
+            setupScrollAnimations();
+            
+            // Staggered animations for screenshot cards
+            setTimeout(() => {
+                document.querySelectorAll('.screenshot-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 150);
+                });
+            }, 500);
+
+            // Enhanced hover effects
+            document.querySelectorAll('.screenshot-card, .feature-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
