@@ -9,7 +9,7 @@
 
 ## 👋 About Me
 
-Hi! I'm **Md Ashraf**, an M.Sc(Tech) student in **Applied Geophysics** at **IIT(ISM) Dhanbad**.  
+Hi! I'm **Ashraf**, an M.Sc(Tech) student in **Applied Geophysics** at **IIT(ISM) Dhanbad**.  
 I love combining **geophysics, coding, and data science** to analyze the Earth's subsurface and build interactive tools.
 
 - 🎓 **Education:**  
