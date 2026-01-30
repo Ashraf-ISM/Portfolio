@@ -21,7 +21,7 @@ I love combining **geophysics, coding, and data science** to analyze the Earth's
   - AIR-11 in JMI MSc Physics  
   
 - 🛠 **Skills:**  
-  - **Programming & ML:** Python, MATLAB, C, PyQt, Plotly, Machine Learning  
+  - **Programming & ML:** Python, MATLAB, C (Beginner), PyQt, Plotly, Machine Learning  
   - **Geophysical Tools:** GAMIT/GLOBK, GMT, SeismicUnix, Tesseral Pro  , Decision-Space
   - **Data Analysis & Visualization:** Jupyter, ArcGIS, Well-log interpretation  
   - **OS:** Linux, Windows  
