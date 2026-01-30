@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Approach to Earthquake Declustering | Md Ashraf</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Thesis | Md Ashraf</div>
+            <ul class="nav-menu">
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#objectives">Objectives</a></li>
+                <li><a href="#methodology">Methodology</a></li>
+                <li><a href="#results">Results</a></li>
+                <li><a href="#conclusions">Conclusions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">A Machine-Learning Approach to Earthquake Declustering</h1>
+            <p class="hero-subtitle">Application to New Zealand Earthquake Catalogue</p>
+            <div class="hero-meta">
+                <p><strong>Md Ashraf</strong> | Admission No: 23MC0049</p>
+                <p>M.Sc (Tech) Applied Geophysics</p>
+                <p>Indian Institute of Technology (ISM) Dhanbad</p>
+                <p class="advisor">Under the guidance of: Dr. Niptika Jana</p>
+            </div>
+            <p class="hero-summary">
+                Developing intelligent algorithms to distinguish independent earthquakes from aftershocks 
+                using supervised machine learning, improving seismic hazard assessment in tectonically active regions.
+            </p>
+        </div>
+    </section>
+
+    <!-- Problem Statement Section -->
+    <section id="problem" class="section">
+        <div class="container">
+            <h2 class="section-title">Problem Statement</h2>
+            
+            <div class="content-block">
+                <h3>What is Earthquake Declustering?</h3>
+                <p>
+                    Earthquake catalogues contain two types of events: <strong>independent background earthquakes</strong> 
+                    that occur randomly due to tectonic stress, and <strong>dependent events</strong> such as aftershocks 
+                    that are triggered by previous earthquakes. Declustering is the process of separating these two types 
+                    of events.
+                </p>
+                <p>
+                    This separation is critical for seismic hazard assessment, earthquake forecasting, and understanding 
+                    long-term tectonic behavior. Background seismicity follows a Poisson process (random, independent events), 
+                    while clustered events show spatial and temporal dependencies.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <h3>Limitations of Traditional Methods</h3>
+                <p>Classical declustering techniques face several challenges:</p>
+                <ul class="styled-list">
+                    <li>
+                        <strong>Fixed Parameters:</strong> Window-based methods like Gardner-Knopoff (1974) and 
+                        Reasenberg (1985) use predetermined time and distance windows that may not work equally 
+                        well across different seismic regions.
+                    </li>
+                    <li>
+                        <strong>Overlapping Clusters:</strong> In complex tectonic environments like New Zealand, 
+                        aftershock sequences often overlap with independent events, making separation difficult.
+                    </li>
+                    <li>
+                        <strong>Subjective Tuning:</strong> Results depend heavily on chosen thresholds and parameter 
+                        values, reducing reproducibility and objectivity.
+                    </li>
+                    <li>
+                        <strong>Statistical Assumptions:</strong> Model-based approaches like ETAS (Epidemic-Type 
+                        Aftershock Sequence) assume constant background rates and can be biased by incomplete catalogues.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h3>Why Machine Learning?</h3>
+                <p>
+                    Machine learning models can automatically learn complex, nonlinear patterns from data without 
+                    requiring fixed rules or thresholds. By training on synthetic earthquake catalogues where true 
+                    event types are known, ML algorithms can:
+                </p>
+                <ul class="styled-list">
+                    <li>Adapt to different seismic environments</li>
+                    <li>Capture multidimensional relationships between time, space, and magnitude</li>
+                    <li>Provide objective, reproducible classifications</li>
+                    <li>Generalize across regions without manual parameter tuning</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Objectives Section -->
+    <section id="objectives" class="section alt-bg">
+        <div class="container">
+            <h2 class="section-title">Research Objectives</h2>
+            <div class="objectives-grid">
+                <div class="objective-card">
+                    <div class="objective-number">1</div>
+                    <p>Generate synthetic earthquake catalogues using the ETAS model with labeled background and triggered events</p>
+                </div>
+                <div class="objective-card">
+                    <div class="objective-number">2</div>
+                    <p>Extract statistical and physical features from both synthetic and real earthquake catalogs using nearest-neighbour analysis</p>
+                </div>
+                <div class="objective-card">
+                    <div class="objective-number">3</div>
+                    <p>Train and test supervised machine learning models (Random Forest, SVM, Gradient Boosting, XGBoost)</p>
+                </div>
+                <div class="objective-card">
+                    <div class="objective-number">4</div>
+                    <p>Apply the best-performing model to the New Zealand earthquake catalog (1980–2024)</p>
+                </div>
+                <div class="objective-card">
+                    <div class="objective-number">5</div>
+                    <p>Compare ML-based results with traditional declustering approaches and analyze their impact on regional seismic patterns</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dataset Section -->
+    <section id="dataset" class="section">
+        <div class="container">
+            <h2 class="section-title">Dataset Description</h2>
+            
+            <div class="dataset-info">
+                <div class="info-card">
+                    <h4>Data Source</h4>
+                    <p>GeoNet Earthquake Catalogue (GNS Science, New Zealand)</p>
+                </div>
+                <div class="info-card">
+                    <h4>Time Period</h4>
+                    <p>January 1, 1980 – December 31, 2024 (44 years)</p>
+                </div>
+                <div class="info-card">
+                    <h4>Study Region</h4>
+                    <p>New Zealand and surrounding areas</p>
+                </div>
+                <div class="info-card">
+                    <h4>Total Events</h4>
+                    <p>396,267 earthquakes (after preprocessing)</p>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Catalogue Parameters</h3>
+                <p>Each earthquake record includes:</p>
+                <ul class="styled-list">
+                    <li><strong>Origin Time:</strong> Precise timestamp of the earthquake occurrence</li>
+                    <li><strong>Location:</strong> Latitude and longitude coordinates</li>
+                    <li><strong>Depth:</strong> Focal depth in kilometers</li>
+                    <li><strong>Magnitude:</strong> Earthquake magnitude (various scales)</li>
+                    <li><strong>Uncertainty:</strong> Location and magnitude estimation errors</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h3>Why New Zealand?</h3>
+                <p>
+                    New Zealand sits at the boundary between the Pacific and Australian tectonic plates, 
+                    experiencing complex seismicity through:
+                </p>
+                <ul class="styled-list">
+                    <li><strong>Hikurangi Subduction Zone:</strong> Pacific Plate subducting beneath North Island</li>
+                    <li><strong>Alpine Fault:</strong> Major strike-slip fault system in South Island</li>
+                    <li><strong>Crustal Faulting:</strong> Distributed deformation across both islands</li>
+                </ul>
+                <p>
+                    This tectonic complexity results in frequent, overlapping aftershock sequences—making it 
+                    an ideal testbed for advanced declustering methods.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <h3>Data Preprocessing</h3>
+                <ul class="styled-list">
+                    <li>Removed duplicate events and artificial sources (e.g., quarry blasts)</li>
+                    <li>Filtered events below magnitude of completeness threshold</li>
+                    <li>Verified data consistency and location accuracy</li>
+                    <li>Computed spherical distances between event pairs</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section id="methodology" class="section alt-bg">
+        <div class="container">
+            <h2 class="section-title">Methodology</h2>
+
+            <div class="workflow-diagram">
+                <h3>Research Workflow</h3>
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Data Acquisition</h4>
+                            <p>Download and preprocess GeoNet catalogue (1980-2024)</p>
+                        </div>
+                    </div>
+                    <div class="workflow-arrow">↓</div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>NND Analysis</h4>
+                            <p>Compute nearest-neighbour distances and rescaled space-time metrics</p>
+                        </div>
+                    </div>
+                    <div class="workflow-arrow">↓</div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>ETAS Simulation</h4>
+                            <p>Generate synthetic catalogues with labeled background/triggered events</p>
+                        </div>
+                    </div>
+                    <div class="workflow-arrow">↓</div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Feature Engineering</h4>
+                            <p>Extract temporal, spatial, and magnitude-based features</p>
+                        </div>
+                    </div>
+                    <div class="workflow-arrow">↓</div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Model Training</h4>
+                            <p>Train ML classifiers on synthetic data with cross-validation</p>
+                        </div>
+                    </div>
+                    <div class="workflow-arrow">↓</div>
+                    
+                    <div class="workflow-step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>Real Data Application</h4>
+                            <p>Apply best model to New Zealand catalogue</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Nearest-Neighbour Distance (NND) Method</h3>
+                <p>
+                    The NND approach transforms earthquake occurrences into a rescaled space-time-magnitude framework. 
+                    For each event pair (i, j), we compute:
+                </p>
+                <div class="formula-box">
+                    <p><strong>Rescaled Proximity Distance:</strong> η<sub>ij</sub> = T<sub>ij</sub> × R<sub>ij</sub></p>
+                    <p>where:</p>
+                    <ul>
+                        <li>T<sub>ij</sub> = rescaled time interval</li>
+                        <li>R<sub>ij</sub> = rescaled spatial distance</li>
+                    </ul>
+                </div>
+                <p>
+                    The distribution of log(η) typically shows two distinct peaks: one for tightly clustered aftershocks 
+                    (low η) and another for independent background events (high η).
+                </p>
+            </div>
+
+            <div class="content-block">
+                <h3>ETAS Model for Synthetic Data Generation</h3>
+                <p>
+                    The Epidemic-Type Aftershock Sequence (ETAS) model treats earthquakes as a branching process where 
+                    each event can trigger its own aftershocks. The model provides labeled training data by explicitly 
+                    marking which events are background and which are triggered.
+                </p>
+                <p><strong>Key ETAS parameters:</strong></p>
+                <ul class="styled-list">
+                    <li><strong>μ:</strong> Background seismicity rate</li>
+                    <li><strong>K, α:</strong> Productivity parameters (aftershock generation)</li>
+                    <li><strong>c, p:</strong> Omori-Utsu temporal decay parameters</li>
+                    <li><strong>D, γ, q:</strong> Spatial decay parameters</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h3>Feature Engineering</h3>
+                <p>Six key features were extracted for each earthquake event:</p>
+                <div class="features-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Description</th>
+                                <th>Physical Significance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>T⁺ (Rescaled Time)</td>
+                                <td>Normalized time to nearest neighbor</td>
+                                <td>Temporal proximity to potential parent event</td>
+                            </tr>
+                            <tr>
+                                <td>R⁺ (Rescaled Distance)</td>
+                                <td>Normalized spatial distance</td>
+                                <td>Spatial clustering strength</td>
+                            </tr>
+                            <tr>
+                                <td>dm⁺ (Magnitude Difference)</td>
+                                <td>m<sub>parent</sub> - m<sub>event</sub></td>
+                                <td>Energy ratio (larger parent → likely aftershock)</td>
+                            </tr>
+                            <tr>
+                                <td>N⁺ (Siblings Count)</td>
+                                <td>Events sharing same parent</td>
+                                <td>Cluster size indicator</td>
+                            </tr>
+                            <tr>
+                                <td>n<sub>parent</sub></td>
+                                <td>Number of potential parents</td>
+                                <td>Multiple triggering sources</td>
+                            </tr>
+                            <tr>
+                                <td>n<sub>child</sub></td>
+                                <td>Number of triggered offspring</td>
+                                <td>Aftershock productivity</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Machine Learning Models</h3>
+                <p>Four supervised classifiers were trained and compared:</p>
+                
+                <div class="models-grid">
+                    <div class="model-card">
+                        <h4>Random Forest (RF)</h4>
+                        <p>Ensemble of decision trees using bootstrap aggregating. Robust to overfitting and provides feature importance rankings.</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>Support Vector Machine (SVM)</h4>
+                        <p>Finds optimal hyperplane separating background and triggered events in high-dimensional feature space.</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>Gradient Boosting (GB)</h4>
+                        <p>Sequential ensemble that iteratively corrects misclassifications, achieving high recall for triggered events.</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>XGBoost</h4>
+                        <p>Optimized gradient boosting with regularization, achieving the best overall performance (97.44% accuracy).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Model Training Protocol</h3>
+                <ul class="styled-list">
+                    <li><strong>Data Split:</strong> 80% training, 20% testing from synthetic ETAS catalogue</li>
+                    <li><strong>Cross-Validation:</strong> 5-fold CV to prevent overfitting</li>
+                    <li><strong>Hyperparameter Tuning:</strong> Grid search optimization for each model</li>
+                    <li><strong>Evaluation Metrics:</strong> Accuracy, Precision, Recall, F1-Score</li>
+                    <li><strong>Feature Standardization:</strong> Z-score normalization to remove scale effects</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="section">
+        <div class="container">
+            <h2 class="section-title">Results & Analysis</h2>
+
+            <div class="content-block">
+                <h3>Model Performance on Synthetic Data</h3>
+                <p>All models were first validated on synthetic ETAS catalogues where true labels were known:</p>
+                
+                <div class="results-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Accuracy</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row">
+                                <td><strong>XGBoost</strong></td>
+                                <td>97.44%</td>
+                                <td>97.66%</td>
+                                <td>98.74%</td>
+                                <td>98.20%</td>
+                            </tr>
+                            <tr>
+                                <td>Gradient Boosting</td>
+                                <td>97.11%</td>
+                                <td>97.06%</td>
+                                <td>98.89%</td>
+                                <td>97.97%</td>
+                            </tr>
+                            <tr>
+                                <td>Random Forest</td>
+                                <td>96.72%</td>
+                                <td>96.22%</td>
+                                <td>95.15%</td>
+                                <td>97.91%</td>
+                            </tr>
+                            <tr>
+                                <td>SVM</td>
+                                <td>94.36%</td>
+                                <td>94.48%</td>
+                                <td>94.36%</td>
+                                <td>94.40%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="caption">
+                    <strong>Key Finding:</strong> XGBoost achieved the highest accuracy (97.44%) and successfully 
+                    identified 98.74% of triggered events, demonstrating superior performance in capturing 
+                    earthquake clustering patterns.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <h3>Feature Importance Analysis</h3>
+                <p>Analysis across all models revealed consistent feature importance rankings:</p>
+                <ol class="styled-list">
+                    <li><strong>N⁺ (Siblings Count):</strong> Most influential predictor—events with many siblings are likely part of aftershock sequences</li>
+                    <li><strong>R⁺ (Rescaled Distance):</strong> Spatial proximity to nearest neighbor strongly indicates clustering</li>
+                    <li><strong>T⁺ (Rescaled Time):</strong> Temporal closeness helps identify recently triggered events</li>
+                    <li><strong>dm⁺ (Magnitude Difference):</strong> Larger parent magnitudes increase triggering probability</li>
+                    <li><strong>n<sub>child</sub> (Offspring Count):</strong> Events that trigger others are more likely mainshocks</li>
+                    <li><strong>n<sub>parent</sub>:</strong> Multiple potential parents indicate complex overlapping sequences</li>
+                </ol>
+                <p>
+                    This ranking confirms physical expectations: aftershocks cluster tightly in space and time around 
+                    larger parent events, validating the NND framework's effectiveness.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <h3>Application to New Zealand Catalogue</h3>
+                <p>
+                    The best-performing XGBoost model was applied to the real GeoNet catalogue (1980-2024), 
+                    classifying 396,267 earthquakes:
+                </p>
+                
+                <div class="classification-stats">
+                    <div class="stat-box background">
+                        <div class="stat-number">230,758</div>
+                        <div class="stat-label">Background Events</div>
+                        <div class="stat-percent">58.23%</div>
+                    </div>
+                    <div class="stat-box triggered">
+                        <div class="stat-number">165,509</div>
+                        <div class="stat-label">Triggered Events</div>
+                        <div class="stat-percent">41.77%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Spatial Patterns</h3>
+                <ul class="styled-list">
+                    <li>
+                        <strong>Background events</strong> align with major tectonic structures:
+                        <ul>
+                            <li>Alpine Fault in South Island</li>
+                            <li>Hikurangi Subduction Zone off North Island</li>
+                            <li>Distributed crustal faulting</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Triggered events</strong> form tight spatial clusters around:
+                        <ul>
+                            <li>Canterbury earthquake sequence (2010-2011)</li>
+                            <li>Kaikōura earthquake (2016)</li>
+                            <li>Edgecumbe earthquake (1987)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h3>Temporal Evolution</h3>
+                <p>
+                    The classified catalogue reveals clear temporal patterns matching New Zealand's seismic history:
+                </p>
+                <ul class="styled-list">
+                    <li><strong>1987:</strong> Edgecumbe earthquake triggered extensive aftershock sequence</li>
+                    <li><strong>2010-2011:</strong> Canterbury sequence showing prolonged aftershock activity</li>
+                    <li><strong>2016:</strong> Kaikōura event with complex multi-fault rupture and aftershocks</li>
+                    <li>Aftershock decay follows Omori-Utsu law (rate decreases with time)</li>
+                    <li>Background rate remains relatively stable between major sequences</li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h3>NND Distribution Analysis</h3>
+                <p>
+                    The rescaled proximity distance (log η) distribution shows clear bimodality:
+                </p>
+                <ul class="styled-list">
+                    <li><strong>Lower peak (log η ≈ -3 to 0):</strong> Clustered aftershocks with tight space-time correlations</li>
+                    <li><strong>Upper peak (log η ≈ 2 to 5):</strong> Independent background events</li>
+                    <li><strong>Threshold (η ≈ 2.03):</strong> Optimal separation point identified via Gaussian Mixture Model</li>
+                </ul>
+                <p>
+                    This bimodal structure validates the fundamental assumption that seismicity comprises two distinct 
+                    populations with different statistical behaviors.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <h3>Comparison with Traditional Methods</h3>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4>Gardner-Knopoff Method</h4>
+                        <p><strong>Background:</strong> ~75%</p>
+                        <p><strong>Issue:</strong> Over-declustering; fixed windows miss overlapping sequences</p>
+                    </div>
+                    <div class="comparison-card">
+                        <h4>NND Threshold Method</h4>
+                        <p><strong>Background:</strong> ~62%</p>
+                        <p><strong>Issue:</strong> Single threshold cannot capture complex clustering variations</p>
+                    </div>
+                    <div class="comparison-card highlight-card">
+                        <h4>XGBoost (This Study)</h4>
+                        <p><strong>Background:</strong> 58.23%</p>
+                        <p><strong>Advantage:</strong> Adaptive classification based on multidimensional features</p>
+                    </div>
+                </div>
+                <p>
+                    The ML approach identifies more triggered events than traditional methods, suggesting better 
+                    sensitivity to weak clustering that fixed-parameter methods miss.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <h3>Scientific Interpretation</h3>
+                <p><strong>Why These Results Matter:</strong></p>
+                <ul class="styled-list">
+                    <li>
+                        <strong>Hazard Assessment:</strong> Accurate background rates are essential for calculating 
+                        long-term earthquake probabilities used in building codes and infrastructure planning
+                    </li>
+                    <li>
+                        <strong>Stress Transfer Studies:</strong> Identifying true triggering relationships helps 
+                        understand how stress redistributes along fault networks
+                    </li>
+                    <li>
+                        <strong>Forecasting Models:</strong> Declustered catalogues improve statistical models 
+                        (e.g., Poisson processes) for earthquake prediction
+                    </li>
+                    <li>
+                        <strong>Tectonic Insights:</strong> Background seismicity patterns reveal long-term 
+                        strain accumulation zones
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusions Section -->
+    <section id="conclusions" class="section alt-bg">
+        <div class="container">
+            <h2 class="section-title">Key Findings & Conclusions</h2>
+
+            <div class="content-block">
+                <h3>Major Achievements</h3>
+                <div class="achievements-grid">
+                    <div class="achievement-card">
+                        <div class="achievement-icon">✓</div>
+                        <h4>High Classification Accuracy</h4>
+                        <p>XGBoost achieved 97.44% accuracy on synthetic test data, demonstrating reliable pattern recognition for earthquake clustering</p>
+                    </div>
+                    <div class="achievement-card">
+                        <div class="achievement-icon">✓</div>
+                        <h4>Objective Declustering</h4>
+                        <p>ML-based approach eliminates subjective parameter tuning, providing reproducible results across different seismic regions</p>
+                    </div>
+                    <div class="achievement-card">
+                        <div class="achievement-icon">✓</div>
+                        <h4>Physical Validation</h4>
+                        <p>Results align with known tectonic structures and historical earthquake sequences in New Zealand</p>
+                    </div>
+                    <div class="achievement-card">
+                        <div class="achievement-icon">✓</div>
+                        <h4>Improved Sensitivity</h4>
+                        <p>Identified more triggered events than classical methods, capturing subtle clustering patterns</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Scientific Contributions</h3>
+                <ul class="styled-list">
+                    <li>
+                        <strong>Methodological Innovation:</strong> Successfully combined ETAS synthetic data generation 
+                        with nearest-neighbour analysis to create a robust training framework
+                    </li>
+                    <li>
+                        <strong>Feature Engineering:</strong> Demonstrated that multidimensional space-time-magnitude 
+                        features outperform single-threshold approaches
+                    </li>
+                    <li>
+                        <strong>Regional Application:</strong> Provided first comprehensive ML-based declustering 
+                        of New Zealand's 44-year earthquake catalogue
+                    </li>
+                    <li>
+                        <strong>Transferability:</strong> Framework can be adapted to other seismic regions without 
+                        region-specific parameter calibration
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h3>Practical Implications</h3>
+                <div class="implications-box">
+                    <h4>For Seismic Hazard Assessment:</h4>
+                    <p>
+                        The refined background seismicity rates derived from this study provide more accurate input 
+                        for probabilistic seismic hazard analysis (PSHA) models used in:
+                    </p>
+                    <ul>
+                        <li>Building code development</li>
+                        <li>Infrastructure planning (bridges, dams, nuclear facilities)</li>
+                        <li>Insurance risk modeling</li>
+                        <li>Emergency preparedness planning</li>
+                    </ul>
+                </div>
+                
+                <div class="implications-box">
+                    <h4>For Earthquake Science:</h4>
+                    <ul>
+                        <li>Better understanding of fault interaction and stress transfer mechanisms</li>
+                        <li>Improved statistical models for earthquake occurrence</li>
+                        <li>Insights into temporal evolution of aftershock sequences</li>
+                        <li>Foundation for physics-based earthquake simulators</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h3>Future Research Directions</h3>
+                <ul class="styled-list">
+                    <li>
+                        <strong>Deep Learning:</strong> Explore neural networks for automated feature extraction 
+                        from raw seismic waveforms
+                    </li>
+                    <li>
+                        <strong>Real-Time Application:</strong> Develop online learning systems for near-real-time 
+                        declustering of streaming earthquake data
+                    </li>
+                    <li>
+                        <strong>Multi-Region Studies:</strong> Test framework on diverse tectonic settings 
+                        (e.g., California, Japan, Italy) to assess global applicability
+                    </li>
+                    <li>
+                        <strong>Uncertainty Quantification:</strong> Incorporate probabilistic classification to 
+                        account for ambiguous cases
+                    </li>
+                    <li>
+                        <strong>Physics-Informed ML:</strong> Integrate domain knowledge (fault geometry, stress models) 
+                        into learning algorithms
+                    </li>
+                    <li>
+                        <strong>Swarm Detection:</strong> Extend methodology to identify earthquake swarms 
+                        (diffuse clustering without clear mainshock)
+                    </li>
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h3>Concluding Remarks</h3>
+                <p>
+                    This research demonstrates that machine learning offers a powerful, objective alternative to 
+                    traditional earthquake declustering methods. By combining the physical insights of the ETAS model 
+                    with the pattern-recognition capabilities of modern ML algorithms, we achieved classification 
+                    accuracy exceeding 97% on synthetic data and produced physically consistent results when applied 
+                    to New Zealand's complex seismic catalogue.
+                </p>
+                <p>
+                    The declustered catalogue provides a clearer picture of New Zealand's background seismicity 
+                    and aftershock patterns, directly supporting improved seismic hazard assessment in this 
+                    tectonically active region. The framework's adaptability and objectivity make it a valuable 
+                    tool for seismologists worldwide working to understand earthquake clustering and improve 
+                    public safety.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools & Technologies Section -->
+    <section id="tools" class="section">
+        <div class="container">
+            <h2 class="section-title">Tools & Technologies</h2>
+            
+            <div class="tools-grid">
+                <div class="tool-category">
+                    <h3>Programming</h3>
+                    <ul class="tool-list">
+                        <li>Python 3.11</li>
+                        <li>R (ETAS simulation)</li>
+                    </ul>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Machine Learning</h3>
+                    <ul class="tool-list">
+                        <li>scikit-learn</li>
+                        <li>XGBoost</li>
+                        <li>NumPy</li>
+                        <li>Pandas</li>
+                    </ul>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Seismological Analysis</h3>
+                    <ul class="tool-list">
+                        <li>ETAS package (R)</li>
+                        <li>Nearest-Neighbour Distance (NND) framework</li>
+                        <li>Stochastic Declustering methods</li>
+                    </ul>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Visualization</h3>
+                    <ul class="tool-list">
+                        <li>Matplotlib</li>
+                        <li>Seaborn</li>
+                        <li>Plotly</li>
+                    </ul>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Statistical Analysis</h3>
+                    <ul class="tool-list">
+                        <li>Gaussian Mixture Models</li>
+                        <li>Kernel Density Estimation</li>
+                        <li>Cross-validation</li>
+                        <li>Grid Search Optimization</li>
+                    </ul>
+                </div>
+
+                <div class="tool-category">
+                    <h3>Data Sources</h3>
+                    <ul class="tool-list">
+                        <li>GeoNet (GNS Science)</li>
+                        <li>New Zealand Earthquake Catalogue</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Links Section -->
+    <section id="links" class="section alt-bg">
+        <div class="container">
+            <h2 class="section-title">Resources</h2>
+            <div class="links-container">
+                <a href="https://github.com/Ashraf-ISM/master-thesis-declustering-using-ml/tree/main" class="btn btn-primary" onclick="alert('GitHub repository link to be added')">
+                    <span class="btn-icon">→</span>
+                    View GitHub Repository
+                </a>
+                <a href="https://drive.google.com/file/d/1CmB44Uoe-G0L4DRxcHYlLF0LI82U3SrE/view?usp=sharing" class="btn btn-secondary" onclick="alert('Thesis PDF link to be added')">
+                    <span class="btn-icon">📄</span>
+                    Download Thesis PDF
+                </a>
+                <a href="#" class="btn btn-tertiary" onclick="alert('Portfolio link to be added')">
+                    <span class="btn-icon">←</span>
+                    Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Md Ashraf | M.Sc (Tech) Applied Geophysics | IIT (ISM) Dhanbad</p>
+            <p class="footer-note">Thesis supervised by Dr. Niptika Jana</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
