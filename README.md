@@ -1,4 +1,4 @@
-# Md Ashraf – Portfolio 🚀
+# Portfolio 🚀
 
 ![Header](https://img.shields.io/badge/Applied%20Geophysics-IIT(ISM)%20Dhanbad-blue?style=flat-square)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?style=flat-square)
