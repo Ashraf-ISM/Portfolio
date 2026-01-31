@@ -62,11 +62,11 @@
         <div class="container hero-container">
             <div class="hero-badge">
                 <span class="badge-icon">🎓</span>
-                M.Sc (Tech) Thesis · 2024
+                M.Sc (Tech) Thesis · 2025
             </div>
             
             <h1 class="hero-title">
-                <span class="title-line" data-text="Machine Learning">Machine Learning</span>
+                <span class="title-line" data-text="Machine Learning">Machine Learning Approach For</span>
                 <span class="title-line highlight" data-text="Earthquake Declustering">Earthquake Declustering</span>
             </h1>
             
@@ -314,29 +314,6 @@
                 <h2 class="section-title">Research Plots & Analysis</h2>
                 <p class="section-desc">Key visualizations from the study</p>
             </div>
-
-            <!-- INSTRUCTIONS BOX -->
-            <div class="instructions-box" data-aos>
-                <div class="instruction-header">
-                    <span class="icon">📌</span>
-                    <h3>How to Add Your Plots</h3>
-                </div>
-                <div class="instruction-content">
-                    <p><strong>Option 1 - Place images in same folder:</strong></p>
-                    <ol>
-                        <li>Save your JPG/PNG plots in the same folder as this HTML file</li>
-                        <li>Name them as: <code>plot1.jpg</code>, <code>plot2.jpg</code>, etc.</li>
-                        <li>They will automatically display below</li>
-                    </ol>
-                    <p><strong>Option 2 - Edit the HTML:</strong></p>
-                    <ol>
-                        <li>Right-click this page → "View Page Source" or open in text editor</li>
-                        <li>Find the <code>&lt;img src="..."&gt;</code> tags below</li>
-                        <li>Replace <code>src="plot1.jpg"</code> with your actual image path</li>
-                        <li>Update the titles and descriptions for each plot</li>
-                    </ol>
-                </div>
-            </div>
             
             <!-- PLOT GRID -->
             <div class="plots-grid">
@@ -348,40 +325,41 @@
                         <span class="plot-badge">Figure 1</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="plot1.jpg" alt="Model Performance Comparison" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/6366f1/ffffff?text=Place+your+plot1.jpg+here'">
+                        <img src="Results/xgb_model_performance_plots_gb.png" alt="Model Performance Comparison" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/6366f1/ffffff?text=Place+your+plot1.jpg+here'">
                     </div>
                     <div class="plot-caption">
                         <p>Accuracy, Precision, Recall, and F1-Score comparison across Random Forest, SVM, Gradient Boosting, and XGBoost models.</p>
                     </div>
                 </div>
-
-                <!-- Plot 2 -->
+                <!-- Plot 2 - feature importance Width -->
                 <div class="plot-card" data-aos>
                     <div class="plot-header">
-                        <h3>Classification Distribution</h3>
+                        <h3>Feature Importance Ranking</h3>
                         <span class="plot-badge">Figure 2</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="plot2.jpg" alt="Classification Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/ec4899/ffffff?text=Place+your+plot2.jpg+here'">
+                        <img src="Results/XGB_Feature_Importance_Detailed.png" alt="Feature Importance" class="plot-img" onerror="this.src='https://via.placeholder.com/1200x500/10b981/ffffff?text=Place+your+plot3.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>XGBoost feature importance showing N⁺ (siblings count) as the most influential predictor, followed by R⁺ (rescaled distance) and T⁺ (rescaled time).</p>
+                    </div>
+                </div>
+
+                <!-- Plot 3 -->
+                <div class="plot-card full-width" data-aos>
+                    <div class="plot-header">
+                        <h3>Classification Distribution</h3>
+                        <span class="plot-badge">Figure 3</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="Results/XGB_Aftershock_Analysis.png" alt="Classification Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/ec4899/ffffff?text=Place+your+plot2.jpg+here'">
                     </div>
                     <div class="plot-caption">
                         <p>Distribution of background events (58.23%) vs triggered events (41.77%) from XGBoost classification of New Zealand catalogue.</p>
                     </div>
                 </div>
 
-                <!-- Plot 3 - Full Width -->
-                <div class="plot-card full-width" data-aos>
-                    <div class="plot-header">
-                        <h3>Feature Importance Ranking</h3>
-                        <span class="plot-badge">Figure 3</span>
-                    </div>
-                    <div class="plot-image-container">
-                        <img src="plot3.jpg" alt="Feature Importance" class="plot-img" onerror="this.src='https://via.placeholder.com/1200x500/10b981/ffffff?text=Place+your+plot3.jpg+here'">
-                    </div>
-                    <div class="plot-caption">
-                        <p>XGBoost feature importance showing N⁺ (siblings count) as the most influential predictor, followed by R⁺ (rescaled distance) and T⁺ (rescaled time).</p>
-                    </div>
-                </div>
+                
 
                 <!-- Plot 4 - Full Width -->
                 <div class="plot-card full-width" data-aos>
@@ -404,7 +382,7 @@
                         <span class="plot-badge">Figure 5</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="plot5.jpg" alt="Confusion Matrix" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/8b5cf6/ffffff?text=Place+your+plot5.jpg+here'">
+                        <img src="Results/600_xgb-confusion_matrix.png" alt="Confusion Matrix" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/8b5cf6/ffffff?text=Place+your+plot5.jpg+here'">
                     </div>
                     <div class="plot-caption">
                         <p>XGBoost confusion matrix on synthetic test data showing 98.7% True Positive rate and 94.4% True Negative rate.</p>
@@ -418,7 +396,7 @@
                         <span class="plot-badge">Figure 6</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="plot6.jpg" alt="Spatial Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/14b8a6/ffffff?text=Place+your+plot6.jpg+here'">
+                        <img src="Results/nz_topo_seismicity_publication.png.png" alt="Spatial Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/14b8a6/ffffff?text=Place+your+plot6.jpg+here'">
                     </div>
                     <div class="plot-caption">
                         <p>Spatial distribution of background and triggered events across New Zealand, showing alignment with major tectonic structures.</p>
@@ -689,8 +667,8 @@
                     <h4>Access</h4>
                     <div class="footer-links">
                         <a href="#" onclick="alert('GitHub link'); return false;">GitHub Repository</a>
-                        <a href="#" onclick="alert('PDF link'); return false;">Download PDF</a>
-                        <a href="#" onclick="alert('Portfolio link'); return false;">Portfolio</a>
+                        <a href="5th-sem-final.pdf" onclick="alert('PDF link'); return false;">Download PDF</a>
+                        <a href="../../index.html" onclick="alert('Portfolio link'); return false;">Portfolio</a>
                     </div>
                 </div>
             </div>
