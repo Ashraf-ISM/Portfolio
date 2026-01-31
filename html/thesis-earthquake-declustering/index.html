@@ -3,392 +3,463 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Machine Learning Approach to Earthquake Declustering | Md Ashraf</title>
+    <title>ML Earthquake Declustering | Md Ashraf - IIT (ISM) Dhanbad</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700;900&family=Work+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">Thesis | Md Ashraf</div>
-            <ul class="nav-menu">
-                <li><a href="#problem">Problem</a></li>
-                <li><a href="#objectives">Objectives</a></li>
-                <li><a href="#methodology">Methodology</a></li>
-                <li><a href="#results">Results</a></li>
-                <li><a href="#conclusions">Conclusions</a></li>
+    <!-- Particle Background -->
+    <canvas id="particleCanvas" class="particle-bg"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="nav-brand">
+                <div class="brand-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <path d="M10 20 Q 15 10, 20 20 T 30 20" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earthquake ML</span>
+                    <span class="brand-subtitle">Declustering Research</span>
+                </div>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#problem" class="nav-link">Challenge</a></li>
+                <li><a href="#methodology" class="nav-link">Method</a></li>
+                <li><a href="#plots" class="nav-link">Plots</a></li>
+                <li><a href="#results" class="nav-link">Results</a></li>
+                <li><a href="#impact" class="nav-link">Impact</a></li>
             </ul>
+            
+            <button class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1 class="hero-title">A Machine-Learning Approach to Earthquake Declustering</h1>
-            <p class="hero-subtitle">Application to New Zealand Earthquake Catalogue</p>
-            <div class="hero-meta">
-                <p><strong>Md Ashraf</strong> | Admission No: 23MC0049</p>
-                <p>M.Sc (Tech) Applied Geophysics</p>
-                <p>Indian Institute of Technology (ISM) Dhanbad</p>
-                <p class="advisor">Under the guidance of: Dr. Niptika Jana</p>
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="wave-container">
+                <svg class="wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                    <path fill="rgba(255,255,255,0.05)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                </svg>
             </div>
-            <p class="hero-summary">
-                Developing intelligent algorithms to distinguish independent earthquakes from aftershocks 
-                using supervised machine learning, improving seismic hazard assessment in tectonically active regions.
-            </p>
         </div>
-    </section>
-
-    <!-- Problem Statement Section -->
-    <section id="problem" class="section">
-        <div class="container">
-            <h2 class="section-title">Problem Statement</h2>
+        
+        <div class="container hero-container">
+            <div class="hero-badge">
+                <span class="badge-icon">🎓</span>
+                M.Sc (Tech) Thesis · 2024
+            </div>
             
-            <div class="content-block">
-                <h3>What is Earthquake Declustering?</h3>
-                <p>
-                    Earthquake catalogues contain two types of events: <strong>independent background earthquakes</strong> 
-                    that occur randomly due to tectonic stress, and <strong>dependent events</strong> such as aftershocks 
-                    that are triggered by previous earthquakes. Declustering is the process of separating these two types 
-                    of events.
-                </p>
-                <p>
-                    This separation is critical for seismic hazard assessment, earthquake forecasting, and understanding 
-                    long-term tectonic behavior. Background seismicity follows a Poisson process (random, independent events), 
-                    while clustered events show spatial and temporal dependencies.
-                </p>
-            </div>
-
-            <div class="content-block">
-                <h3>Limitations of Traditional Methods</h3>
-                <p>Classical declustering techniques face several challenges:</p>
-                <ul class="styled-list">
-                    <li>
-                        <strong>Fixed Parameters:</strong> Window-based methods like Gardner-Knopoff (1974) and 
-                        Reasenberg (1985) use predetermined time and distance windows that may not work equally 
-                        well across different seismic regions.
-                    </li>
-                    <li>
-                        <strong>Overlapping Clusters:</strong> In complex tectonic environments like New Zealand, 
-                        aftershock sequences often overlap with independent events, making separation difficult.
-                    </li>
-                    <li>
-                        <strong>Subjective Tuning:</strong> Results depend heavily on chosen thresholds and parameter 
-                        values, reducing reproducibility and objectivity.
-                    </li>
-                    <li>
-                        <strong>Statistical Assumptions:</strong> Model-based approaches like ETAS (Epidemic-Type 
-                        Aftershock Sequence) assume constant background rates and can be biased by incomplete catalogues.
-                    </li>
-                </ul>
-            </div>
-
-            <div class="content-block">
-                <h3>Why Machine Learning?</h3>
-                <p>
-                    Machine learning models can automatically learn complex, nonlinear patterns from data without 
-                    requiring fixed rules or thresholds. By training on synthetic earthquake catalogues where true 
-                    event types are known, ML algorithms can:
-                </p>
-                <ul class="styled-list">
-                    <li>Adapt to different seismic environments</li>
-                    <li>Capture multidimensional relationships between time, space, and magnitude</li>
-                    <li>Provide objective, reproducible classifications</li>
-                    <li>Generalize across regions without manual parameter tuning</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Objectives Section -->
-    <section id="objectives" class="section alt-bg">
-        <div class="container">
-            <h2 class="section-title">Research Objectives</h2>
-            <div class="objectives-grid">
-                <div class="objective-card">
-                    <div class="objective-number">1</div>
-                    <p>Generate synthetic earthquake catalogues using the ETAS model with labeled background and triggered events</p>
-                </div>
-                <div class="objective-card">
-                    <div class="objective-number">2</div>
-                    <p>Extract statistical and physical features from both synthetic and real earthquake catalogs using nearest-neighbour analysis</p>
-                </div>
-                <div class="objective-card">
-                    <div class="objective-number">3</div>
-                    <p>Train and test supervised machine learning models (Random Forest, SVM, Gradient Boosting, XGBoost)</p>
-                </div>
-                <div class="objective-card">
-                    <div class="objective-number">4</div>
-                    <p>Apply the best-performing model to the New Zealand earthquake catalog (1980–2024)</p>
-                </div>
-                <div class="objective-card">
-                    <div class="objective-number">5</div>
-                    <p>Compare ML-based results with traditional declustering approaches and analyze their impact on regional seismic patterns</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Dataset Section -->
-    <section id="dataset" class="section">
-        <div class="container">
-            <h2 class="section-title">Dataset Description</h2>
+            <h1 class="hero-title">
+                <span class="title-line" data-text="Machine Learning">Machine Learning</span>
+                <span class="title-line highlight" data-text="Earthquake Declustering">Earthquake Declustering</span>
+            </h1>
             
-            <div class="dataset-info">
-                <div class="info-card">
-                    <h4>Data Source</h4>
-                    <p>GeoNet Earthquake Catalogue (GNS Science, New Zealand)</p>
+            <p class="hero-subtitle">Intelligent Classification of Seismic Events in New Zealand</p>
+            
+            <div class="hero-meta-grid">
+                <div class="meta-card">
+                    <div class="meta-icon">👤</div>
+                    <div class="meta-content">
+                        <span class="meta-label">Researcher</span>
+                        <span class="meta-value">Md Ashraf</span>
+                    </div>
                 </div>
-                <div class="info-card">
-                    <h4>Time Period</h4>
-                    <p>January 1, 1980 – December 31, 2024 (44 years)</p>
+                <div class="meta-card">
+                    <div class="meta-icon">🏛️</div>
+                    <div class="meta-content">
+                        <span class="meta-label">Institution</span>
+                        <span class="meta-value">IIT (ISM) Dhanbad</span>
+                    </div>
                 </div>
-                <div class="info-card">
-                    <h4>Study Region</h4>
-                    <p>New Zealand and surrounding areas</p>
-                </div>
-                <div class="info-card">
-                    <h4>Total Events</h4>
-                    <p>396,267 earthquakes (after preprocessing)</p>
+                <div class="meta-card">
+                    <div class="meta-icon">🧑‍🏫</div>
+                    <div class="meta-content">
+                        <span class="meta-label">Supervisor</span>
+                        <span class="meta-value">Dr. Niptika Jana</span>
+                    </div>
                 </div>
             </div>
-
-            <div class="content-block">
-                <h3>Catalogue Parameters</h3>
-                <p>Each earthquake record includes:</p>
-                <ul class="styled-list">
-                    <li><strong>Origin Time:</strong> Precise timestamp of the earthquake occurrence</li>
-                    <li><strong>Location:</strong> Latitude and longitude coordinates</li>
-                    <li><strong>Depth:</strong> Focal depth in kilometers</li>
-                    <li><strong>Magnitude:</strong> Earthquake magnitude (various scales)</li>
-                    <li><strong>Uncertainty:</strong> Location and magnitude estimation errors</li>
-                </ul>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">97.44%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number">396K+</div>
+                    <div class="stat-label">Events</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number">44 Years</div>
+                    <div class="stat-label">Data</div>
+                </div>
             </div>
-
-            <div class="content-block">
-                <h3>Why New Zealand?</h3>
-                <p>
-                    New Zealand sits at the boundary between the Pacific and Australian tectonic plates, 
-                    experiencing complex seismicity through:
-                </p>
-                <ul class="styled-list">
-                    <li><strong>Hikurangi Subduction Zone:</strong> Pacific Plate subducting beneath North Island</li>
-                    <li><strong>Alpine Fault:</strong> Major strike-slip fault system in South Island</li>
-                    <li><strong>Crustal Faulting:</strong> Distributed deformation across both islands</li>
-                </ul>
-                <p>
-                    This tectonic complexity results in frequent, overlapping aftershock sequences—making it 
-                    an ideal testbed for advanced declustering methods.
-                </p>
+            
+            <div class="hero-cta-group">
+                <a href="#plots" class="cta-btn primary">
+                    <span>View Plots & Analysis</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </a>
+                <a href="#results" class="cta-btn secondary">
+                    View Results
+                </a>
             </div>
+        </div>
+        
+        <div class="scroll-prompt">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
 
-            <div class="content-block">
-                <h3>Data Preprocessing</h3>
-                <ul class="styled-list">
-                    <li>Removed duplicate events and artificial sources (e.g., quarry blasts)</li>
-                    <li>Filtered events below magnitude of completeness threshold</li>
-                    <li>Verified data consistency and location accuracy</li>
-                    <li>Computed spherical distances between event pairs</li>
-                </ul>
+    <!-- Problem Section -->
+    <section class="section problem-section" id="problem">
+        <div class="container">
+            <div class="section-header" data-aos>
+                <span class="section-tag">01 · The Challenge</span>
+                <h2 class="section-title">Understanding Earthquake Declustering</h2>
+                <p class="section-desc">Separating independent earthquakes from dependent aftershocks</p>
+            </div>
+            
+            <div class="content-layout">
+                <div class="content-main">
+                    <div class="rich-card" data-aos>
+                        <div class="card-icon gradient-1">🌍</div>
+                        <h3>What is Declustering?</h3>
+                        <p>Earthquake catalogues contain <strong>background events</strong> (independent, random tectonic stress release) and <strong>dependent events</strong> (aftershocks triggered by previous earthquakes). Declustering separates these populations to enable accurate hazard assessment and earthquake forecasting.</p>
+                        <p>Background seismicity follows a Poisson process, while clustered events exhibit strong spatiotemporal dependencies.</p>
+                    </div>
+                    
+                    <div class="problem-grid">
+                        <div class="problem-card" data-aos>
+                            <div class="problem-icon">📏</div>
+                            <h4>Fixed Parameters</h4>
+                            <p>Traditional methods use predetermined windows that don't adapt to regional variations.</p>
+                        </div>
+                        <div class="problem-card" data-aos>
+                            <div class="problem-icon">🔀</div>
+                            <h4>Overlapping Clusters</h4>
+                            <p>Complex sequences overlap, making separation difficult with rule-based approaches.</p>
+                        </div>
+                        <div class="problem-card" data-aos>
+                            <div class="problem-icon">🎯</div>
+                            <h4>Subjective Tuning</h4>
+                            <p>Results depend heavily on threshold choices, reducing reproducibility.</p>
+                        </div>
+                        <div class="problem-card" data-aos>
+                            <div class="problem-icon">📊</div>
+                            <h4>Statistical Bias</h4>
+                            <p>Model assumptions often violated by real-world catalogue incompleteness.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="rich-card highlight" data-aos>
+                        <div class="card-icon gradient-2">🤖</div>
+                        <h3>Machine Learning Solution</h3>
+                        <div class="advantage-list">
+                            <div class="advantage-item">
+                                <span class="adv-num">01</span>
+                                <div>
+                                    <strong>Pattern Recognition</strong>
+                                    <p>Automatically learns complex nonlinear relationships without fixed rules</p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <span class="adv-num">02</span>
+                                <div>
+                                    <strong>Adaptive Learning</strong>
+                                    <p>Generalizes across regions without manual parameter tuning</p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <span class="adv-num">03</span>
+                                <div>
+                                    <strong>Multidimensional Analysis</strong>
+                                    <p>Captures time-space-magnitude relationships simultaneously</p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <span class="adv-num">04</span>
+                                <div>
+                                    <strong>Objective Classification</strong>
+                                    <p>Reproducible results based on learned patterns from synthetic training data</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Methodology Section -->
-    <section id="methodology" class="section alt-bg">
+    <section class="section methodology-section" id="methodology">
         <div class="container">
-            <h2 class="section-title">Methodology</h2>
-
-            <div class="workflow-diagram">
-                <h3>Research Workflow</h3>
-                <div class="workflow-steps">
-                    <div class="workflow-step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h4>Data Acquisition</h4>
-                            <p>Download and preprocess GeoNet catalogue (1980-2024)</p>
-                        </div>
+            <div class="section-header" data-aos>
+                <span class="section-tag">02 · Methodology</span>
+                <h2 class="section-title">Research Framework</h2>
+                <p class="section-desc">Six-stage machine learning pipeline</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <h4>Data Acquisition</h4>
+                        <p>GeoNet earthquake catalogue (1980-2024) · 396,267 events · Quality control and preprocessing</p>
                     </div>
-                    <div class="workflow-arrow">↓</div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h4>NND Analysis</h4>
-                            <p>Compute nearest-neighbour distances and rescaled space-time metrics</p>
-                        </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <h4>NND Analysis</h4>
+                        <p>Nearest-neighbour distance computation · Rescaled space-time metrics · Bimodal distribution analysis</p>
                     </div>
-                    <div class="workflow-arrow">↓</div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h4>ETAS Simulation</h4>
-                            <p>Generate synthetic catalogues with labeled background/triggered events</p>
-                        </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <h4>ETAS Simulation</h4>
+                        <p>Synthetic catalogue generation · Labeled background/triggered events · Training data preparation</p>
                     </div>
-                    <div class="workflow-arrow">↓</div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h4>Feature Engineering</h4>
-                            <p>Extract temporal, spatial, and magnitude-based features</p>
-                        </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">4</div>
+                    <div class="timeline-content">
+                        <h4>Feature Engineering</h4>
+                        <p>Extract T⁺, R⁺, dm⁺, N⁺, n_parent, n_child · Temporal, spatial, magnitude features</p>
                     </div>
-                    <div class="workflow-arrow">↓</div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">5</div>
-                        <div class="step-content">
-                            <h4>Model Training</h4>
-                            <p>Train ML classifiers on synthetic data with cross-validation</p>
-                        </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">5</div>
+                    <div class="timeline-content">
+                        <h4>Model Training</h4>
+                        <p>Random Forest, SVM, Gradient Boosting, XGBoost · 5-fold cross-validation · Hyperparameter optimization</p>
                     </div>
-                    <div class="workflow-arrow">↓</div>
-                    
-                    <div class="workflow-step">
-                        <div class="step-number">6</div>
-                        <div class="step-content">
-                            <h4>Real Data Application</h4>
-                            <p>Apply best model to New Zealand catalogue</p>
-                        </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">6</div>
+                    <div class="timeline-content">
+                        <h4>Deployment</h4>
+                        <p>Apply best model (XGBoost) to real catalogue · Validate against historical sequences</p>
                     </div>
                 </div>
             </div>
-
-            <div class="content-block">
-                <h3>Nearest-Neighbour Distance (NND) Method</h3>
-                <p>
-                    The NND approach transforms earthquake occurrences into a rescaled space-time-magnitude framework. 
-                    For each event pair (i, j), we compute:
-                </p>
-                <div class="formula-box">
-                    <p><strong>Rescaled Proximity Distance:</strong> η<sub>ij</sub> = T<sub>ij</sub> × R<sub>ij</sub></p>
-                    <p>where:</p>
-                    <ul>
-                        <li>T<sub>ij</sub> = rescaled time interval</li>
-                        <li>R<sub>ij</sub> = rescaled spatial distance</li>
-                    </ul>
+            
+            <div class="method-showcase">
+                <div class="method-box" data-aos>
+                    <h3>ML Models</h3>
+                    <div class="model-grid">
+                        <div class="model-chip">
+                            <span class="chip-badge">RF</span>
+                            <span class="chip-name">Random Forest</span>
+                        </div>
+                        <div class="model-chip">
+                            <span class="chip-badge">SVM</span>
+                            <span class="chip-name">Support Vector</span>
+                        </div>
+                        <div class="model-chip">
+                            <span class="chip-badge">GB</span>
+                            <span class="chip-name">Gradient Boost</span>
+                        </div>
+                        <div class="model-chip highlight">
+                            <span class="chip-badge">XGB</span>
+                            <span class="chip-name">XGBoost ⭐</span>
+                        </div>
+                    </div>
                 </div>
-                <p>
-                    The distribution of log(η) typically shows two distinct peaks: one for tightly clustered aftershocks 
-                    (low η) and another for independent background events (high η).
-                </p>
-            </div>
-
-            <div class="content-block">
-                <h3>ETAS Model for Synthetic Data Generation</h3>
-                <p>
-                    The Epidemic-Type Aftershock Sequence (ETAS) model treats earthquakes as a branching process where 
-                    each event can trigger its own aftershocks. The model provides labeled training data by explicitly 
-                    marking which events are background and which are triggered.
-                </p>
-                <p><strong>Key ETAS parameters:</strong></p>
-                <ul class="styled-list">
-                    <li><strong>μ:</strong> Background seismicity rate</li>
-                    <li><strong>K, α:</strong> Productivity parameters (aftershock generation)</li>
-                    <li><strong>c, p:</strong> Omori-Utsu temporal decay parameters</li>
-                    <li><strong>D, γ, q:</strong> Spatial decay parameters</li>
-                </ul>
-            </div>
-
-            <div class="content-block">
-                <h3>Feature Engineering</h3>
-                <p>Six key features were extracted for each earthquake event:</p>
-                <div class="features-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Feature</th>
-                                <th>Description</th>
-                                <th>Physical Significance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>T⁺ (Rescaled Time)</td>
-                                <td>Normalized time to nearest neighbor</td>
-                                <td>Temporal proximity to potential parent event</td>
-                            </tr>
-                            <tr>
-                                <td>R⁺ (Rescaled Distance)</td>
-                                <td>Normalized spatial distance</td>
-                                <td>Spatial clustering strength</td>
-                            </tr>
-                            <tr>
-                                <td>dm⁺ (Magnitude Difference)</td>
-                                <td>m<sub>parent</sub> - m<sub>event</sub></td>
-                                <td>Energy ratio (larger parent → likely aftershock)</td>
-                            </tr>
-                            <tr>
-                                <td>N⁺ (Siblings Count)</td>
-                                <td>Events sharing same parent</td>
-                                <td>Cluster size indicator</td>
-                            </tr>
-                            <tr>
-                                <td>n<sub>parent</sub></td>
-                                <td>Number of potential parents</td>
-                                <td>Multiple triggering sources</td>
-                            </tr>
-                            <tr>
-                                <td>n<sub>child</sub></td>
-                                <td>Number of triggered offspring</td>
-                                <td>Aftershock productivity</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="content-block">
-                <h3>Machine Learning Models</h3>
-                <p>Four supervised classifiers were trained and compared:</p>
                 
-                <div class="models-grid">
-                    <div class="model-card">
-                        <h4>Random Forest (RF)</h4>
-                        <p>Ensemble of decision trees using bootstrap aggregating. Robust to overfitting and provides feature importance rankings.</p>
-                    </div>
-                    <div class="model-card">
-                        <h4>Support Vector Machine (SVM)</h4>
-                        <p>Finds optimal hyperplane separating background and triggered events in high-dimensional feature space.</p>
-                    </div>
-                    <div class="model-card">
-                        <h4>Gradient Boosting (GB)</h4>
-                        <p>Sequential ensemble that iteratively corrects misclassifications, achieving high recall for triggered events.</p>
-                    </div>
-                    <div class="model-card">
-                        <h4>XGBoost</h4>
-                        <p>Optimized gradient boosting with regularization, achieving the best overall performance (97.44% accuracy).</p>
+                <div class="method-box" data-aos>
+                    <h3>Features</h3>
+                    <div class="feature-tags">
+                        <span class="feature-tag">T⁺</span>
+                        <span class="feature-tag">R⁺</span>
+                        <span class="feature-tag">dm⁺</span>
+                        <span class="feature-tag">N⁺</span>
+                        <span class="feature-tag">n_parent</span>
+                        <span class="feature-tag">n_child</span>
                     </div>
                 </div>
-            </div>
-
-            <div class="content-block">
-                <h3>Model Training Protocol</h3>
-                <ul class="styled-list">
-                    <li><strong>Data Split:</strong> 80% training, 20% testing from synthetic ETAS catalogue</li>
-                    <li><strong>Cross-Validation:</strong> 5-fold CV to prevent overfitting</li>
-                    <li><strong>Hyperparameter Tuning:</strong> Grid search optimization for each model</li>
-                    <li><strong>Evaluation Metrics:</strong> Accuracy, Precision, Recall, F1-Score</li>
-                    <li><strong>Feature Standardization:</strong> Z-score normalization to remove scale effects</li>
-                </ul>
             </div>
         </div>
     </section>
 
-    <!-- Results Section -->
-    <section id="results" class="section">
+    <!-- PLOTS SECTION - IMAGE BASED -->
+    <section class="section plots-section" id="plots">
         <div class="container">
-            <h2 class="section-title">Results & Analysis</h2>
+            <div class="section-header" data-aos>
+                <span class="section-tag">03 · Visualizations</span>
+                <h2 class="section-title">Research Plots & Analysis</h2>
+                <p class="section-desc">Key visualizations from the study</p>
+            </div>
 
-            <div class="content-block">
-                <h3>Model Performance on Synthetic Data</h3>
-                <p>All models were first validated on synthetic ETAS catalogues where true labels were known:</p>
+            <!-- INSTRUCTIONS BOX -->
+            <div class="instructions-box" data-aos>
+                <div class="instruction-header">
+                    <span class="icon">📌</span>
+                    <h3>How to Add Your Plots</h3>
+                </div>
+                <div class="instruction-content">
+                    <p><strong>Option 1 - Place images in same folder:</strong></p>
+                    <ol>
+                        <li>Save your JPG/PNG plots in the same folder as this HTML file</li>
+                        <li>Name them as: <code>plot1.jpg</code>, <code>plot2.jpg</code>, etc.</li>
+                        <li>They will automatically display below</li>
+                    </ol>
+                    <p><strong>Option 2 - Edit the HTML:</strong></p>
+                    <ol>
+                        <li>Right-click this page → "View Page Source" or open in text editor</li>
+                        <li>Find the <code>&lt;img src="..."&gt;</code> tags below</li>
+                        <li>Replace <code>src="plot1.jpg"</code> with your actual image path</li>
+                        <li>Update the titles and descriptions for each plot</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- PLOT GRID -->
+            <div class="plots-grid">
                 
-                <div class="results-table">
-                    <table>
+                <!-- Plot 1 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>Model Performance Comparison</h3>
+                        <span class="plot-badge">Figure 1</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot1.jpg" alt="Model Performance Comparison" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/6366f1/ffffff?text=Place+your+plot1.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Accuracy, Precision, Recall, and F1-Score comparison across Random Forest, SVM, Gradient Boosting, and XGBoost models.</p>
+                    </div>
+                </div>
+
+                <!-- Plot 2 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>Classification Distribution</h3>
+                        <span class="plot-badge">Figure 2</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot2.jpg" alt="Classification Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/ec4899/ffffff?text=Place+your+plot2.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Distribution of background events (58.23%) vs triggered events (41.77%) from XGBoost classification of New Zealand catalogue.</p>
+                    </div>
+                </div>
+
+                <!-- Plot 3 - Full Width -->
+                <div class="plot-card full-width" data-aos>
+                    <div class="plot-header">
+                        <h3>Feature Importance Ranking</h3>
+                        <span class="plot-badge">Figure 3</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot3.jpg" alt="Feature Importance" class="plot-img" onerror="this.src='https://via.placeholder.com/1200x500/10b981/ffffff?text=Place+your+plot3.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>XGBoost feature importance showing N⁺ (siblings count) as the most influential predictor, followed by R⁺ (rescaled distance) and T⁺ (rescaled time).</p>
+                    </div>
+                </div>
+
+                <!-- Plot 4 - Full Width -->
+                <div class="plot-card full-width" data-aos>
+                    <div class="plot-header">
+                        <h3>Temporal Evolution of Seismicity</h3>
+                        <span class="plot-badge">Figure 4</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot4.jpg" alt="Temporal Evolution" class="plot-img" onerror="this.src='https://via.placeholder.com/1200x500/f59e0b/ffffff?text=Place+your+plot4.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Background and triggered events over 44 years (1980-2024) showing major earthquake sequences: Edgecumbe (1987), Canterbury (2010-2011), Kaikōura (2016).</p>
+                    </div>
+                </div>
+
+                <!-- Plot 5 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>Confusion Matrix</h3>
+                        <span class="plot-badge">Figure 5</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot5.jpg" alt="Confusion Matrix" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/8b5cf6/ffffff?text=Place+your+plot5.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>XGBoost confusion matrix on synthetic test data showing 98.7% True Positive rate and 94.4% True Negative rate.</p>
+                    </div>
+                </div>
+
+                <!-- Plot 6 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>Spatial Distribution Map</h3>
+                        <span class="plot-badge">Figure 6</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot6.jpg" alt="Spatial Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/14b8a6/ffffff?text=Place+your+plot6.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Spatial distribution of background and triggered events across New Zealand, showing alignment with major tectonic structures.</p>
+                    </div>
+                </div>
+
+                <!-- Plot 7 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>NND Distribution</h3>
+                        <span class="plot-badge">Figure 7</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot7.jpg" alt="NND Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/f43f5e/ffffff?text=Place+your+plot7.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Bimodal distribution of nearest-neighbour distance (log η) showing clear separation between background and clustered events.</p>
+                    </div>
+                </div>
+
+                <!-- Plot 8 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>ROC Curve Analysis</h3>
+                        <span class="plot-badge">Figure 8</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot8.jpg" alt="ROC Curve" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/0ea5e9/ffffff?text=Place+your+plot8.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Receiver Operating Characteristic curve demonstrating model discrimination capability with AUC = 0.98.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Performance Table -->
+            <div class="metrics-table-container" data-aos>
+                <h3>Detailed Performance Metrics</h3>
+                <div class="table-wrapper">
+                    <table class="metrics-table">
                         <thead>
                             <tr>
                                 <th>Model</th>
@@ -399,7 +470,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="highlight-row">
+                            <tr class="best">
                                 <td><strong>XGBoost</strong></td>
                                 <td>97.44%</td>
                                 <td>97.66%</td>
@@ -430,349 +501,102 @@
                         </tbody>
                     </table>
                 </div>
-                <p class="caption">
-                    <strong>Key Finding:</strong> XGBoost achieved the highest accuracy (97.44%) and successfully 
-                    identified 98.74% of triggered events, demonstrating superior performance in capturing 
-                    earthquake clustering patterns.
-                </p>
-            </div>
-
-            <div class="content-block">
-                <h3>Feature Importance Analysis</h3>
-                <p>Analysis across all models revealed consistent feature importance rankings:</p>
-                <ol class="styled-list">
-                    <li><strong>N⁺ (Siblings Count):</strong> Most influential predictor—events with many siblings are likely part of aftershock sequences</li>
-                    <li><strong>R⁺ (Rescaled Distance):</strong> Spatial proximity to nearest neighbor strongly indicates clustering</li>
-                    <li><strong>T⁺ (Rescaled Time):</strong> Temporal closeness helps identify recently triggered events</li>
-                    <li><strong>dm⁺ (Magnitude Difference):</strong> Larger parent magnitudes increase triggering probability</li>
-                    <li><strong>n<sub>child</sub> (Offspring Count):</strong> Events that trigger others are more likely mainshocks</li>
-                    <li><strong>n<sub>parent</sub>:</strong> Multiple potential parents indicate complex overlapping sequences</li>
-                </ol>
-                <p>
-                    This ranking confirms physical expectations: aftershocks cluster tightly in space and time around 
-                    larger parent events, validating the NND framework's effectiveness.
-                </p>
-            </div>
-
-            <div class="content-block">
-                <h3>Application to New Zealand Catalogue</h3>
-                <p>
-                    The best-performing XGBoost model was applied to the real GeoNet catalogue (1980-2024), 
-                    classifying 396,267 earthquakes:
-                </p>
-                
-                <div class="classification-stats">
-                    <div class="stat-box background">
-                        <div class="stat-number">230,758</div>
-                        <div class="stat-label">Background Events</div>
-                        <div class="stat-percent">58.23%</div>
-                    </div>
-                    <div class="stat-box triggered">
-                        <div class="stat-number">165,509</div>
-                        <div class="stat-label">Triggered Events</div>
-                        <div class="stat-percent">41.77%</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="content-block">
-                <h3>Spatial Patterns</h3>
-                <ul class="styled-list">
-                    <li>
-                        <strong>Background events</strong> align with major tectonic structures:
-                        <ul>
-                            <li>Alpine Fault in South Island</li>
-                            <li>Hikurangi Subduction Zone off North Island</li>
-                            <li>Distributed crustal faulting</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <strong>Triggered events</strong> form tight spatial clusters around:
-                        <ul>
-                            <li>Canterbury earthquake sequence (2010-2011)</li>
-                            <li>Kaikōura earthquake (2016)</li>
-                            <li>Edgecumbe earthquake (1987)</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="content-block">
-                <h3>Temporal Evolution</h3>
-                <p>
-                    The classified catalogue reveals clear temporal patterns matching New Zealand's seismic history:
-                </p>
-                <ul class="styled-list">
-                    <li><strong>1987:</strong> Edgecumbe earthquake triggered extensive aftershock sequence</li>
-                    <li><strong>2010-2011:</strong> Canterbury sequence showing prolonged aftershock activity</li>
-                    <li><strong>2016:</strong> Kaikōura event with complex multi-fault rupture and aftershocks</li>
-                    <li>Aftershock decay follows Omori-Utsu law (rate decreases with time)</li>
-                    <li>Background rate remains relatively stable between major sequences</li>
-                </ul>
-            </div>
-
-            <div class="content-block">
-                <h3>NND Distribution Analysis</h3>
-                <p>
-                    The rescaled proximity distance (log η) distribution shows clear bimodality:
-                </p>
-                <ul class="styled-list">
-                    <li><strong>Lower peak (log η ≈ -3 to 0):</strong> Clustered aftershocks with tight space-time correlations</li>
-                    <li><strong>Upper peak (log η ≈ 2 to 5):</strong> Independent background events</li>
-                    <li><strong>Threshold (η ≈ 2.03):</strong> Optimal separation point identified via Gaussian Mixture Model</li>
-                </ul>
-                <p>
-                    This bimodal structure validates the fundamental assumption that seismicity comprises two distinct 
-                    populations with different statistical behaviors.
-                </p>
-            </div>
-
-            <div class="content-block">
-                <h3>Comparison with Traditional Methods</h3>
-                <div class="comparison-grid">
-                    <div class="comparison-card">
-                        <h4>Gardner-Knopoff Method</h4>
-                        <p><strong>Background:</strong> ~75%</p>
-                        <p><strong>Issue:</strong> Over-declustering; fixed windows miss overlapping sequences</p>
-                    </div>
-                    <div class="comparison-card">
-                        <h4>NND Threshold Method</h4>
-                        <p><strong>Background:</strong> ~62%</p>
-                        <p><strong>Issue:</strong> Single threshold cannot capture complex clustering variations</p>
-                    </div>
-                    <div class="comparison-card highlight-card">
-                        <h4>XGBoost (This Study)</h4>
-                        <p><strong>Background:</strong> 58.23%</p>
-                        <p><strong>Advantage:</strong> Adaptive classification based on multidimensional features</p>
-                    </div>
-                </div>
-                <p>
-                    The ML approach identifies more triggered events than traditional methods, suggesting better 
-                    sensitivity to weak clustering that fixed-parameter methods miss.
-                </p>
-            </div>
-
-            <div class="content-block">
-                <h3>Scientific Interpretation</h3>
-                <p><strong>Why These Results Matter:</strong></p>
-                <ul class="styled-list">
-                    <li>
-                        <strong>Hazard Assessment:</strong> Accurate background rates are essential for calculating 
-                        long-term earthquake probabilities used in building codes and infrastructure planning
-                    </li>
-                    <li>
-                        <strong>Stress Transfer Studies:</strong> Identifying true triggering relationships helps 
-                        understand how stress redistributes along fault networks
-                    </li>
-                    <li>
-                        <strong>Forecasting Models:</strong> Declustered catalogues improve statistical models 
-                        (e.g., Poisson processes) for earthquake prediction
-                    </li>
-                    <li>
-                        <strong>Tectonic Insights:</strong> Background seismicity patterns reveal long-term 
-                        strain accumulation zones
-                    </li>
-                </ul>
             </div>
         </div>
     </section>
 
-    <!-- Conclusions Section -->
-    <section id="conclusions" class="section alt-bg">
+    <!-- Results Section -->
+    <section class="section results-section" id="results">
         <div class="container">
-            <h2 class="section-title">Key Findings & Conclusions</h2>
-
-            <div class="content-block">
-                <h3>Major Achievements</h3>
-                <div class="achievements-grid">
-                    <div class="achievement-card">
-                        <div class="achievement-icon">✓</div>
-                        <h4>High Classification Accuracy</h4>
-                        <p>XGBoost achieved 97.44% accuracy on synthetic test data, demonstrating reliable pattern recognition for earthquake clustering</p>
-                    </div>
-                    <div class="achievement-card">
-                        <div class="achievement-icon">✓</div>
-                        <h4>Objective Declustering</h4>
-                        <p>ML-based approach eliminates subjective parameter tuning, providing reproducible results across different seismic regions</p>
-                    </div>
-                    <div class="achievement-card">
-                        <div class="achievement-icon">✓</div>
-                        <h4>Physical Validation</h4>
-                        <p>Results align with known tectonic structures and historical earthquake sequences in New Zealand</p>
-                    </div>
-                    <div class="achievement-card">
-                        <div class="achievement-icon">✓</div>
-                        <h4>Improved Sensitivity</h4>
-                        <p>Identified more triggered events than classical methods, capturing subtle clustering patterns</p>
-                    </div>
-                </div>
+            <div class="section-header" data-aos>
+                <span class="section-tag">04 · Results</span>
+                <h2 class="section-title">Key Findings</h2>
+                <p class="section-desc">Application to New Zealand earthquake catalogue</p>
             </div>
-
-            <div class="content-block">
-                <h3>Scientific Contributions</h3>
-                <ul class="styled-list">
-                    <li>
-                        <strong>Methodological Innovation:</strong> Successfully combined ETAS synthetic data generation 
-                        with nearest-neighbour analysis to create a robust training framework
-                    </li>
-                    <li>
-                        <strong>Feature Engineering:</strong> Demonstrated that multidimensional space-time-magnitude 
-                        features outperform single-threshold approaches
-                    </li>
-                    <li>
-                        <strong>Regional Application:</strong> Provided first comprehensive ML-based declustering 
-                        of New Zealand's 44-year earthquake catalogue
-                    </li>
-                    <li>
-                        <strong>Transferability:</strong> Framework can be adapted to other seismic regions without 
-                        region-specific parameter calibration
-                    </li>
-                </ul>
-            </div>
-
-            <div class="content-block">
-                <h3>Practical Implications</h3>
-                <div class="implications-box">
-                    <h4>For Seismic Hazard Assessment:</h4>
-                    <p>
-                        The refined background seismicity rates derived from this study provide more accurate input 
-                        for probabilistic seismic hazard analysis (PSHA) models used in:
-                    </p>
-                    <ul>
-                        <li>Building code development</li>
-                        <li>Infrastructure planning (bridges, dams, nuclear facilities)</li>
-                        <li>Insurance risk modeling</li>
-                        <li>Emergency preparedness planning</li>
-                    </ul>
-                </div>
-                
-                <div class="implications-box">
-                    <h4>For Earthquake Science:</h4>
-                    <ul>
-                        <li>Better understanding of fault interaction and stress transfer mechanisms</li>
-                        <li>Improved statistical models for earthquake occurrence</li>
-                        <li>Insights into temporal evolution of aftershock sequences</li>
-                        <li>Foundation for physics-based earthquake simulators</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="content-block">
-                <h3>Future Research Directions</h3>
-                <ul class="styled-list">
-                    <li>
-                        <strong>Deep Learning:</strong> Explore neural networks for automated feature extraction 
-                        from raw seismic waveforms
-                    </li>
-                    <li>
-                        <strong>Real-Time Application:</strong> Develop online learning systems for near-real-time 
-                        declustering of streaming earthquake data
-                    </li>
-                    <li>
-                        <strong>Multi-Region Studies:</strong> Test framework on diverse tectonic settings 
-                        (e.g., California, Japan, Italy) to assess global applicability
-                    </li>
-                    <li>
-                        <strong>Uncertainty Quantification:</strong> Incorporate probabilistic classification to 
-                        account for ambiguous cases
-                    </li>
-                    <li>
-                        <strong>Physics-Informed ML:</strong> Integrate domain knowledge (fault geometry, stress models) 
-                        into learning algorithms
-                    </li>
-                    <li>
-                        <strong>Swarm Detection:</strong> Extend methodology to identify earthquake swarms 
-                        (diffuse clustering without clear mainshock)
-                    </li>
-                </ul>
-            </div>
-
-            <div class="content-block">
-                <h3>Concluding Remarks</h3>
-                <p>
-                    This research demonstrates that machine learning offers a powerful, objective alternative to 
-                    traditional earthquake declustering methods. By combining the physical insights of the ETAS model 
-                    with the pattern-recognition capabilities of modern ML algorithms, we achieved classification 
-                    accuracy exceeding 97% on synthetic data and produced physically consistent results when applied 
-                    to New Zealand's complex seismic catalogue.
-                </p>
-                <p>
-                    The declustered catalogue provides a clearer picture of New Zealand's background seismicity 
-                    and aftershock patterns, directly supporting improved seismic hazard assessment in this 
-                    tectonically active region. The framework's adaptability and objectivity make it a valuable 
-                    tool for seismologists worldwide working to understand earthquake clustering and improve 
-                    public safety.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tools & Technologies Section -->
-    <section id="tools" class="section">
-        <div class="container">
-            <h2 class="section-title">Tools & Technologies</h2>
             
-            <div class="tools-grid">
-                <div class="tool-category">
-                    <h3>Programming</h3>
-                    <ul class="tool-list">
-                        <li>Python 3.11</li>
-                        <li>R (ETAS simulation)</li>
-                    </ul>
+            <div class="results-hero">
+                <div class="result-card" data-aos>
+                    <div class="result-icon">🎯</div>
+                    <div class="result-value">97.44%</div>
+                    <div class="result-label">Classification Accuracy</div>
+                    <div class="result-desc">XGBoost model on synthetic test data</div>
                 </div>
-
-                <div class="tool-category">
-                    <h3>Machine Learning</h3>
-                    <ul class="tool-list">
-                        <li>scikit-learn</li>
-                        <li>XGBoost</li>
-                        <li>NumPy</li>
-                        <li>Pandas</li>
-                    </ul>
+                <div class="result-card" data-aos>
+                    <div class="result-icon">🟢</div>
+                    <div class="result-value">230,758</div>
+                    <div class="result-label">Background Events</div>
+                    <div class="result-desc">58.23% of total catalogue</div>
                 </div>
-
-                <div class="tool-category">
-                    <h3>Seismological Analysis</h3>
-                    <ul class="tool-list">
-                        <li>ETAS package (R)</li>
-                        <li>Nearest-Neighbour Distance (NND) framework</li>
-                        <li>Stochastic Declustering methods</li>
-                    </ul>
+                <div class="result-card" data-aos>
+                    <div class="result-icon">🔴</div>
+                    <div class="result-value">165,509</div>
+                    <div class="result-label">Triggered Events</div>
+                    <div class="result-desc">41.77% aftershocks identified</div>
                 </div>
-
-                <div class="tool-category">
-                    <h3>Visualization</h3>
-                    <ul class="tool-list">
-                        <li>Matplotlib</li>
-                        <li>Seaborn</li>
-                        <li>Plotly</li>
-                    </ul>
+            </div>
+            
+            <div class="insights-grid">
+                <div class="insight-card" data-aos>
+                    <h3>Feature Importance</h3>
+                    <div class="rank-list">
+                        <div class="rank-item">
+                            <span class="rank">1</span>
+                            <div class="rank-content">
+                                <strong>N⁺ — Siblings Count</strong>
+                                <p>Most influential predictor of aftershock clustering</p>
+                            </div>
+                        </div>
+                        <div class="rank-item">
+                            <span class="rank">2</span>
+                            <div class="rank-content">
+                                <strong>R⁺ — Rescaled Distance</strong>
+                                <p>Spatial proximity strongly indicates triggering</p>
+                            </div>
+                        </div>
+                        <div class="rank-item">
+                            <span class="rank">3</span>
+                            <div class="rank-content">
+                                <strong>T⁺ — Rescaled Time</strong>
+                                <p>Temporal correlation with Omori-Utsu decay</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="tool-category">
-                    <h3>Statistical Analysis</h3>
-                    <ul class="tool-list">
-                        <li>Gaussian Mixture Models</li>
-                        <li>Kernel Density Estimation</li>
-                        <li>Cross-validation</li>
-                        <li>Grid Search Optimization</li>
-                    </ul>
-                </div>
-
-                <div class="tool-category">
-                    <h3>Data Sources</h3>
-                    <ul class="tool-list">
-                        <li>GeoNet (GNS Science)</li>
-                        <li>New Zealand Earthquake Catalogue</li>
-                    </ul>
+                
+                <div class="insight-card" data-aos>
+                    <h3>Comparison with Traditional Methods</h3>
+                    <div class="comparison-list">
+                        <div class="comp-item">
+                            <div class="comp-name">Gardner-Knopoff</div>
+                            <div class="comp-bar">
+                                <div class="bar" style="width: 75%"></div>
+                            </div>
+                            <div class="comp-value">75% BG</div>
+                        </div>
+                        <div class="comp-item">
+                            <div class="comp-name">NND Threshold</div>
+                            <div class="comp-bar">
+                                <div class="bar" style="width: 62%"></div>
+                            </div>
+                            <div class="comp-value">62% BG</div>
+                        </div>
+                        <div class="comp-item highlight">
+                            <div class="comp-name">XGBoost (This Study)</div>
+                            <div class="comp-bar">
+                                <div class="bar" style="width: 58.23%"></div>
+                            </div>
+                            <div class="comp-value">58.23% BG</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Links Section -->
-    <section id="links" class="section alt-bg">
+    <!-- Impact Section -->
+    <section class="section impact-section" id="impact">
         <div class="container">
+<<<<<<< HEAD
             <h2 class="section-title">Resources</h2>
             <div class="links-container">
                 <a href="https://github.com/Ashraf-ISM/master-thesis-declustering-using-ml/tree/main" class="btn btn-primary">
@@ -787,6 +611,56 @@
                     <span class="btn-icon">←</span>
                     Back to Portfolio
                 </a>
+=======
+            <div class="section-header" data-aos>
+                <span class="section-tag">05 · Scientific Impact</span>
+                <h2 class="section-title">Research Contributions</h2>
+                <p class="section-desc">Implications for seismology and hazard assessment</p>
+            </div>
+            
+            <div class="impact-grid">
+                <div class="impact-card" data-aos>
+                    <div class="impact-icon">✓</div>
+                    <h3>High Accuracy</h3>
+                    <p>97.44% classification accuracy demonstrates reliable pattern recognition with minimal misclassification</p>
+                </div>
+                <div class="impact-card" data-aos>
+                    <div class="impact-icon">✓</div>
+                    <h3>Objective Method</h3>
+                    <p>Eliminates subjective parameter tuning, providing reproducible results across regions</p>
+                </div>
+                <div class="impact-card" data-aos>
+                    <div class="impact-icon">✓</div>
+                    <h3>Physical Validation</h3>
+                    <p>Results align with known tectonic structures and historical earthquake sequences</p>
+                </div>
+                <div class="impact-card" data-aos>
+                    <div class="impact-icon">✓</div>
+                    <h3>Improved Sensitivity</h3>
+                    <p>Captures subtle clustering patterns that fixed-parameter approaches miss</p>
+                </div>
+            </div>
+            
+            <div class="application-boxes">
+                <div class="app-box" data-aos>
+                    <h3>Seismic Hazard Assessment</h3>
+                    <ul>
+                        <li>More accurate background rates for PSHA models</li>
+                        <li>Improved building code development</li>
+                        <li>Better insurance risk modeling</li>
+                        <li>Enhanced emergency preparedness</li>
+                    </ul>
+                </div>
+                <div class="app-box" data-aos>
+                    <h3>Earthquake Science</h3>
+                    <ul>
+                        <li>Understanding fault interaction mechanisms</li>
+                        <li>Statistical forecasting model improvement</li>
+                        <li>Aftershock sequence evolution insights</li>
+                        <li>Physics-based simulator foundations</li>
+                    </ul>
+                </div>
+>>>>>>> cf03a3d (Updated About section, Portfolio projects, ONGC internship)
             </div>
         </div>
     </section>
@@ -794,8 +668,36 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
+<<<<<<< HEAD
             <p>&copy; 2026 Md Ashraf | M.Sc (Tech) Applied Geophysics | IIT (ISM) Dhanbad</p>
             <p class="footer-note">Thesis supervised by Dr. Niptika Jana</p>
+=======
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Research</h4>
+                    <p><strong>Md Ashraf</strong></p>
+                    <p>M.Sc (Tech) Applied Geophysics</p>
+                    <p>Indian Institute of Technology (ISM) Dhanbad</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Supervision</h4>
+                    <p>Dr. Niptika Jana</p>
+                    <p>Assistant Professor</p>
+                    <p>Department of Applied Geophysics</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Access</h4>
+                    <div class="footer-links">
+                        <a href="#" onclick="alert('GitHub link'); return false;">GitHub Repository</a>
+                        <a href="#" onclick="alert('PDF link'); return false;">Download PDF</a>
+                        <a href="#" onclick="alert('Portfolio link'); return false;">Portfolio</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Md Ashraf · IIT (ISM) Dhanbad · All rights reserved</p>
+            </div>
+>>>>>>> cf03a3d (Updated About section, Portfolio projects, ONGC internship)
         </div>
     </footer>
 
