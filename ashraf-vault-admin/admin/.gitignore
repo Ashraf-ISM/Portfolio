@@ -1,0 +1,4 @@
+# Real Supabase config — copy config.example.js to config.js and fill it in locally / in Netlify.
+# The anon key is technically safe to expose (RLS protects the data either way), but keeping
+# config.js untracked means you never have to think about it when switching Supabase projects.
+js/config.js

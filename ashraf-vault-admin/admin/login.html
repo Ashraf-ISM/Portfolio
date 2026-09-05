@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Ashraf Vault</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="login-shell">
+  <div class="login-visual">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z"/></svg>
+      </div>
+      <div class="brand-text">
+        <h1 style="font-size:17px;">Ashraf Vault</h1>
+        <span>Private Research &amp; Document Workspace</span>
+      </div>
+    </div>
+
+    <div class="pitch">
+      <h2>Your work, secured<br>and always within reach.</h2>
+      <p>A private, access-controlled home for resumes, research papers, datasets and every document tied to your work in applied geophysics — reachable from anywhere, visible to no one else.</p>
+    </div>
+
+    <svg class="waveform" width="100%" height="70" viewBox="0 0 500 70" preserveAspectRatio="none">
+      <path d="M0 35 Q 20 5, 40 35 T 80 35 T 120 35 T 160 35 Q 180 60, 200 35 T 240 35 T 280 35 Q 300 10, 320 35 T 360 35 T 400 35 T 440 35 T 480 35 T 500 35"
+        fill="none" stroke="#e5473c" stroke-width="1.4" opacity="0.55"/>
+    </svg>
+
+    <div class="security-line">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+      Protected by Supabase Auth with row-level access control
+    </div>
+  </div>
+
+  <div class="login-form-side">
+    <div class="login-card">
+      <h2>Welcome back</h2>
+      <p class="subt">Access your private document vault.</p>
+
+      <div class="form-alert" id="form-alert"></div>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">Administrator ID / Email</label>
+          <input type="email" id="email" name="email" autocomplete="username" placeholder="you@example.com">
+          <div class="field-error"></div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="pw-row">
+            <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••">
+            <button type="button" class="pw-toggle" id="pw-toggle" aria-label="Show password">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <div class="form-row-between">
+          <label class="checkbox-row"><input type="checkbox" id="remember"> Remember me</label>
+          <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-signin" id="signin-btn">Sign In Securely</button>
+      </form>
+
+      <div class="protected-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        Protected private workspace
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toast-stack"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashraf Vault</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body style="background:#0a0f1a;">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
+    <div class="spinner" style="width:26px;height:26px;border-width:3px;"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script>
+    (async () => {
+      const { data: { session } } = await window.sb.auth.getSession();
+      window.location.replace(session ? "dashboard.html" : "login.html");
+    })();
+  </script>
+</body>
+</html>

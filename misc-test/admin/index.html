@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ashraf Vault | Sign In</title>
+    <meta name="description" content="Private research and document workspace for Ashraf." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body class="auth-page">
+    <div class="auth-shell">
+      <div class="auth-visual">
+        <div class="brand-mark">A</div>
+        <div class="visual-copy">
+          <p class="eyebrow">PRIVATE RESEARCH & DOCUMENT WORKSPACE</p>
+          <h1>Ashraf Vault</h1>
+          <p>
+            Secure access for research, academic files, certificates, reports,
+            and professional documentation.
+          </p>
+        </div>
+        <div class="wave-panel">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="security-note">
+          <strong>🔒 Protected private workspace</strong>
+          <small>Authenticated access, private storage, and secure signing.</small>
+        </div>
+      </div>
+
+      <main class="auth-card-wrap">
+        <section class="auth-card">
+          <div class="card-topbar">
+            <span class="chip">Secure</span>
+          </div>
+
+          <p class="eyebrow accent">ADMIN ACCESS</p>
+          <h2>Welcome back</h2>
+          <p class="subtext">Access your private document vault.</p>
+
+          <form id="loginForm" novalidate>
+            <div class="field-group">
+              <label for="email">Administrator ID / Email</label>
+              <input id="email" name="email" type="email" autocomplete="username" placeholder="admin@yourdomain.com" required />
+            </div>
+
+            <div class="field-group">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required />
+            </div>
+
+            <div class="meta-row">
+              <label class="remember">
+                <input type="checkbox" name="remember" />
+                <span>Remember me</span>
+              </label>
+              <button type="button" class="link-btn" id="resetPasswordBtn">Forgot password?</button>
+            </div>
+
+            <div id="authError" class="form-message error" role="alert" aria-live="polite"></div>
+            <div id="authSuccess" class="form-message success" role="status" aria-live="polite"></div>
+
+            <button class="primary-btn submit-btn" type="submit" id="loginButton">
+              <span class="btn-label">Sign In Securely</span>
+              <span class="btn-loader" hidden>Signing in…</span>
+            </button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.AdminAuth && typeof window.AdminAuth.initLogin === 'function') {
+          window.AdminAuth.initLogin();
+        }
+      });
+    </script>
+  </body>
+</html>
