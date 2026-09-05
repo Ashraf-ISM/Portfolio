@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Earthquake Declustering | Md Ashraf - IIT (ISM) Dhanbad</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700;900&family=Work+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Particle Background -->
+    <canvas id="particleCanvas" class="particle-bg"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="nav-brand">
+                <div class="brand-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <path d="M10 20 Q 15 10, 20 20 T 30 20" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earthquake ML</span>
+                    <span class="brand-subtitle">Declustering Research</span>
+                </div>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#problem" class="nav-link">Challenge</a></li>
+                <li><a href="#methodology" class="nav-link">Method</a></li>
+                <li><a href="#plots" class="nav-link">Plots</a></li>
+                <li><a href="#results" class="nav-link">Results</a></li>
+                <li><a href="#impact" class="nav-link">Impact</a></li>
+            </ul>
+            
+            <button class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="wave-container">
+                <svg class="wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                    <path fill="rgba(255,255,255,0.05)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="container hero-container">
+            <div class="hero-badge">
+                <span class="badge-icon">🎓</span>
+                M.Sc (Tech) Thesis · 2025
+            </div>
+            
+            <h1 class="hero-title">
+                <span class="title-line" data-text="Machine Learning">Machine Learning Approach For</span>
+                <span class="title-line highlight" data-text="Earthquake Declustering">Earthquake Declustering</span>
+            </h1>
+            
+            <p class="hero-subtitle">Intelligent Classification of Seismic Events in New Zealand</p>
+            
+            <div class="hero-meta-grid">
+                <div class="meta-card">
+                    <div class="meta-icon">👤</div>
+                    <div class="meta-content">
+                        <span class="meta-label">Researcher</span>
+                        <span class="meta-value">Md Ashraf</span>
+                    </div>
+                </div>
+                <div class="meta-card">
+                    <div class="meta-icon">🏛️</div>
+                    <div class="meta-content">
+                        <span class="meta-label">Institution</span>
+                        <span class="meta-value">IIT (ISM) Dhanbad</span>
+                    </div>
+                </div>
+                <div class="meta-card">
+                    <div class="meta-icon">🧑‍🏫</div>
+                    <div class="meta-content">
+                        <span class="meta-label">Supervisor</span>
+                        <span class="meta-value">Dr. Niptika Jana</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">97.44%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number">396K+</div>
+                    <div class="stat-label">Events</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-number">44 Years</div>
+                    <div class="stat-label">Data</div>
+                </div>
+            </div>
+            
+            <div class="hero-cta-group">
+                <a href="#plots" class="cta-btn primary">
+                    <span>View Plots & Analysis</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </a>
+                <a href="#results" class="cta-btn secondary">
+                    View Results
+                </a>
+            </div>
+        </div>
+        
+        <div class="scroll-prompt">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section problem-section" id="problem">
+        <div class="container">
+            <div class="section-header" data-aos>
+                <span class="section-tag">01 · The Challenge</span>
+                <h2 class="section-title">Understanding Earthquake Declustering</h2>
+                <p class="section-desc">Separating independent earthquakes from dependent aftershocks</p>
+            </div>
+            
+            <div class="content-layout">
+                <div class="content-main">
+                    <div class="rich-card" data-aos>
+                        <div class="card-icon gradient-1">🌍</div>
+                        <h3>What is Declustering?</h3>
+                        <p>Earthquake catalogues contain <strong>background events</strong> (independent, random tectonic stress release) and <strong>dependent events</strong> (aftershocks triggered by previous earthquakes). Declustering separates these populations to enable accurate hazard assessment and earthquake forecasting.</p>
+                        <p>Background seismicity follows a Poisson process, while clustered events exhibit strong spatiotemporal dependencies.</p>
+                    </div>
+                    
+                    <div class="problem-grid">
+                        <div class="problem-card" data-aos>
+                            <div class="problem-icon">📏</div>
+                            <h4>Fixed Parameters</h4>
+                            <p>Traditional methods use predetermined windows that don't adapt to regional variations.</p>
+                        </div>
+                        <div class="problem-card" data-aos>
+                            <div class="problem-icon">🔀</div>
+                            <h4>Overlapping Clusters</h4>
+                            <p>Complex sequences overlap, making separation difficult with rule-based approaches.</p>
+                        </div>
+                        <div class="problem-card" data-aos>
+                            <div class="problem-icon">🎯</div>
+                            <h4>Subjective Tuning</h4>
+                            <p>Results depend heavily on threshold choices, reducing reproducibility.</p>
+                        </div>
+                        <div class="problem-card" data-aos>
+                            <div class="problem-icon">📊</div>
+                            <h4>Statistical Bias</h4>
+                            <p>Model assumptions often violated by real-world catalogue incompleteness.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="rich-card highlight" data-aos>
+                        <div class="card-icon gradient-2">🤖</div>
+                        <h3>Machine Learning Solution</h3>
+                        <div class="advantage-list">
+                            <div class="advantage-item">
+                                <span class="adv-num">01</span>
+                                <div>
+                                    <strong>Pattern Recognition</strong>
+                                    <p>Automatically learns complex nonlinear relationships without fixed rules</p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <span class="adv-num">02</span>
+                                <div>
+                                    <strong>Adaptive Learning</strong>
+                                    <p>Generalizes across regions without manual parameter tuning</p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <span class="adv-num">03</span>
+                                <div>
+                                    <strong>Multidimensional Analysis</strong>
+                                    <p>Captures time-space-magnitude relationships simultaneously</p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <span class="adv-num">04</span>
+                                <div>
+                                    <strong>Objective Classification</strong>
+                                    <p>Reproducible results based on learned patterns from synthetic training data</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section class="section methodology-section" id="methodology">
+        <div class="container">
+            <div class="section-header" data-aos>
+                <span class="section-tag">02 · Methodology</span>
+                <h2 class="section-title">Research Framework</h2>
+                <p class="section-desc">Six-stage machine learning pipeline</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <h4>Data Acquisition</h4>
+                        <p>GeoNet earthquake catalogue (1980-2024) · 396,267 events · Quality control and preprocessing</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <h4>NND Analysis</h4>
+                        <p>Nearest-neighbour distance computation · Rescaled space-time metrics · Bimodal distribution analysis</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <h4>ETAS Simulation</h4>
+                        <p>Synthetic catalogue generation · Labeled background/triggered events · Training data preparation</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">4</div>
+                    <div class="timeline-content">
+                        <h4>Feature Engineering</h4>
+                        <p>Extract T⁺, R⁺, dm⁺, N⁺, n_parent, n_child · Temporal, spatial, magnitude features</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">5</div>
+                    <div class="timeline-content">
+                        <h4>Model Training</h4>
+                        <p>Random Forest, SVM, Gradient Boosting, XGBoost · 5-fold cross-validation · Hyperparameter optimization</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos>
+                    <div class="timeline-marker">6</div>
+                    <div class="timeline-content">
+                        <h4>Deployment</h4>
+                        <p>Apply best model (XGBoost) to real catalogue · Validate against historical sequences</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="method-showcase">
+                <div class="method-box" data-aos>
+                    <h3>ML Models</h3>
+                    <div class="model-grid">
+                        <div class="model-chip">
+                            <span class="chip-badge">RF</span>
+                            <span class="chip-name">Random Forest</span>
+                        </div>
+                        <div class="model-chip">
+                            <span class="chip-badge">SVM</span>
+                            <span class="chip-name">Support Vector</span>
+                        </div>
+                        <div class="model-chip">
+                            <span class="chip-badge">GB</span>
+                            <span class="chip-name">Gradient Boost</span>
+                        </div>
+                        <div class="model-chip highlight">
+                            <span class="chip-badge">XGB</span>
+                            <span class="chip-name">XGBoost ⭐</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="method-box" data-aos>
+                    <h3>Features</h3>
+                    <div class="feature-tags">
+                        <span class="feature-tag">T⁺</span>
+                        <span class="feature-tag">R⁺</span>
+                        <span class="feature-tag">dm⁺</span>
+                        <span class="feature-tag">N⁺</span>
+                        <span class="feature-tag">n_parent</span>
+                        <span class="feature-tag">n_child</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLOTS SECTION - IMAGE BASED -->
+    <section class="section plots-section" id="plots">
+        <div class="container">
+            <div class="section-header" data-aos>
+                <span class="section-tag">03 · Visualizations</span>
+                <h2 class="section-title">Research Plots & Analysis</h2>
+                <p class="section-desc">Key visualizations from the study</p>
+            </div>
+            
+            <!-- PLOT GRID -->
+            <div class="plots-grid">
+                
+                <!-- Plot 1 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>Model Performance Comparison</h3>
+                        <span class="plot-badge">Figure 1</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="Results/xgb_model_performance_plots_gb.png" alt="Model Performance Comparison" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/6366f1/ffffff?text=Place+your+plot1.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Accuracy, Precision, Recall, and F1-Score comparison across Random Forest, SVM, Gradient Boosting, and XGBoost models.</p>
+                    </div>
+                </div>
+                <!-- Plot 2 - feature importance Width -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>Feature Importance Ranking</h3>
+                        <span class="plot-badge">Figure 2</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="Results/XGB_Feature_Importance_Detailed.png" alt="Feature Importance" class="plot-img" onerror="this.src='https://via.placeholder.com/1200x500/10b981/ffffff?text=Place+your+plot3.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>XGBoost feature importance showing N⁺ (siblings count) as the most influential predictor, followed by R⁺ (rescaled distance) and T⁺ (rescaled time).</p>
+                    </div>
+                </div>
+
+                <!-- Plot 3 -->
+                <div class="plot-card full-width" data-aos>
+                    <div class="plot-header">
+                        <h3>Classification Distribution</h3>
+                        <span class="plot-badge">Figure 3</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="Results/XGB_Aftershock_Analysis.png" alt="Classification Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/ec4899/ffffff?text=Place+your+plot2.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Distribution of background events (58.23%) vs triggered events (41.77%) from XGBoost classification of New Zealand catalogue.</p>
+                    </div>
+                </div>
+
+                
+
+                <!-- Plot 4 - Full Width -->
+                <div class="plot-card full-width" data-aos>
+                    <div class="plot-header">
+                        <h3>Temporal Evolution of Seismicity</h3>
+                        <span class="plot-badge">Figure 4</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot4.jpg" alt="Temporal Evolution" class="plot-img" onerror="this.src='https://via.placeholder.com/1200x500/f59e0b/ffffff?text=Place+your+plot4.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Background and triggered events over 44 years (1980-2024) showing major earthquake sequences: Edgecumbe (1987), Canterbury (2010-2011), Kaikōura (2016).</p>
+                    </div>
+                </div>
+
+                <!-- Plot 5 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>Confusion Matrix</h3>
+                        <span class="plot-badge">Figure 5</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="Results/600_xgb-confusion_matrix.png" alt="Confusion Matrix" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/8b5cf6/ffffff?text=Place+your+plot5.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>XGBoost confusion matrix on synthetic test data showing 98.7% True Positive rate and 94.4% True Negative rate.</p>
+                    </div>
+                </div>
+
+                <!-- Plot 6 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>Spatial Distribution Map</h3>
+                        <span class="plot-badge">Figure 6</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="Results/nz_topo_seismicity_publication.png.png" alt="Spatial Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/14b8a6/ffffff?text=Place+your+plot6.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Spatial distribution of background and triggered events across New Zealand, showing alignment with major tectonic structures.</p>
+                    </div>
+                </div>
+
+                <!-- Plot 7 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>NND Distribution</h3>
+                        <span class="plot-badge">Figure 7</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot7.jpg" alt="NND Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/f43f5e/ffffff?text=Place+your+plot7.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Bimodal distribution of nearest-neighbour distance (log η) showing clear separation between background and clustered events.</p>
+                    </div>
+                </div>
+
+                <!-- Plot 8 -->
+                <div class="plot-card" data-aos>
+                    <div class="plot-header">
+                        <h3>ROC Curve Analysis</h3>
+                        <span class="plot-badge">Figure 8</span>
+                    </div>
+                    <div class="plot-image-container">
+                        <img src="plot8.jpg" alt="ROC Curve" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/0ea5e9/ffffff?text=Place+your+plot8.jpg+here'">
+                    </div>
+                    <div class="plot-caption">
+                        <p>Receiver Operating Characteristic curve demonstrating model discrimination capability with AUC = 0.98.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Performance Table -->
+            <div class="metrics-table-container" data-aos>
+                <h3>Detailed Performance Metrics</h3>
+                <div class="table-wrapper">
+                    <table class="metrics-table">
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Accuracy</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="best">
+                                <td><strong>XGBoost</strong></td>
+                                <td>97.44%</td>
+                                <td>97.66%</td>
+                                <td>98.74%</td>
+                                <td>98.20%</td>
+                            </tr>
+                            <tr>
+                                <td>Gradient Boosting</td>
+                                <td>97.11%</td>
+                                <td>97.06%</td>
+                                <td>98.89%</td>
+                                <td>97.97%</td>
+                            </tr>
+                            <tr>
+                                <td>Random Forest</td>
+                                <td>96.72%</td>
+                                <td>96.22%</td>
+                                <td>95.15%</td>
+                                <td>97.91%</td>
+                            </tr>
+                            <tr>
+                                <td>SVM</td>
+                                <td>94.36%</td>
+                                <td>94.48%</td>
+                                <td>94.36%</td>
+                                <td>94.40%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="section results-section" id="results">
+        <div class="container">
+            <div class="section-header" data-aos>
+                <span class="section-tag">04 · Results</span>
+                <h2 class="section-title">Key Findings</h2>
+                <p class="section-desc">Application to New Zealand earthquake catalogue</p>
+            </div>
+            
+            <div class="results-hero">
+                <div class="result-card" data-aos>
+                    <div class="result-icon">🎯</div>
+                    <div class="result-value">97.44%</div>
+                    <div class="result-label">Classification Accuracy</div>
+                    <div class="result-desc">XGBoost model on synthetic test data</div>
+                </div>
+                <div class="result-card" data-aos>
+                    <div class="result-icon">🟢</div>
+                    <div class="result-value">230,758</div>
+                    <div class="result-label">Background Events</div>
+                    <div class="result-desc">58.23% of total catalogue</div>
+                </div>
+                <div class="result-card" data-aos>
+                    <div class="result-icon">🔴</div>
+                    <div class="result-value">165,509</div>
+                    <div class="result-label">Triggered Events</div>
+                    <div class="result-desc">41.77% aftershocks identified</div>
+                </div>
+            </div>
+            
+            <div class="insights-grid">
+                <div class="insight-card" data-aos>
+                    <h3>Feature Importance</h3>
+                    <div class="rank-list">
+                        <div class="rank-item">
+                            <span class="rank">1</span>
+                            <div class="rank-content">
+                                <strong>N⁺ — Siblings Count</strong>
+                                <p>Most influential predictor of aftershock clustering</p>
+                            </div>
+                        </div>
+                        <div class="rank-item">
+                            <span class="rank">2</span>
+                            <div class="rank-content">
+                                <strong>R⁺ — Rescaled Distance</strong>
+                                <p>Spatial proximity strongly indicates triggering</p>
+                            </div>
+                        </div>
+                        <div class="rank-item">
+                            <span class="rank">3</span>
+                            <div class="rank-content">
+                                <strong>T⁺ — Rescaled Time</strong>
+                                <p>Temporal correlation with Omori-Utsu decay</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insight-card" data-aos>
+                    <h3>Comparison with Traditional Methods</h3>
+                    <div class="comparison-list">
+                        <div class="comp-item">
+                            <div class="comp-name">Gardner-Knopoff</div>
+                            <div class="comp-bar">
+                                <div class="bar" style="width: 75%"></div>
+                            </div>
+                            <div class="comp-value">75% BG</div>
+                        </div>
+                        <div class="comp-item">
+                            <div class="comp-name">NND Threshold</div>
+                            <div class="comp-bar">
+                                <div class="bar" style="width: 62%"></div>
+                            </div>
+                            <div class="comp-value">62% BG</div>
+                        </div>
+                        <div class="comp-item highlight">
+                            <div class="comp-name">XGBoost (This Study)</div>
+                            <div class="comp-bar">
+                                <div class="bar" style="width: 58.23%"></div>
+                            </div>
+                            <div class="comp-value">58.23% BG</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="section impact-section" id="impact">
+        <div class="container">
+            <div class="section-header" data-aos>
+                <span class="section-tag">05 · Scientific Impact</span>
+                <h2 class="section-title">Research Contributions</h2>
+                <p class="section-desc">Implications for seismology and hazard assessment</p>
+            </div>
+            
+            <div class="impact-grid">
+                <div class="impact-card" data-aos>
+                    <div class="impact-icon">✓</div>
+                    <h3>High Accuracy</h3>
+                    <p>97.44% classification accuracy demonstrates reliable pattern recognition with minimal misclassification</p>
+                </div>
+                <div class="impact-card" data-aos>
+                    <div class="impact-icon">✓</div>
+                    <h3>Objective Method</h3>
+                    <p>Eliminates subjective parameter tuning, providing reproducible results across regions</p>
+                </div>
+                <div class="impact-card" data-aos>
+                    <div class="impact-icon">✓</div>
+                    <h3>Physical Validation</h3>
+                    <p>Results align with known tectonic structures and historical earthquake sequences</p>
+                </div>
+                <div class="impact-card" data-aos>
+                    <div class="impact-icon">✓</div>
+                    <h3>Improved Sensitivity</h3>
+                    <p>Captures subtle clustering patterns that fixed-parameter approaches miss</p>
+                </div>
+            </div>
+            
+            <div class="application-boxes">
+                <div class="app-box" data-aos>
+                    <h3>Seismic Hazard Assessment</h3>
+                    <ul>
+                        <li>More accurate background rates for PSHA models</li>
+                        <li>Improved building code development</li>
+                        <li>Better insurance risk modeling</li>
+                        <li>Enhanced emergency preparedness</li>
+                    </ul>
+                </div>
+                <div class="app-box" data-aos>
+                    <h3>Earthquake Science</h3>
+                    <ul>
+                        <li>Understanding fault interaction mechanisms</li>
+                        <li>Statistical forecasting model improvement</li>
+                        <li>Aftershock sequence evolution insights</li>
+                        <li>Physics-based simulator foundations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Resources Section -->
+            <div class="section-header" style="margin-top: 5rem;" data-aos>
+                <span class="section-tag">06 · Resources</span>
+                <h2 class="section-title">Thesis Materials & Code</h2>
+                <p class="section-desc">Access the research papers, code repository, and results</p>
+            </div>
+            <div class="links-container" style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem;">
+                <a href="https://github.com/Ashraf-ISM/master-thesis-declustering-using-ml/tree/main" target="_blank" class="cta-btn primary" style="text-decoration: none;">
+                    <span>View GitHub Repository</span>
+                </a>
+                <a href="5th-sem-final.pdf" target="_blank" class="cta-btn secondary" style="text-decoration: none; border: 1px solid var(--accent-color);">
+                    <span>Download Thesis Report</span>
+                </a>
+                <a href="../../index.html" class="cta-btn secondary" style="text-decoration: none; border: 1px solid var(--accent-color);">
+                    <span>Back to Portfolio</span>
+                </a>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Research</h4>
+                    <p><strong>Md Ashraf</strong></p>
+                    <p>M.Sc (Tech) Applied Geophysics</p>
+                    <p>Indian Institute of Technology (ISM) Dhanbad</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Supervision</h4>
+                    <p>Dr. Niptika Jana</p>
+                    <p>Assistant Professor</p>
+                    <p>Department of Applied Geophysics</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Access</h4>
+                    <div class="footer-links">
+                        <a href="https://github.com/Ashraf-ISM/master-thesis-declustering-using-ml/tree/main" target="_blank">GitHub Repository</a>
+                        <a href="5th-sem-final.pdf" target="_blank">Download PDF</a>
+                        <a href="../../index.html">Portfolio</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Md Ashraf · IIT (ISM) Dhanbad · All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
