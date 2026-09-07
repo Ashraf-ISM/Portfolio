@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Survey Horizon Not Found | Md Ashraf</title>
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/themify-icons.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/virtual.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/revamp.css">
+  <style>
+    body {
+      background: radial-gradient(circle at center, #0f2438 0%, #06101a 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+    }
+    .error-card {
+      max-width: 580px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(20, 145, 155, 0.3);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 48px 36px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    .error-code {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 6.5rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #14919b, #d4920b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .error-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 16px;
+    }
+    .error-message {
+      font-size: 0.98rem;
+      color: #94a3b8;
+      line-height: 1.65;
+      margin-bottom: 32px;
+    }
+    .radar-pulse {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: rgba(13, 115, 119, 0.15);
+      border: 2px solid #14919b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      color: #14919b;
+      font-size: 2rem;
+      animation: pulse-glow 2.5s infinite;
+    }
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 0 0 rgba(20, 145, 155, 0.5); }
+      70% { box-shadow: 0 0 0 16px rgba(20, 145, 155, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(20, 145, 155, 0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="error-card">
+    <div class="radar-pulse">
+      <span class="ti-signal"></span>
+    </div>
+    <div class="error-code">404</div>
+    <h1 class="error-title">Subsurface Signal Lost</h1>
+    <p class="error-message">
+      The seismic survey line or horizon profile you are looking for is undefined or has been migrated to another depth coordinate.
+    </p>
+    <a href="index.html" class="btn btn-theme btn-rounded px-4 py-2">
+      <span class="ti-arrow-left mr-2"></span> Return to Surface (Home)
+    </a>
+  </div>
+</body>
+</html>
