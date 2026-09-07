@@ -1,5 +1,5 @@
 
 git branch
 git add .
-git commit -m "Upgraded Admin Panel to version 1.0.0"
+git commit -m "Portfolio Upgraded"
 git push origin main
