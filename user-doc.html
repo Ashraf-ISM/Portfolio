@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARKSPY - Petrophysics Analysis Documentation</title>
+    <title>DARKSPY User Guide — Petrophysical Analysis Desktop App | Md Ashraf</title>
+    <meta name="description" content="User documentation for DARKSPY, the Python desktop application for petrophysical well log analysis built by Md Ashraf — installation, data loading, visualisation and formation evaluation.">
+    <meta name="author" content="Md Ashraf">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://ash-geophysics.netlify.app/user-doc.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Md Ashraf — Applied Geophysicist">
+    <meta property="og:url" content="https://ash-geophysics.netlify.app/user-doc.html">
+    <meta property="og:title" content="DARKSPY User Guide — Petrophysical Analysis Desktop App | Md Ashraf">
+    <meta property="og:description" content="User documentation for DARKSPY, the Python desktop application for petrophysical well log analysis built by Md Ashraf — installation, data loading, visualisation and formation evaluation.">
+    <meta property="og:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Md Ashraf — Applied Geophysicist, IIT (ISM) Dhanbad">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DARKSPY User Guide — Petrophysical Analysis Desktop App | Md Ashraf">
+    <meta name="twitter:description" content="User documentation for DARKSPY, the Python desktop application for petrophysical well log analysis built by Md Ashraf — installation, data loading, visualisation and formation evaluation.">
+    <meta name="twitter:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f172a">
+
     <style>
         /* Modern CSS Reset */
         *, *::before, *::after {
@@ -69,6 +90,7 @@
             transition: transform 0.3s ease;
         }
 
+        #sidebar .sidebar-brand-title,
         #sidebar h1 {
             font-family: var(--header-font);
             font-size: 1.5rem;
@@ -159,6 +181,29 @@
         }
         
         h5 {
+            font-family: var(--header-font);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Promoted headings keep their previous visual weight.
+           Applied where a heading had to move up a level to remove a
+           skipped-level gap in the document outline. */
+        .txt-h4 {
+            font-family: var(--header-font);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid var(--accent-secondary);
+            padding-left: 10px;
+        }
+
+        .txt-h5 {
             font-family: var(--header-font);
             font-size: 1.1rem;
             color: var(--text-secondary);
@@ -280,7 +325,7 @@
 <body>
 
     <aside id="sidebar">
-        <h1>DARKSPY Docs</h1>
+        <div class="sidebar-brand-title">DARKSPY Docs</div>
         <nav id="toc">
             <ul>
                 <li><a href="#introduction" class="active">Introduction</a></li>
@@ -337,7 +382,7 @@
 
         <section id="system-requirements">
             <h2>System Requirements</h2>
-            <h4>Minimum Requirements</h4>
+            <h3 class="txt-h4">Minimum Requirements</h3>
             <ul>
                 <li><strong>Operating System</strong>: Windows 10/11, macOS 10.14+, or Linux Ubuntu 18.04+</li>
                 <li><strong>Python Version</strong>: Python 3.7 or higher</li>
@@ -345,7 +390,7 @@
                 <li><strong>Storage</strong>: 500 MB free disk space</li>
                 <li><strong>Display</strong>: 1024x768 resolution minimum (1920x1080 recommended)</li>
             </ul>
-            <h4>Required Python Libraries</h4>
+            <h3 class="txt-h4">Required Python Libraries</h3>
             <pre><code>PyQt5 >= 5.15.0
 numpy >= 1.19.0
 pandas >= 1.2.0
@@ -359,14 +404,14 @@ scikit-learn >= 0.24.0</code></pre>
 
         <section id="installation-guide">
             <h2>Installation Guide</h2>
-            <h4>Method 1: Direct Installation (Recommended)</h4>
+            <h3 class="txt-h4">Method 1: Direct Installation (Recommended)</h3>
             <ol>
                 <li>Download the DARKSPY installer package</li>
                 <li>Run the installer executable</li>
                 <li>Follow the installation wizard prompts</li>
                 <li>Launch DARKSPY from the desktop shortcut</li>
             </ol>
-            <h4>Method 2: Python Source Installation</h4>
+            <h3 class="txt-h4">Method 2: Python Source Installation</h3>
             <ol>
                 <li>Ensure Python 3.7+ is installed on your system</li>
                 <li>Download the source code from the repository</li>
@@ -375,7 +420,7 @@ scikit-learn >= 0.24.0</code></pre>
                 <li>Run the application:</li>
                 <pre><code class="language-bash">python main.py</code></pre>
             </ol>
-            <h4>Method 3: Virtual Environment Setup</h4>
+            <h3 class="txt-h4">Method 3: Virtual Environment Setup</h3>
             <pre><code class="language-bash"># Create virtual environment
 python -m venv darkspy_env
 
@@ -415,28 +460,28 @@ python main.py</code></pre>
             <h2>User Interface Overview</h2>
             <h3>Main Window Components</h3>
             <p>The DARKSPY interface consists of four primary tabs:</p>
-            <h4>1. Data Loading Tab</h4>
+            <h3 class="txt-h4">1. Data Loading Tab</h3>
             <ul>
                 <li>File import interface with drag-and-drop support</li>
                 <li>Formation tops data upload</li>
                 <li>LAS file header information display</li>
                 <li>Well log unit conversion tools</li>
             </ul>
-            <h4>2. Well Data and Stats Tab</h4>
+            <h3 class="txt-h4">2. Well Data and Stats Tab</h3>
             <ul>
                 <li>Raw data table display</li>
                 <li>Comprehensive statistical analysis</li>
                 <li>Data filtering and sorting capabilities</li>
                 <li>Export functionality for processed data</li>
             </ul>
-            <h4>3. Basic Visualization Tab</h4>
+            <h3 class="txt-h4">3. Basic Visualization Tab</h3>
             <ul>
                 <li>Multi-track well log displays</li>
                 <li>Cross-plot analysis tools</li>
                 <li>Histogram generation</li>
                 <li>Triple combo and multitrack plotting options</li>
             </ul>
-            <h4>4. Formation Evaluation Tab</h4>
+            <h3 class="txt-h4">4. Formation Evaluation Tab</h3>
             <ul>
                 <li>Quality control tools</li>
                 <li>V-shale calculation</li>
@@ -449,13 +494,13 @@ python main.py</code></pre>
         <section id="data-loading-module">
             <h2>Data Loading Module</h2>
             <h3>Supported File Formats</h3>
-            <h4>LAS Files (.las)</h4>
+            <h3 class="txt-h4">LAS Files (.las)</h3>
             <ul>
                 <li>Industry-standard Log ASCII Standard format</li>
                 <li>Automatic header parsing and curve identification</li>
                 <li>Support for LAS 2.0 and 3.0 formats</li>
             </ul>
-            <h4>CSV Files (.csv) & Excel Files (.xlsx, .xls)</h4>
+            <h3 class="txt-h4">CSV Files (.csv) & Excel Files (.xlsx, .xls)</h3>
             <ul>
                 <li>Automatic data type detection</li>
                 <li>Support for different delimiter types and multiple sheets</li>
@@ -529,24 +574,24 @@ python main.py</code></pre>
 
         <section id="troubleshooting">
             <h2>Troubleshooting</h2>
-            <h5>Installation Problems</h5>
+            <h3 class="txt-h5">Installation Problems</h3>
             <p><strong>Issue:</strong> Application won't start. <br/> <strong>Solution:</strong> Verify Python 3.7+ is installed, check all dependencies with <code>pip install -r requirements.txt</code>, and restart your computer.</p>
             
-            <h5>Data Loading Issues</h5>
+            <h3 class="txt-h5">Data Loading Issues</h3>
             <p><strong>Issue:</strong> LAS file won't load. <br/> <strong>Solution:</strong> Verify the file is a valid LAS format, check for corruption, and ensure file permissions are correct.</p>
             
-            <h5>Visualization Problems</h5>
+            <h3 class="txt-h5">Visualization Problems</h3>
             <p><strong>Issue:</strong> Plots not displaying correctly. <br/> <strong>Solution:</strong> Update your graphics drivers and the matplotlib library. Ensure the selected data curves contain valid numerical values.</p>
         </section>
 
         <section id="contact-information">
             <h2>Contact Information</h2>
-            <h5>Development Team</h5>
+            <h3 class="txt-h5">Development Team</h3>
             <p><strong>Institution:</strong> Indian Institute of Technology (ISM) Dhanbad <br/>
                <strong>Lead Developer:</strong> Md Ashraf <br/>
                <strong>Email:</strong> <a href="mailto:mdashraf620@gmail.com">mdashraf620@gmail.com</a>
             </p>
-            <h5>Reporting Issues</h5>
+            <h3 class="txt-h5">Reporting Issues</h3>
             <p>When reporting bugs, please include your OS, Python version, a detailed description of the problem, steps to reproduce, and any relevant error messages or log files.</p>
         </section>
         

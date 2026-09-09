@@ -1,0 +1,14 @@
+# https://ash-geophysics.netlify.app/robots.txt
+
+User-agent: *
+Allow: /
+
+# Admin area. Not portfolio content, so it is kept out of the index.
+# Actual access control is enforced by Supabase auth + row level security,
+# never by this file.
+Disallow: /manage/
+
+# CSS, JS and images are intentionally crawlable so search engines can
+# render the pages exactly as a visitor sees them.
+
+Sitemap: https://ash-geophysics.netlify.app/sitemap.xml

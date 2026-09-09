@@ -1,0 +1,146 @@
+# Netlify configuration — Md Ashraf portfolio
+#
+# NOTE ON CSP: no Content-Security-Policy is set here on purpose. The site
+# loads the Google Maps JS API, which pulls further scripts, workers and
+# images from several *.googleapis.com / *.gstatic.com origins at runtime, and
+# a CSP written without testing those would silently break the contact map.
+# See docs/SECURITY.md before adding one.
+
+[build]
+  publish = "."
+
+# ---------------------------------------------------------------- headers ---
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+
+# HTML is never cached for long: a deploy must be visible immediately.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# CSS and JS are NOT content-hashed, so they must revalidate on every load.
+# ETags make that a cheap 304 rather than a full re-download.
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Fonts and pinned third-party libraries are effectively immutable.
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Images change only when they are regenerated under a new name.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/GUI-IMAGE/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# The admin area is not portfolio content — keep it out of search results at
+# the header level, which is stronger than a robots.txt Disallow.
+[[headers]]
+  for = "/manage/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+
+# -------------------------------------------------------------- redirects ---
+# Pages removed in the 2026 cleanup. They may already be indexed, so they are
+# redirected rather than left to 404.
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/index-2.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/blog-topbar.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/blog-minibar.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/misc-test/*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/html/index.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/html/index-2.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/html/blog-topbar.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/html/blog-minibar.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/html/petrophysics_gui.html"
+  to = "/petrophysics_gui.html"
+  status = 301
+
+[[redirects]]
+  from = "/html/user-doc.html"
+  to = "/user-doc.html"
+  status = 301
+
+# Deploy previews and branch deploys must never be indexed; only the
+# production canonical host may appear in search results.
+[[context.deploy-preview.headers]]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[context.branch-deploy.headers]]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex, nofollow"

@@ -10,17 +10,6 @@ $(function() {
     $grid.isotope({ filter: filterValue });
   });
   
-  $('.testi-carousel').owlCarousel({
-    margin: 0,
-    loop: true,
-    autoplay: true,
-    autoplayTimeout: 4000,
-    items: 1,
-  });
-  
-  // Nice select
-  $('.vg-select').niceSelect();
-  
   // Tooltip
   $('[data-toggle="tooltip"]').tooltip();
   
@@ -229,3 +218,51 @@ $(document).ready(function() {
   }
   counterInit();
 });
+
+/*
+ *  Certification filter
+ *  Chips carry data-cert-filter; cards carry a space-separated data-cert-cat.
+ *  Cards are hidden with the `hidden` attribute so they leave the accessibility
+ *  tree as well as the layout. Group headings hide when their grid empties.
+ */
+(function () {
+  var chips = document.querySelectorAll('[data-cert-filter]');
+  if (!chips.length) return;
+
+  var cards  = document.querySelectorAll('[data-cert-cat]');
+  var empty  = document.querySelector('.cert-empty');
+  var groups = document.querySelectorAll('#certifications .cert-grid');
+
+  function apply(filter) {
+    var shown = 0;
+
+    cards.forEach(function (card) {
+      var cats = (card.getAttribute('data-cert-cat') || '').split(/\s+/);
+      var match = filter === 'all' || cats.indexOf(filter) !== -1;
+      card.hidden = !match;
+      if (match) shown++;
+    });
+
+    // hide a grid, and the heading directly above it, when it has nothing left
+    groups.forEach(function (grid) {
+      var visible = grid.querySelectorAll('[data-cert-cat]:not([hidden])').length;
+      grid.hidden = visible === 0;
+      var head = grid.previousElementSibling;
+      if (head && head.classList.contains('cert-group-head')) head.hidden = visible === 0;
+    });
+
+    if (empty) empty.hidden = shown !== 0;
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) {
+        c.classList.remove('is-active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      chip.classList.add('is-active');
+      chip.setAttribute('aria-pressed', 'true');
+      apply(chip.getAttribute('data-cert-filter'));
+    });
+  });
+})();

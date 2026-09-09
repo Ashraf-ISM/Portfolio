@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARKSPY - Petrophysics Analysis Desktop Application</title>
+    <title>DARKSPY — Python GUI for Petrophysical Well Log Analysis | Md Ashraf</title>
+    <meta name="description" content="DARKSPY is a Python and PyQt5 desktop application by Md Ashraf for petrophysical well log analysis — LAS loading, log quality control, multi-track visualisation and formation evaluation.">
+    <meta name="author" content="Md Ashraf">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://ash-geophysics.netlify.app/petrophysics_gui.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Md Ashraf — Applied Geophysicist">
+    <meta property="og:url" content="https://ash-geophysics.netlify.app/petrophysics_gui.html">
+    <meta property="og:title" content="DARKSPY — Python GUI for Petrophysical Well Log Analysis | Md Ashraf">
+    <meta property="og:description" content="DARKSPY is a Python and PyQt5 desktop application by Md Ashraf for petrophysical well log analysis — LAS loading, log quality control, multi-track visualisation and formation evaluation.">
+    <meta property="og:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Md Ashraf — Applied Geophysicist, IIT (ISM) Dhanbad">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DARKSPY — Python GUI for Petrophysical Well Log Analysis | Md Ashraf">
+    <meta name="twitter:description" content="DARKSPY is a Python and PyQt5 desktop application by Md Ashraf for petrophysical well log analysis — LAS loading, log quality control, multi-track visualisation and formation evaluation.">
+    <meta name="twitter:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f172a">
+
     <style>
         :root {
             --primary-blue: #1e3a8a;
@@ -886,7 +907,7 @@
                 <!-- Formation Evaluation Interface -->
                 <div class="screenshot-card" data-category="all formation analysis" onclick="openModal('formation-eval')">
                     <div class="screenshot-image">
-                        <img src="../GUI-IMAGE/vshale.png" alt="Data Loading Interface Screenshot">   
+                        <picture><source type="image/webp" srcset="GUI-IMAGE/opt/vshale.webp"><img src="GUI-IMAGE/opt/vshale.jpg" alt="PetroARX shale volume computation panel with the resulting Vsh curve" width="1400" height="788" loading="lazy" decoding="async"></picture>   
 
                         <div class="placeholder-content">
                             <div class="placeholder-icon">🔬</div>
@@ -928,7 +949,7 @@
                 <!-- Multi-track Well Log Display -->
                 <div class="screenshot-card" data-category="all visualization" onclick="openModal('multitrack')">
                     <div class="screenshot-image">
-                        <img src="../GUI-IMAGE/multiplot.png" alt="Data Loading Interface Screenshot">   
+                        <picture><source type="image/webp" srcset="GUI-IMAGE/opt/multiplot.webp"><img src="GUI-IMAGE/opt/multiplot.jpg" alt="PetroARX multi-track log display showing several well curves side by side" width="1400" height="788" loading="lazy" decoding="async"></picture>   
 
                         <div class="placeholder-content">
                             <div class="placeholder-icon">📈</div>
@@ -970,7 +991,7 @@
                 <!-- Reservoir Evaluation -->
                 <div class="screenshot-card" data-category="all formation analysis" onclick="openModal('reservoir-eval')">
                     <div class="screenshot-image">
-                        <img src="../GUI-IMAGE/reservoir-flag.png" alt="Data Loading Interface Screenshot">   
+                        <picture><source type="image/webp" srcset="GUI-IMAGE/opt/reservoir-flag.webp"><img src="GUI-IMAGE/opt/reservoir-flag.jpg" alt="PetroARX reservoir flag output marking net pay intervals along the well" width="1400" height="788" loading="lazy" decoding="async"></picture>   
 
                         <div class="placeholder-content">
                             <div class="placeholder-icon">🎯</div>
@@ -1012,7 +1033,7 @@
                 <!-- Quality Control & Outlier Detection -->
                 <div class="screenshot-card" data-category="all analysis" onclick="openModal('outlier-detection')">
                     <div class="screenshot-image">
-                         <img src="../GUI-IMAGE/outlier-detection.png" alt="Data Loading Interface Screenshot">   
+                         <picture><source type="image/webp" srcset="GUI-IMAGE/opt/outlier-detection.webp"><img src="GUI-IMAGE/opt/outlier-detection.jpg" alt="PetroARX quality-control view highlighting outlier readings detected in the log curves" width="1400" height="788" loading="lazy" decoding="async"></picture>   
 
                         <div class="placeholder-content">
                             <div class="placeholder-icon">🔍</div>
@@ -1054,7 +1075,7 @@
                 <!-- Statistical Analysis - Histograms -->
                 <div class="screenshot-card" data-category="all analysis visualization" onclick="openModal('histograms')">
                     <div class="screenshot-image">
-                        <img src="../GUI-IMAGE/histogram.png" alt="Data Loading Interface Screenshot">   
+                        <picture><source type="image/webp" srcset="GUI-IMAGE/opt/histogram.webp"><img src="GUI-IMAGE/opt/histogram.jpg" alt="PetroARX histogram panel showing the statistical distribution of a log curve" width="1400" height="788" loading="lazy" decoding="async"></picture>   
 
                         <div class="placeholder-content">
                             <div class="placeholder-icon">📊</div>
@@ -1201,13 +1222,15 @@
                         </svg>
                         View Source Code
                     </a>
-                    <a href="#download" class="action-btn btn-secondary" onclick="alert('Download link will be available soon!')">
+                    <!-- TODO: replace with the real download URL when the build is published -->
+        <a href="#download" class="action-btn btn-secondary" aria-disabled="true"
+           onclick="alert('Download link will be available soon!'); return false;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/>
                         </svg>
                         Download Application
                     </a>
-                    <a href="../user-doc.html" class="action-btn btn-secondary" >
+                    <a href="user-doc.html" class="action-btn btn-secondary" >
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
                         </svg>
@@ -1229,12 +1252,12 @@
     <script>
         // Screenshot data mapping to your actual screenshots
         const screenshotData = {
-            'data-loading': '../GUI-IMAGE/data-loading.png',
-            'data-stats': '../GUI-IMAGE/well-data-stat.png',
-            'formation-eval': "../GUI-IMAG",
-            'outlier-detection': 'https://via.placeholder.com/1200x800/3b82f6/ffffff?text=Quality+Control+-+ML-based+Outlier+Detection',
-            'histograms': 'https://via.placeholder.com/1200x800/1e3a8a/ffffff?text=Statistical+Histograms+-+Distribution+Analysis',
-            'help-system': 'https://via.placeholder.com/1200x800/3b82f6/ffffff?text=Help+System+-+Comprehensive+User+Documentation'
+            'data-loading': 'GUI-IMAGE/opt/data-loading.jpg',
+            'data-stats': 'GUI-IMAGE/opt/well-data-stat.jpg',
+            // TODO: no formation-evaluation screenshot exists in GUI-IMAGE/ yet - add one and restore this entry,
+            'outlier-detection': 'GUI-IMAGE/opt/outlier-detection.jpg',
+            'histograms': 'GUI-IMAGE/opt/histogram.jpg',
+            'help-system': 'GUI-IMAGE/opt/help.jpg'
         };
 
         // Enhanced filter functionality

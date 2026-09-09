@@ -467,96 +467,364 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* Certifications Theme Grouping */
-.cert-theme-divider {
+
+
+
+/* ==================================================================
+   Certifications
+   Filterable credential cards. Each card states the issuing body, the
+   dates taken from the certificate itself, and links to either the
+   issuer's verification page or the stored certificate file.
+   ================================================================== */
+
+.cert-filters {
   display: flex;
-  align-items: center;
-  gap: 15px;
-  margin: 40px 0 25px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 26px 0 34px;
 }
 
-.cert-theme-divider h4 {
-  font-size: 1.25rem;
-  font-weight: 700;
+.cert-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--theme-border-soft);
+  background: #ffffff;
+  color: var(--theme-slate);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.cert-chip [class^="ti-"] {
+  font-size: 0.95rem;
+  opacity: .75;
+}
+
+.cert-chip:hover {
+  border-color: var(--theme-teal-border);
+  color: var(--theme-teal-dark);
+  background: var(--theme-teal-subtle);
+}
+
+.cert-chip.is-active {
+  background: var(--theme-teal);
+  border-color: var(--theme-teal);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(13, 115, 119, .22);
+}
+
+.cert-chip.is-active [class^="ti-"] { opacity: 1; }
+
+.cert-chip-count {
+  font-weight: 500;
+  opacity: .7;
+}
+
+.cert-chip:focus-visible {
+  outline: 2px solid var(--theme-teal);
+  outline-offset: 2px;
+}
+
+/* --- group headings --- */
+.cert-group-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 34px 0 18px;
+}
+
+.cert-group-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cert-group-icon {
+  font-size: 1.15rem;
+  color: var(--theme-amber);
+  line-height: 1.5;
+}
+
+.cert-group-title h3 {
+  margin: 0 0 2px;
   color: var(--theme-dark);
+}
+
+.cert-group-title p {
   margin: 0;
+  font-size: .9rem;
+  color: var(--theme-slate-light);
+}
+
+.cert-group-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--theme-teal);
   white-space: nowrap;
 }
 
-.cert-theme-line {
-  flex: 1;
-  height: 1px;
-  background: #e2e8f0;
+.cert-group-link:hover { color: var(--theme-teal-dark); }
+
+/* --- grid --- */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 20px;
 }
 
-.cert-card-unified {
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid var(--theme-border-soft);
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-  padding: 24px;
-  height: 100%;
+/* --- card --- */
+.cert-card {
   display: flex;
   flex-direction: column;
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--theme-border-soft);
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, .04);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
 
-.cert-card-unified::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
+.cert-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--theme-teal-border);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, .09);
+}
+
+.cert-card.is-featured {
+  border-color: rgba(212, 146, 11, .35);
+  background: linear-gradient(180deg, rgba(212, 146, 11, .045) 0%, #ffffff 120px);
+}
+
+.cert-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* Issuer wordmark tile. Text, not an official logo file — drop an <img>
+   in place of the text if a licensed logo is ever added. */
+.cert-logo {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: .8rem;
+  letter-spacing: .02em;
+  color: #ffffff;
+  background: var(--theme-dark);
+}
+
+.cert-logo--ibm   { background: #0f62fe; }
+.cert-logo--umich { background: #00274c; }
+.cert-logo--gsi   { background: #8a1538; }
+.cert-logo--iirs  { background: #0b6e4f; font-size: .72rem; }
+.cert-logo--udemy { background: #a435f0; font-size: .62rem; }
+
+.cert-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--theme-amber-subtle);
+  border: 1px solid var(--theme-amber-border);
+  color: #92600a;
+  font-size: .72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cert-kicker {
+  margin: 0 0 4px;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--theme-teal);
+}
+
+.cert-card .cert-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--theme-dark);
+  margin: 0 0 8px;
+}
+
+.cert-desc {
+  font-size: .89rem;
+  line-height: 1.55;
+  color: var(--theme-slate);
+  margin: 0 0 12px;
+}
+
+.cert-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+}
+
+.cert-tags li {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--theme-bg-soft);
+  border: 1px solid var(--theme-border-soft);
+  font-size: .74rem;
+  font-weight: 500;
+  color: var(--theme-slate);
+}
+
+.cert-meta {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.cert-meta p {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: .8rem;
+  color: var(--theme-slate-light);
+}
+
+.cert-meta [class^="ti-"] {
+  font-size: .82rem;
+  line-height: 1.5;
+  opacity: .8;
+}
+
+.cert-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--theme-border-soft);
+}
+
+.cert-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .76rem;
+  font-weight: 600;
+  color: var(--theme-slate-light);
+}
+
+.cert-status.is-verified { color: var(--theme-teal); }
+
+.cert-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 999px;
   background: var(--theme-teal);
+  color: #ffffff !important;
+  font-size: .82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color .2s ease, box-shadow .2s ease;
 }
 
-.cert-card-unified.amber-stripe::before {
-  background: var(--theme-amber);
+.cert-btn:hover {
+  background: var(--theme-teal-dark);
+  box-shadow: 0 6px 16px rgba(13, 115, 119, .28);
 }
 
-.cert-card-unified.industry-stripe::before {
-  background: #008b8b;
+.cert-btn:focus-visible {
+  outline: 2px solid var(--theme-teal-dark);
+  outline-offset: 2px;
 }
 
-.cert-card-unified.industry-stripe .cert-org-badge {
-  color: #008b8b;
+.cert-btn [class^="ti-"] { font-size: .78rem; }
+
+/* --- filtering --- */
+.cert-card[hidden] { display: none !important; }
+
+.cert-empty {
+  margin: 26px 0 0;
+  text-align: center;
+  color: var(--theme-slate-light);
+  font-size: .9rem;
 }
 
-.cert-card-unified.industry-stripe:hover {
-  border-color: rgba(0, 139, 139, 0.4);
-  box-shadow: 0 10px 25px rgba(0, 139, 139, 0.12);
+/* --- footnote --- */
+.cert-footnote {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 30px;
+  padding: 16px 22px;
+  border-radius: 12px;
+  background: var(--theme-teal-subtle);
+  border: 1px solid var(--theme-teal-border);
 }
 
-.cert-card-unified.industry-stripe .btn-theme {
-  background-color: #008b8b !important;
-  border-color: #008b8b !important;
+.cert-footnote [class^="ti-"] {
+  font-size: 1.25rem;
+  color: var(--theme-teal);
+  flex: none;
 }
 
-.cert-card-unified.industry-stripe .btn-theme:hover {
-  background-color: #007373 !important;
-  border-color: #007373 !important;
-  box-shadow: 0 4px 14px rgba(0, 139, 139, 0.3) !important;
+.cert-footnote p {
+  margin: 0;
+  font-size: .9rem;
+  color: var(--theme-teal-dark);
+  flex: 1 1 320px;
+}
+
+.cert-quote {
+  margin: 0;
+  font-size: .86rem;
+  font-style: italic;
+  color: var(--theme-slate-light);
+  text-align: right;
+}
+
+.cert-quote cite {
+  font-style: normal;
+  white-space: nowrap;
+}
+
+@media (max-width: 767.98px) {
+  .cert-footnote { flex-wrap: wrap; }
+  .cert-quote { text-align: left; }
+}
+
+@media (max-width: 575.98px) {
+  .cert-group-head { flex-direction: column; align-items: flex-start; }
+  .cert-actions { flex-direction: column; align-items: stretch; }
+  .cert-btn { justify-content: center; }
 }
 
 .text-teal-highlight {
   color: #008b8b !important;
 }
 
-.cert-theme-tag {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--theme-slate-light);
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
 
-.cert-cta-wrap {
-  text-align: center;
-  margin-top: 36px;
-}
 
 .btn-cert-cta {
   display: inline-flex;
@@ -579,27 +847,6 @@ h1, h2, h3, h4, h5, h6,
   box-shadow: 0 6px 20px rgba(0, 139, 139, 0.25);
   transform: translateY(-2px);
   text-decoration: none;
-}
-
-@media (max-width: 767px) {
-  .cert-theme-tag {
-    display: none;
-  }
-}
-
-.cert-card-unified:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(13, 115, 119, 0.1);
-  border-color: var(--theme-teal-border);
-}
-
-.cert-org-badge {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--theme-teal);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
 }
 
 .cert-title {
@@ -838,4 +1085,85 @@ h1, h2, h3, h4, h5, h6,
   .section-counter > div {
     margin-bottom: 15px;
   }
+}
+
+/* ------------------------------------------------------------------
+   <picture> shim
+   Responsive images are wrapped in <picture> so a WebP source can be
+   offered with a JPEG fallback. The original layout rules target
+   `.img-place > img` (a direct-child selector), so the wrapper is made
+   transparent to layout here. Visual output is unchanged.
+   ------------------------------------------------------------------ */
+.img-place > picture {
+  display: block;
+  width: 100%;
+}
+
+.img-place > picture > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.gallery-preview-box picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Hero background: WebP where supported, JPEG everywhere else. */
+.page-home.hero-bg {
+  background-image: url("../img/opt/hero/hero-background.jpg");
+  background-image: image-set(url("../img/opt/hero/hero-background.webp") type("image/webp"),
+      url("../img/opt/hero/hero-background.jpg") type("image/jpeg"));
+}
+
+.page-funfact.banner-bg,
+.ashraf-contact-bg {
+  background-image: url("../img/opt/hero/section-banner.jpg");
+  background-image: image-set(url("../img/opt/hero/section-banner.webp") type("image/webp"),
+      url("../img/opt/hero/section-banner.jpg") type("image/jpeg"));
+}
+
+/* Project outcome block — quoted results, kept visually quieter than the
+   project body copy so it reads as a summary rather than a claim banner. */
+.project-outcome {
+  margin-top: 18px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--theme-teal);
+  background: var(--theme-teal-subtle);
+  border-radius: 0 8px 8px 0;
+}
+
+.project-outcome-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-teal-dark);
+  margin: 0 0 8px;
+}
+
+.project-outcome-list {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.65;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.project-outcome-note {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Hero role line — the visible counterpart to the H1, so the page states who
+   Md Ashraf is and what he does without relying on screen-reader-only text. */
+.caption-header .hero-role {
+  margin: 0 0 14px;
+  font-size: clamp(1rem, 2.1vw, 1.3rem);
+  font-weight: 500;
+  letter-spacing: .01em;
+  color: rgba(255, 255, 255, .92);
 }

@@ -3,7 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ML Earthquake Declustering | Md Ashraf - IIT (ISM) Dhanbad</title>
+    <title>Earthquake Declustering with Statistical & Machine Learning Methods | Md Ashraf</title>
+    <meta name="description"
+        content="Master's research by Md Ashraf (IIT (ISM) Dhanbad) applying machine learning to separate triggered aftershock sequences from background seismicity in the New Zealand GeoNet earthquake catalogue.">
+    <meta name="author" content="Md Ashraf">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://ash-geophysics.netlify.app/html/thesis-earthquake-declustering/">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Md Ashraf — Applied Geophysicist">
+    <meta property="og:url" content="https://ash-geophysics.netlify.app/html/thesis-earthquake-declustering/">
+    <meta property="og:title" content="Earthquake Declustering with Statistical &amp; Machine Learning Methods | Md Ashraf">
+    <meta property="og:description"
+        content="Separating triggered aftershocks from background seismicity in the New Zealand GeoNet catalogue using machine learning.">
+    <meta property="og:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Md Ashraf — Applied Geophysicist, IIT (ISM) Dhanbad">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Earthquake Declustering with Statistical &amp; Machine Learning Methods | Md Ashraf">
+    <meta name="twitter:description"
+        content="Separating triggered aftershocks from background seismicity in the New Zealand GeoNet catalogue using machine learning.">
+    <meta name="twitter:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
+
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#0f172a">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -155,22 +180,22 @@
                     <div class="problem-grid">
                         <div class="problem-card" data-aos>
                             <div class="problem-icon">📏</div>
-                            <h4>Fixed Parameters</h4>
+                            <h3>Fixed Parameters</h3>
                             <p>Traditional methods use predetermined windows that don't adapt to regional variations.</p>
                         </div>
                         <div class="problem-card" data-aos>
                             <div class="problem-icon">🔀</div>
-                            <h4>Overlapping Clusters</h4>
+                            <h3>Overlapping Clusters</h3>
                             <p>Complex sequences overlap, making separation difficult with rule-based approaches.</p>
                         </div>
                         <div class="problem-card" data-aos>
                             <div class="problem-icon">🎯</div>
-                            <h4>Subjective Tuning</h4>
+                            <h3>Subjective Tuning</h3>
                             <p>Results depend heavily on threshold choices, reducing reproducibility.</p>
                         </div>
                         <div class="problem-card" data-aos>
                             <div class="problem-icon">📊</div>
-                            <h4>Statistical Bias</h4>
+                            <h3>Statistical Bias</h3>
                             <p>Model assumptions often violated by real-world catalogue incompleteness.</p>
                         </div>
                     </div>
@@ -227,42 +252,42 @@
                 <div class="timeline-item" data-aos>
                     <div class="timeline-marker">1</div>
                     <div class="timeline-content">
-                        <h4>Data Acquisition</h4>
+                        <h3>Data Acquisition</h3>
                         <p>GeoNet earthquake catalogue (1980-2024) · 396,267 events · Quality control and preprocessing</p>
                     </div>
                 </div>
                 <div class="timeline-item" data-aos>
                     <div class="timeline-marker">2</div>
                     <div class="timeline-content">
-                        <h4>NND Analysis</h4>
+                        <h3>NND Analysis</h3>
                         <p>Nearest-neighbour distance computation · Rescaled space-time metrics · Bimodal distribution analysis</p>
                     </div>
                 </div>
                 <div class="timeline-item" data-aos>
                     <div class="timeline-marker">3</div>
                     <div class="timeline-content">
-                        <h4>ETAS Simulation</h4>
+                        <h3>ETAS Simulation</h3>
                         <p>Synthetic catalogue generation · Labeled background/triggered events · Training data preparation</p>
                     </div>
                 </div>
                 <div class="timeline-item" data-aos>
                     <div class="timeline-marker">4</div>
                     <div class="timeline-content">
-                        <h4>Feature Engineering</h4>
+                        <h3>Feature Engineering</h3>
                         <p>Extract T⁺, R⁺, dm⁺, N⁺, n_parent, n_child · Temporal, spatial, magnitude features</p>
                     </div>
                 </div>
                 <div class="timeline-item" data-aos>
                     <div class="timeline-marker">5</div>
                     <div class="timeline-content">
-                        <h4>Model Training</h4>
+                        <h3>Model Training</h3>
                         <p>Random Forest, SVM, Gradient Boosting, XGBoost · 5-fold cross-validation · Hyperparameter optimization</p>
                     </div>
                 </div>
                 <div class="timeline-item" data-aos>
                     <div class="timeline-marker">6</div>
                     <div class="timeline-content">
-                        <h4>Deployment</h4>
+                        <h3>Deployment</h3>
                         <p>Apply best model (XGBoost) to real catalogue · Validate against historical sequences</p>
                     </div>
                 </div>
@@ -325,7 +350,11 @@
                         <span class="plot-badge">Figure 1</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="Results/xgb_model_performance_plots_gb.png" alt="Model Performance Comparison" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/6366f1/ffffff?text=Place+your+plot1.jpg+here'">
+                        <picture>
+                            <source type="image/webp" srcset="Results/opt/xgb-model-performance.webp">
+                            <img src="Results/opt/xgb-model-performance.jpg" alt="Bar chart comparing accuracy, precision, recall and F1 score across the tested classifiers" class="plot-img"
+                                 width="1600" height="1068" loading="lazy" decoding="async">
+                        </picture>
                     </div>
                     <div class="plot-caption">
                         <p>Accuracy, Precision, Recall, and F1-Score comparison across Random Forest, SVM, Gradient Boosting, and XGBoost models.</p>
@@ -338,7 +367,11 @@
                         <span class="plot-badge">Figure 2</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="Results/XGB_Feature_Importance_Detailed.png" alt="Feature Importance" class="plot-img" onerror="this.src='https://via.placeholder.com/1200x500/10b981/ffffff?text=Place+your+plot3.jpg+here'">
+                        <picture>
+                            <source type="image/webp" srcset="Results/opt/xgb-feature-importance.webp">
+                            <img src="Results/opt/xgb-feature-importance.jpg" alt="Ranked feature importance scores from the XGBoost declustering model" class="plot-img"
+                                 width="1600" height="1139" loading="lazy" decoding="async">
+                        </picture>
                     </div>
                     <div class="plot-caption">
                         <p>XGBoost feature importance showing N⁺ (siblings count) as the most influential predictor, followed by R⁺ (rescaled distance) and T⁺ (rescaled time).</p>
@@ -352,7 +385,11 @@
                         <span class="plot-badge">Figure 3</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="Results/XGB_Aftershock_Analysis.png" alt="Classification Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/ec4899/ffffff?text=Place+your+plot2.jpg+here'">
+                        <picture>
+                            <source type="image/webp" srcset="Results/opt/xgb-aftershock-analysis.webp">
+                            <img src="Results/opt/xgb-aftershock-analysis.jpg" alt="Panels summarising how events were classified into aftershock and background populations" class="plot-img"
+                                 width="1800" height="1201" loading="lazy" decoding="async">
+                        </picture>
                     </div>
                     <div class="plot-caption">
                         <p>Distribution of background events (58.23%) vs triggered events (41.77%) from XGBoost classification of New Zealand catalogue.</p>
@@ -368,7 +405,11 @@
                         <span class="plot-badge">Figure 4</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="plot4.jpg" alt="Temporal Evolution" class="plot-img" onerror="this.src='https://via.placeholder.com/1200x500/f59e0b/ffffff?text=Place+your+plot4.jpg+here'">
+                        <picture>
+                            <source type="image/webp" srcset="Results/opt/temporal-evolution-seismicity.webp">
+                            <img src="Results/opt/temporal-evolution-seismicity.jpg" alt="Time series of background and triggered earthquake counts across the catalogue period" class="plot-img"
+                                 width="1600" height="875" loading="lazy" decoding="async">
+                        </picture>
                     </div>
                     <div class="plot-caption">
                         <p>Background and triggered events over 44 years (1980-2024) showing major earthquake sequences: Edgecumbe (1987), Canterbury (2010-2011), Kaikōura (2016).</p>
@@ -382,7 +423,11 @@
                         <span class="plot-badge">Figure 5</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="Results/600_xgb-confusion_matrix.png" alt="Confusion Matrix" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/8b5cf6/ffffff?text=Place+your+plot5.jpg+here'">
+                        <picture>
+                            <source type="image/webp" srcset="Results/opt/xgb-confusion-matrix.webp">
+                            <img src="Results/opt/xgb-confusion-matrix.jpg" alt="Confusion matrix of predicted versus labelled background and triggered events" class="plot-img"
+                                 width="1200" height="928" loading="lazy" decoding="async">
+                        </picture>
                     </div>
                     <div class="plot-caption">
                         <p>XGBoost confusion matrix on synthetic test data showing 98.7% True Positive rate and 94.4% True Negative rate.</p>
@@ -396,7 +441,11 @@
                         <span class="plot-badge">Figure 6</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="Results/nz_topo_seismicity_publication.png.png" alt="Spatial Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/14b8a6/ffffff?text=Place+your+plot6.jpg+here'">
+                        <picture>
+                            <source type="image/webp" srcset="Results/opt/nz-topography-seismicity.webp">
+                            <img src="Results/opt/nz-topography-seismicity.jpg" alt="Map of New Zealand topography overlaid with background and triggered earthquake epicentres" class="plot-img"
+                                 width="1800" height="1633" loading="lazy" decoding="async">
+                        </picture>
                     </div>
                     <div class="plot-caption">
                         <p>Spatial distribution of background and triggered events across New Zealand, showing alignment with major tectonic structures.</p>
@@ -410,7 +459,8 @@
                         <span class="plot-badge">Figure 7</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="plot7.jpg" alt="NND Distribution" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/f43f5e/ffffff?text=Place+your+plot7.jpg+here'">
+                        <!-- TODO: figure not yet exported from the analysis notebook. Drop the NND distribution image in Results/ and swap this note for a <picture> block. -->
+                        <p class="plot-missing" role="note">Figure pending export from the analysis notebook.</p>
                     </div>
                     <div class="plot-caption">
                         <p>Bimodal distribution of nearest-neighbour distance (log η) showing clear separation between background and clustered events.</p>
@@ -424,7 +474,8 @@
                         <span class="plot-badge">Figure 8</span>
                     </div>
                     <div class="plot-image-container">
-                        <img src="plot8.jpg" alt="ROC Curve" class="plot-img" onerror="this.src='https://via.placeholder.com/800x500/0ea5e9/ffffff?text=Place+your+plot8.jpg+here'">
+                        <!-- TODO: figure not yet exported from the analysis notebook. Drop the ROC curve image in Results/ and swap this note for a <picture> block. -->
+                        <p class="plot-missing" role="note">Figure pending export from the analysis notebook.</p>
                     </div>
                     <div class="plot-caption">
                         <p>Receiver Operating Characteristic curve demonstrating model discrimination capability with AUC = 0.98.</p>
@@ -585,7 +636,7 @@
                     <span class="btn-icon">📄</span>
                     Download Thesis Report
                 </a>
-                <a href="../index.html" class="btn btn-tertiary">
+                <a href="/" class="btn btn-tertiary">
                     <span class="btn-icon">←</span>
                     Back to Portfolio
                 </a>
@@ -652,19 +703,19 @@
 =======
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h4>Research</h4>
+                    <h3>Research</h3>
                     <p><strong>Md Ashraf</strong></p>
                     <p>M.Sc (Tech) Applied Geophysics</p>
                     <p>Indian Institute of Technology (ISM) Dhanbad</p>
                 </div>
                 <div class="footer-col">
-                    <h4>Supervision</h4>
+                    <h3>Supervision</h3>
                     <p>Dr. Niptika Jana</p>
                     <p>Assistant Professor</p>
                     <p>Department of Applied Geophysics</p>
                 </div>
                 <div class="footer-col">
-                    <h4>Access</h4>
+                    <h3>Access</h3>
                     <div class="footer-links">
                         <a href="#" onclick="alert('GitHub link'); return false;">GitHub Repository</a>
                         <a href="5th-sem-final.pdf" onclick="alert('PDF link'); return false;">Download PDF</a>
