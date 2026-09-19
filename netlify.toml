@@ -65,6 +65,12 @@
   [headers.values]
     Cache-Control = "public, max-age=2592000"
 
+# The PetroARX walkthrough recording changes only when it is re-cut.
+[[headers]]
+  for = "/assets/video/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
 # The admin area is not portfolio content — keep it out of search results at
 # the header level, which is stronger than a robots.txt Disallow.
 [[headers]]

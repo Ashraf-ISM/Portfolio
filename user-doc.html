@@ -3,27 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARKSPY User Guide — Petrophysical Analysis Desktop App | Md Ashraf</title>
-    <meta name="description" content="User documentation for DARKSPY, the Python desktop application for petrophysical well log analysis built by Md Ashraf — installation, data loading, visualisation and formation evaluation.">
-    <meta name="author" content="Md Ashraf">
+    <title>PetroARX User Guide — Petrophysical Analysis Desktop App | Md Ashraf Ali</title>
+    <meta name="description" content="User documentation for PetroARX, the Python desktop application for petrophysical well log analysis built by Md Ashraf Ali — installation, data loading, visualization, and formation evaluation.">
+    <meta name="author" content="Md Ashraf Ali">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="https://ash-geophysics.netlify.app/user-doc.html">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Md Ashraf — Applied Geophysicist">
+    <meta property="og:site_name" content="Md Ashraf Ali — Applied Geophysicist">
     <meta property="og:url" content="https://ash-geophysics.netlify.app/user-doc.html">
-    <meta property="og:title" content="DARKSPY User Guide — Petrophysical Analysis Desktop App | Md Ashraf">
-    <meta property="og:description" content="User documentation for DARKSPY, the Python desktop application for petrophysical well log analysis built by Md Ashraf — installation, data loading, visualisation and formation evaluation.">
+    <meta property="og:title" content="PetroARX User Guide — Petrophysical Analysis Desktop App | Md Ashraf Ali">
+    <meta property="og:description" content="User documentation for PetroARX, the Python desktop application for petrophysical well log analysis built by Md Ashraf Ali — installation, data loading, visualization, and formation evaluation.">
     <meta property="og:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Md Ashraf — Applied Geophysicist, IIT (ISM) Dhanbad">
+    <meta property="og:image:alt" content="Md Ashraf Ali — Applied Geophysicist, IIT (ISM) Dhanbad">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="DARKSPY User Guide — Petrophysical Analysis Desktop App | Md Ashraf">
-    <meta name="twitter:description" content="User documentation for DARKSPY, the Python desktop application for petrophysical well log analysis built by Md Ashraf — installation, data loading, visualisation and formation evaluation.">
+    <meta name="twitter:title" content="PetroARX User Guide — Petrophysical Analysis Desktop App | Md Ashraf Ali">
+    <meta name="twitter:description" content="User documentation for PetroARX, the Python desktop application for petrophysical well log analysis built by Md Ashraf Ali — installation, data loading, visualization, and formation evaluation.">
     <meta name="twitter:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
     <link rel="icon" href="/assets/favicon.ico" sizes="any">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icons/apple-touch-icon.png">
     <meta name="theme-color" content="#0f172a">
+
+    <!-- Structured data: technical documentation -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "PetroARX User Guide and Documentation",
+        "description": "Comprehensive user manual for the PetroARX petrophysical analysis desktop application.",
+        "author": {
+            "@type": "Person",
+            "@id": "https://ash-geophysics.netlify.app/#person",
+            "name": "Md Ashraf Ali"
+        },
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "PetroARX"
+        },
+        "url": "https://ash-geophysics.netlify.app/user-doc.html"
+    }
+    </script>
 
     <style>
         /* Modern CSS Reset */
@@ -102,6 +122,16 @@
 
         #sidebar nav ul {
             list-style: none;
+        }
+
+        #sidebar .site-links {
+            padding-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #sidebar .site-links a {
+            font-size: 0.9rem;
         }
 
         #sidebar nav a {
@@ -325,7 +355,13 @@
 <body>
 
     <aside id="sidebar">
-        <div class="sidebar-brand-title">DARKSPY Docs</div>
+        <div class="sidebar-brand-title">PetroARX Docs</div>
+        <nav class="site-links" aria-label="Site navigation">
+            <ul>
+                <li><a href="/">← Portfolio Home</a></li>
+                <li><a href="/petrophysics_gui.html">← PetroARX Project Suite</a></li>
+            </ul>
+        </nav>
         <nav id="toc">
             <ul>
                 <li><a href="#introduction" class="active">Introduction</a></li>
@@ -349,15 +385,15 @@
 
     <main>
         <header style="text-align: center; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
-            <h1 style="font-size: 3rem; color: #fff;">DARKSPY</h1>
+            <h1 style="font-size: 3rem; color: #fff;">PetroARX</h1>
             <p style="font-size: 1.5rem; color: var(--accent-primary);">Petrophysics Analysis Desktop Application</p>
-            <p style="color: var(--text-secondary);">Version 1.0 | Developed at IIT (ISM) Dhanbad | Sep - Nov 2024</p>
+            <p style="color: var(--text-secondary);">Version 1.0 | Developed by Md Ashraf Ali at IIT (ISM) Dhanbad | Sep - Nov 2024</p>
         </header>
 
         <section id="introduction">
             <h2>Introduction</h2>
             <p>
-                <strong>DARKSPY</strong> (Data Analysis and Reservoir Knowledge System for PetroPhYsics) is a comprehensive desktop application designed to facilitate the analysis and visualization of well log data. Built with Python and PyQt5, this application provides geoscientists, engineers, and students with powerful tools to load, visualize, interpret, and analyze subsurface geological data through an intuitive graphical interface.
+                <strong>PetroARX</strong> is a comprehensive desktop application designed to facilitate the analysis and visualization of well log data. Built with Python and PyQt5, this application provides geoscientists, engineers, and students with powerful tools to load, visualize, interpret, and analyze subsurface geological data through an intuitive graphical interface.
             </p>
             <h3>Key Features</h3>
             <ul>
@@ -406,10 +442,10 @@ scikit-learn >= 0.24.0</code></pre>
             <h2>Installation Guide</h2>
             <h3 class="txt-h4">Method 1: Direct Installation (Recommended)</h3>
             <ol>
-                <li>Download the DARKSPY installer package</li>
+                <li>Download the PetroARX installer package</li>
                 <li>Run the installer executable</li>
                 <li>Follow the installation wizard prompts</li>
-                <li>Launch DARKSPY from the desktop shortcut</li>
+                <li>Launch PetroARX from the desktop shortcut</li>
             </ol>
             <h3 class="txt-h4">Method 2: Python Source Installation</h3>
             <ol>
@@ -422,13 +458,13 @@ scikit-learn >= 0.24.0</code></pre>
             </ol>
             <h3 class="txt-h4">Method 3: Virtual Environment Setup</h3>
             <pre><code class="language-bash"># Create virtual environment
-python -m venv darkspy_env
+python -m venv petroarx_env
 
 # Activate virtual environment
 # Windows:
-darkspy_env\Scripts\activate
+petroarx_env\Scripts\activate
 # macOS/Linux:
-source darkspy_env/bin/activate
+source petroarx_env/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -441,7 +477,7 @@ python main.py</code></pre>
             <h2>Getting Started</h2>
             <h3>First Launch</h3>
             <ol>
-                <li>Double-click the DARKSPY desktop icon or run from command line.</li>
+                <li>Double-click the PetroARX desktop icon or run from command line.</li>
                 <li>The main application window will open with the "Data Loading" tab active.</li>
                 <li>Review the "Motive" dialog that explains the application's purpose.</li>
                 <li>Access the Help menu for detailed guidance.</li>
@@ -459,7 +495,7 @@ python main.py</code></pre>
         <section id="user-interface-overview">
             <h2>User Interface Overview</h2>
             <h3>Main Window Components</h3>
-            <p>The DARKSPY interface consists of four primary tabs:</p>
+            <p>The PetroARX interface consists of four primary tabs:</p>
             <h3 class="txt-h4">1. Data Loading Tab</h3>
             <ul>
                 <li>File import interface with drag-and-drop support</li>
@@ -508,7 +544,7 @@ python main.py</code></pre>
             <h3>Loading Data Process</h3>
             <ol>
                 <li><strong>Select File</strong>: Click "Browse Files" or use drag-and-drop.</li>
-                <li><strong>File Validation</strong>: DARKSPY automatically validates the file format and checks data integrity.</li>
+                <li><strong>File Validation</strong>: PetroARX automatically validates the file format and checks data integrity.</li>
                 <li><strong>Data Preview</strong>: A preview is shown in the data table, flagging missing values.</li>
             </ol>
         </section>
@@ -588,8 +624,8 @@ python main.py</code></pre>
             <h2>Contact Information</h2>
             <h3 class="txt-h5">Development Team</h3>
             <p><strong>Institution:</strong> Indian Institute of Technology (ISM) Dhanbad <br/>
-               <strong>Lead Developer:</strong> Md Ashraf <br/>
-               <strong>Email:</strong> <a href="mailto:mdashraf620@gmail.com">mdashraf620@gmail.com</a>
+               <strong>Lead Developer:</strong> Md Ashraf Ali <br/>
+               <strong>Email:</strong> <a href="mailto:ashraf.ism49@gmail.com">ashraf.ism49@gmail.com</a>
             </p>
             <h3 class="txt-h5">Reporting Issues</h3>
             <p>When reporting bugs, please include your OS, Python version, a detailed description of the problem, steps to reproduce, and any relevant error messages or log files.</p>
@@ -614,8 +650,9 @@ python main.py</code></pre>
         </section>
 
         <footer>
-            <p>This documentation is part of the DARKSPY project developed at IIT(ISM) Dhanbad.</p>
+            <p>This documentation is part of the PetroARX project developed at IIT(ISM) Dhanbad.</p>
             <p>Document Version: 1.0 | Last Updated: November 2024</p>
+            <p><a href="/">Portfolio Home</a> &nbsp;·&nbsp; <a href="/petrophysics_gui.html">PetroARX Project Suite</a></p>
         </footer>
 
     </main>

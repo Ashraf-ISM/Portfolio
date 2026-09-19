@@ -1,1393 +1,1610 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARKSPY — Python GUI for Petrophysical Well Log Analysis | Md Ashraf</title>
-    <meta name="description" content="DARKSPY is a Python and PyQt5 desktop application by Md Ashraf for petrophysical well log analysis — LAS loading, log quality control, multi-track visualisation and formation evaluation.">
-    <meta name="author" content="Md Ashraf">
-    <meta name="robots" content="index, follow, max-image-preview:large">
-    <link rel="canonical" href="https://ash-geophysics.netlify.app/petrophysics_gui.html">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Md Ashraf — Applied Geophysicist">
-    <meta property="og:url" content="https://ash-geophysics.netlify.app/petrophysics_gui.html">
-    <meta property="og:title" content="DARKSPY — Python GUI for Petrophysical Well Log Analysis | Md Ashraf">
-    <meta property="og:description" content="DARKSPY is a Python and PyQt5 desktop application by Md Ashraf for petrophysical well log analysis — LAS loading, log quality control, multi-track visualisation and formation evaluation.">
-    <meta property="og:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Md Ashraf — Applied Geophysicist, IIT (ISM) Dhanbad">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="DARKSPY — Python GUI for Petrophysical Well Log Analysis | Md Ashraf">
-    <meta name="twitter:description" content="DARKSPY is a Python and PyQt5 desktop application by Md Ashraf for petrophysical well log analysis — LAS loading, log quality control, multi-track visualisation and formation evaluation.">
-    <meta name="twitter:image" content="https://ash-geophysics.netlify.app/assets/img/social-preview.png">
-    <link rel="icon" href="/assets/favicon.ico" sizes="any">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icons/apple-touch-icon.png">
-    <meta name="theme-color" content="#0f172a">
-
-    <style>
-        :root {
-            --primary-blue: #1e3a8a;
-            --secondary-blue: #3b82f6;
-            --accent-orange: #ea580c;
-            --dark-gray: #374151;
-            --light-gray: #f8fafc;
-            --white: #ffffff;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            --gradient-bg: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--dark-gray);
-            background: var(--gradient-bg);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Header Section */
-        .header-section {
-            text-align: center;
-            margin-bottom: 4rem;
-            background: var(--white);
-            border-radius: 16px;
-            padding: 4rem 2rem;
-            box-shadow: var(--shadow-lg);
-            border-left: 6px solid var(--primary-blue);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 200px;
-            height: 200px;
-            background: var(--gradient-primary);
-            border-radius: 50%;
-            opacity: 0.1;
-            transform: translate(50%, -50%);
-        }
-
-        .project-badge {
-            display: inline-block;
-            background: var(--gradient-primary);
-            color: var(--white);
-            padding: 0.7rem 2rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .main-title {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
-            line-height: 1.2;
-            position: relative;
-            z-index: 2;
-        }
-
-        .subtitle {
-            font-size: 1.3rem;
-            color: var(--dark-gray);
-            font-weight: 400;
-            max-width: 900px;
-            margin: 0 auto 2rem;
-            line-height: 1.8;
-        }
-
-        .project-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid #e5e7eb;
-        }
-
-        .meta-item {
-            text-align: center;
-            padding: 1rem;
-            background: rgba(59, 130, 246, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.1);
-        }
-
-        .meta-label {
-            font-size: 0.9rem;
-            color: var(--dark-gray);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .meta-value {
-            font-size: 1.2rem;
-            color: var(--primary-blue);
-            font-weight: 800;
-        }
-
-        .tech-stack {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .tech-item {
-            background: var(--white);
-            border: 2px solid #e5e7eb;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--dark-gray);
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
-        }
-
-        .tech-item:hover {
-            border-color: var(--secondary-blue);
-            background: var(--secondary-blue);
-            color: var(--white);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Features Overview Section */
-        .features-overview {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 3rem;
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 3rem;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
-        }
-
-        .section-description {
-            font-size: 1.2rem;
-            color: var(--dark-gray);
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .feature-card {
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            border-radius: 12px;
-            padding: 2rem;
-            border: 2px solid #e5e7eb;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--secondary-blue);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--gradient-primary);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-primary);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
-        }
-
-        .feature-description {
-            color: var(--dark-gray);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-highlights {
-            list-style: none;
-            padding: 0;
-        }
-
-        .feature-highlights li {
-            padding: 0.3rem 0;
-            color: var(--dark-gray);
-            position: relative;
-            padding-left: 1.5rem;
-        }
-
-        .feature-highlights li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--secondary-blue);
-            font-weight: bold;
-        }
-
-        /* Screenshots Section */
-        .screenshots-section {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 3rem;
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 3rem;
-        }
-
-        .filter-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 3rem;
-            background: var(--light-gray);
-            padding: 0.5rem;
-            border-radius: 15px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .tab-btn {
-            padding: 1rem 2rem;
-            border: none;
-            background: transparent;
-            border-radius: 12px;
-            font-weight: 600;
-            color: var(--dark-gray);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .tab-btn.active {
-            background: var(--gradient-primary);
-            color: var(--white);
-            box-shadow: var(--shadow);
-        }
-
-        .tab-btn:hover:not(.active) {
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .screenshots-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .screenshot-card {
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 2px solid #e5e7eb;
-            cursor: pointer;
-        }
-
-        .screenshot-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            border-color: var(--secondary-blue);
-        }
-
-        .screenshot-image {
-            width: 100%;
-            height: 280px;
-            background: var(--gradient-primary);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .screenshot-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .screenshot-card:hover .screenshot-image img {
-            transform: scale(1.05);
-        }
-
-        .placeholder-content {
-            text-align: center;
-            color: var(--white);
-            z-index: 2;
-            position: relative;
-        }
-
-        .placeholder-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1rem;
-            opacity: 0.9;
-            font-size: 2rem;
-        }
-
-        .placeholder-text {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .placeholder-subtext {
-            font-size: 1rem;
-            opacity: 0.8;
-        }
-
-        .screenshot-content {
-            padding: 2.5rem;
-        }
-
-        .screenshot-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .title-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--gradient-primary);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 1.2rem;
-        }
-
-        .screenshot-description {
-            color: var(--dark-gray);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-            font-size: 1rem;
-        }
-
-        .feature-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.7rem;
-            margin-bottom: 2rem;
-        }
-
-        .feature-tag {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--secondary-blue);
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-
-        .card-metrics {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            padding-top: 2rem;
-            border-top: 2px solid #e5e7eb;
-        }
-
-        .metric-item {
-            text-align: center;
-        }
-
-        .metric-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-            line-height: 1;
-        }
-
-        .metric-label {
-            font-size: 0.8rem;
-            color: var(--dark-gray);
-            margin-top: 0.5rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        /* Technical Details Section */
-        .technical-details {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 3rem;
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 3rem;
-        }
-
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .detail-card {
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            border-radius: 12px;
-            padding: 2rem;
-            border: 2px solid #e5e7eb;
-        }
-
-        .detail-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .detail-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .detail-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .detail-list li:last-child {
-            border-bottom: none;
-        }
-
-        /* Action Section */
-        .action-section {
-            background: var(--gradient-primary);
-            border-radius: 16px;
-            padding: 4rem 3rem;
-            text-align: center;
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .action-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            z-index: 1;
-        }
-
-        .action-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .action-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .action-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-            padding: 1.2rem 2.5rem;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            border: 2px solid transparent;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-primary {
-            background: var(--accent-orange);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: #dc2626;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border-color: var(--white);
-        }
-
-        .btn-secondary:hover {
-            background: var(--white);
-            color: var(--primary-blue);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Modal */
-        .fullscreen-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 95%;
-            position: relative;
-        }
-
-        .modal-image {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.7);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: -60px;
-            right: 0;
-            color: var(--white);
-            font-size: 2rem;
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.7);
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            background: var(--accent-orange);
-            transform: rotate(90deg);
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .screenshots-grid { grid-template-columns: 1fr; }
-            .main-title { font-size: 2.2rem; }
-            .project-meta { grid-template-columns: 1fr; }
-            .filter-tabs { flex-wrap: wrap; }
-            .action-buttons { flex-direction: column; align-items: center; }
-            .features-grid { grid-template-columns: 1fr; }
-            .details-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 480px) {
-            .header-section { padding: 2rem 1rem; }
-            .screenshots-section { padding: 2rem 1rem; }
-            .action-section { padding: 2rem 1rem; }
-            .main-title { font-size: 1.8rem; }
-            .section-title { font-size: 1.8rem; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary meta -->
+  <title>PetroARX — Python Petrophysics Interpretation Platform | Md Ashraf Ali</title>
+  <meta name="description"
+    content="PetroARX is a PyQt5 petrophysics interpretation platform by Md Ashraf Ali — LAS parsing, ML log QC, formation evaluation and 3D wellbore visualisation.">
+  <meta name="author" content="Md Ashraf Ali">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://ash-geophysics.netlify.app/petrophysics_gui.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Md Ashraf Ali — Applied Geophysicist">
+  <meta property="og:url" content="https://ash-geophysics.netlify.app/petrophysics_gui.html">
+  <meta property="og:title" content="PetroARX — Python Petrophysics Interpretation Platform">
+  <meta property="og:description"
+    content="A PyQt5 desktop platform for well-log interpretation: LAS parsing, ML quality control, formation evaluation, 3D wellbore visualisation and facies classification.">
+  <meta property="og:image" content="https://ash-geophysics.netlify.app/assets/img/petroarx-ui/splash-1536.jpg">
+  <meta property="og:image:width" content="1536">
+  <meta property="og:image:height" content="1028">
+  <meta property="og:image:alt" content="PetroARX start-up screen — Petrophysics, Intelligence, Insight">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PetroARX — Python Petrophysics Interpretation Platform">
+  <meta name="twitter:description"
+    content="A PyQt5 desktop platform for well-log interpretation: LAS parsing, ML quality control, formation evaluation, 3D wellbore visualisation and facies classification.">
+  <meta name="twitter:image" content="https://ash-geophysics.netlify.app/assets/img/petroarx-ui/splash-1536.jpg">
+
+  <!-- Icons -->
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#050a14">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Preload the hero image -->
+  <link rel="preload" as="image" href="assets/img/petroarx-ui/splash-1536.webp" type="image/webp"
+    fetchpriority="high">
+
+  <!-- Structured data: the application described on this page -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PetroARX",
+    "alternateName": "PetroARX Petrophysics Interpretation Platform",
+    "softwareVersion": "1.0",
+    "applicationCategory": "GeoscienceApplication",
+    "operatingSystem": "Windows, Linux, macOS",
+    "description": "Desktop platform built with Python and PyQt5 for petrophysical well log interpretation: LAS 2.0/3.0 and CSV ingestion, statistical and machine-learning quality control, shale volume, porosity, water saturation, permeability and net pay workflows, 3D wellbore visualisation, multi-mineral inversion and facies classification.",
+    "featureList": [
+      "LAS 2.0/3.0 and CSV ingestion with curve metadata and unit validation",
+      "Statistical and Isolation Forest log quality control",
+      "Multi-track log plotting, crossplots and histograms",
+      "3D well trajectory visualisation with log ribbons",
+      "Shale volume, porosity, water saturation, permeability and net pay",
+      "Multi-mineral (ELAN) least-squares inversion",
+      "Machine-learning facies classification and missing log prediction",
+      "Embedded Python scripting console"
+    ],
+    "author": {
+      "@type": "Person",
+      "@id": "https://ash-geophysics.netlify.app/#person",
+      "name": "Md Ashraf Ali"
+    },
+    "url": "https://ash-geophysics.netlify.app/petrophysics_gui.html",
+    "screenshot": "https://ash-geophysics.netlify.app/assets/img/petroarx-ui/dashboard-1600.jpg",
+    "softwareHelp": "https://ash-geophysics.netlify.app/user-doc.html"
+  }
+  </script>
+
+  <style>
+    /* ============================================================
+       PetroARX product page — design tokens
+       Palette sampled from the application's own start-up screen.
+       ============================================================ */
+    :root {
+      --bg: #050a14;
+      --bg-2: #08101f;
+      --surface: #0c1524;
+      --surface-2: #111d30;
+      --surface-3: #16243a;
+      --border: rgba(148, 163, 184, 0.14);
+      --border-strong: rgba(148, 163, 184, 0.28);
+
+      --text: #e8eef8;
+      --text-2: #aebdd4;
+      --muted: #7e90ab;
+
+      --blue: #3b9eff;
+      --blue-deep: #1b6fd4;
+      --cyan: #22d3ee;
+      --amber: #f5a623;
+      --green: #34d399;
+      --violet: #a78bfa;
+
+      --glow: 0 0 0 1px rgba(59, 158, 255, .35), 0 8px 40px -12px rgba(59, 158, 255, .45);
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px -12px rgba(0, 0, 0, .7);
+      --shadow-lg: 0 2px 4px rgba(0, 0, 0, .4), 0 32px 64px -24px rgba(0, 0, 0, .85);
+
+      --radius: 14px;
+      --radius-lg: 20px;
+      --maxw: 1240px;
+      --gutter: 24px;
+
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background wash */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(900px 500px at 12% -5%, rgba(27, 111, 212, .20), transparent 60%),
+        radial-gradient(700px 420px at 92% 8%, rgba(34, 211, 238, .12), transparent 62%),
+        radial-gradient(800px 500px at 50% 105%, rgba(245, 166, 35, .07), transparent 65%);
+      pointer-events: none;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: var(--blue); }
+
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+
+    h1, h2, h3, h4 { line-height: 1.18; letter-spacing: -0.02em; margin: 0; font-weight: 700; }
+    h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
+    h3 { font-size: 1.14rem; font-weight: 650; }
+    p { margin: 0; }
+
+    .skip-link {
+      position: absolute; left: -9999px; top: 0; z-index: 200;
+      background: var(--blue); color: #001225; padding: 12px 20px;
+      border-radius: 0 0 10px 0; font-weight: 700;
+    }
+    .skip-link:focus { left: 0; }
+
+    :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+
+    /* ---------------------------------------------------- header --- */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 2px; width: 0;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      z-index: 120; transition: width .1s linear;
+    }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(5, 10, 20, .82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-header .wrap {
+      display: flex; align-items: center; gap: 20px;
+      height: 64px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; color: var(--text); flex-shrink: 0; }
+    .brand-mark {
+      width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(145deg, var(--blue-deep), var(--cyan));
+      display: grid; place-items: center;
+      font-weight: 800; font-size: .84rem; color: #02121f; letter-spacing: -.04em;
+    }
+    .brand-name { font-weight: 700; letter-spacing: -.02em; font-size: 1.02rem; }
+    .brand-ver {
+      font-family: var(--mono); font-size: .68rem; color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, .34); border-radius: 999px;
+      padding: 1px 7px; margin-left: 2px;
+    }
+
+    .site-nav { display: flex; gap: 4px; margin-left: auto; align-items: center; }
+    .site-nav a {
+      color: var(--text-2); text-decoration: none; font-size: .88rem; font-weight: 500;
+      padding: 7px 12px; border-radius: 9px; transition: background .18s, color .18s;
+      white-space: nowrap;
+    }
+    .site-nav a:hover { color: var(--text); background: rgba(148, 163, 184, .10); }
+    .site-nav a.current { color: var(--cyan); background: rgba(34, 211, 238, .10); }
+    .site-nav .nav-home { color: var(--text); border: 1px solid var(--border-strong); }
+    .site-nav .nav-home:hover { border-color: var(--blue); }
+
+    @media (max-width: 1080px) { .site-nav .opt { display: none; } }
+    @media (max-width: 720px) {
+      .site-nav a:not(.nav-home) { display: none; }
+      .site-header .wrap { height: 58px; }
+    }
+
+    /* ---------------------------------------------------- section --- */
+    section { padding: clamp(56px, 8vw, 104px) 0; }
+    .section-head { max-width: 720px; margin-bottom: 44px; }
+    .eyebrow {
+      font-family: var(--mono); font-size: .74rem; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .eyebrow::before {
+      content: ""; width: 26px; height: 1px; background: var(--cyan); opacity: .6;
+    }
+    .section-desc { color: var(--text-2); margin-top: 14px; font-size: 1.04rem; }
+
+    /* ---------------------------------------------------- hero ----- */
+    .hero { padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(48px, 7vw, 88px); }
+    .hero-grid {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+      gap: clamp(32px, 5vw, 64px); align-items: center;
+    }
+    @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800;
+      letter-spacing: -.035em; margin-bottom: 18px;
+    }
+    .hero h1 .accent {
+      background: linear-gradient(100deg, var(--blue) 10%, var(--cyan) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero-tagline {
+      font-family: var(--mono); font-size: .82rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 22px;
+    }
+    .hero-lede { font-size: 1.1rem; color: var(--text-2); margin-bottom: 30px; max-width: 54ch; }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+    .pill {
+      font-size: .78rem; font-weight: 550; padding: 5px 12px; border-radius: 999px;
+      border: 1px solid var(--border-strong); color: var(--text-2);
+      background: rgba(148, 163, 184, .05);
+    }
+    .pill.hot { border-color: rgba(34, 211, 238, .4); color: var(--cyan); background: rgba(34, 211, 238, .07); }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 12px 22px; border-radius: 11px; font-weight: 600; font-size: .94rem;
+      text-decoration: none; border: 1px solid transparent; cursor: pointer;
+      transition: transform .18s, box-shadow .18s, background .18s, border-color .18s;
+      font-family: inherit;
+    }
+    .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+    .btn-primary {
+      background: linear-gradient(140deg, var(--blue-deep), var(--blue));
+      color: #fff; box-shadow: 0 8px 28px -10px rgba(59, 158, 255, .8);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -10px rgba(59, 158, 255, .9); }
+    .btn-ghost { border-color: var(--border-strong); color: var(--text); background: rgba(148, 163, 184, .05); }
+    .btn-ghost:hover { border-color: var(--blue); background: rgba(59, 158, 255, .10); transform: translateY(-2px); }
+
+    .hero-shot {
+      border-radius: var(--radius-lg); overflow: hidden;
+      border: 1px solid var(--border-strong); box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .hero-shot img { width: 100%; height: auto; }
+
+    /* ---------------------------------------------------- stat band  */
+    .stat-band {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(12, 21, 36, .7), rgba(8, 16, 31, .4));
+      padding: 0;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat {
+      padding: 30px 26px; border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: 0; }
+    .stat-value {
+      font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 800; letter-spacing: -.03em;
+      background: linear-gradient(120deg, var(--text) 30%, var(--blue));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      line-height: 1.1;
+    }
+    .stat-label { font-size: .84rem; color: var(--muted); margin-top: 6px; }
+    @media (max-width: 860px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2) { border-right: 0; }
+      .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+    }
+
+    /* ---------------------------------------------------- video ---- */
+    .video-frame {
+      position: relative; border-radius: var(--radius-lg); overflow: hidden;
+      border: 1px solid var(--border-strong); box-shadow: var(--shadow-lg);
+      background: var(--surface); aspect-ratio: 16 / 9;
+    }
+    .video-frame video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+    .video-poster {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: 0; padding: 0; cursor: pointer; background: #000;
+      display: block; color: inherit; font: inherit;
+    }
+    .video-poster img { width: 100%; height: 100%; object-fit: cover; opacity: .5; transition: opacity .3s, transform .5s; }
+    .video-poster:hover img { opacity: .62; transform: scale(1.02); }
+    /* Radial pass keeps the play label legible over the light dashboard screenshot. */
+    .video-poster::after {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(closest-side at 50% 48%, rgba(5, 10, 20, .88), rgba(5, 10, 20, .3) 100%),
+        linear-gradient(180deg, rgba(5, 10, 20, .45), rgba(5, 10, 20, .8));
+    }
+    .play-badge {
+      position: absolute; inset: 0; display: grid; place-content: center; justify-items: center;
+      gap: 14px; z-index: 2; text-align: center; padding: 20px;
+    }
+    .play-ring {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: rgba(59, 158, 255, .16); border: 1px solid rgba(59, 158, 255, .5);
+      display: grid; place-items: center; backdrop-filter: blur(6px);
+      transition: transform .25s, background .25s;
+    }
+    .video-poster:hover .play-ring { transform: scale(1.08); background: rgba(59, 158, 255, .28); }
+    .play-ring svg { width: 26px; height: 26px; fill: #fff; margin-left: 4px; }
+    .play-label { font-weight: 650; font-size: 1rem; }
+    .play-sub { font-size: .84rem; color: var(--text-2); font-family: var(--mono); }
+
+    .video-note {
+      margin-top: 16px; font-size: .88rem; color: var(--muted);
+      display: flex; align-items: flex-start; gap: 9px;
+    }
+    .video-note code {
+      font-family: var(--mono); font-size: .84em; color: var(--cyan);
+      background: rgba(34, 211, 238, .08); padding: 2px 6px; border-radius: 5px;
+    }
+    .video-fallback {
+      position: absolute; inset: 0; display: none; place-content: center; justify-items: center;
+      gap: 10px; text-align: center; padding: 30px; background: var(--surface-2); z-index: 3;
+    }
+    .video-fallback.show { display: grid; }
+
+    /* ---------------------------------------------------- cards ---- */
+    .card-grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    }
+    .card {
+      background: linear-gradient(165deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 26px 24px; transition: border-color .25s, transform .25s, box-shadow .25s;
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ""; position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0; transition: opacity .25s;
+    }
+    .card:hover { border-color: var(--border-strong); transform: translateY(-3px); box-shadow: var(--shadow); }
+    .card:hover::before { opacity: .7; }
+    .card-icon {
+      width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
+      background: rgba(59, 158, 255, .10); border: 1px solid rgba(59, 158, 255, .22);
+      margin-bottom: 16px;
+    }
+    .card-icon svg { width: 20px; height: 20px; stroke: var(--blue); fill: none; stroke-width: 1.7; }
+    .card h3 { margin-bottom: 9px; }
+    .card p { color: var(--text-2); font-size: .93rem; }
+
+    /* ---------------------------------------------------- workflow - */
+    .flow {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+      counter-reset: step;
+    }
+    .flow-step {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 16px; position: relative;
+      transition: border-color .25s, background .25s;
+    }
+    .flow-step:hover { border-color: var(--blue); background: var(--surface-2); }
+    .flow-step::before {
+      counter-increment: step; content: counter(step, decimal-leading-zero);
+      font-family: var(--mono); font-size: .7rem; color: var(--blue);
+      display: block; margin-bottom: 8px; letter-spacing: .08em;
+    }
+    .flow-step strong { display: block; font-size: .95rem; font-weight: 650; margin-bottom: 4px; }
+    .flow-step span { font-size: .82rem; color: var(--muted); }
+
+    /* ---------------------------------------------------- gallery -- */
+    .filter-bar {
+      display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 30px;
+      padding: 6px; border: 1px solid var(--border); border-radius: 14px;
+      background: rgba(12, 21, 36, .6); width: fit-content; max-width: 100%;
+    }
+    .filter-btn {
+      font-family: inherit; font-size: .86rem; font-weight: 550;
+      padding: 8px 16px; border-radius: 9px; cursor: pointer;
+      background: transparent; border: 0; color: var(--text-2);
+      transition: background .2s, color .2s;
+    }
+    .filter-btn:hover { background: rgba(148, 163, 184, .10); color: var(--text); }
+    .filter-btn[aria-pressed="true"] {
+      background: linear-gradient(140deg, var(--blue-deep), var(--blue));
+      color: #fff;
+    }
+
+    .shot-grid {
+      display: grid; gap: 22px;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    }
+    .shot {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+    }
+    .shot:hover { border-color: var(--border-strong); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .shot[hidden] { display: none; }
+
+    .shot-media {
+      position: relative; margin: 0; padding: 0; border: 0; width: 100%;
+      background: #0a1220; cursor: zoom-in; display: block; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      aspect-ratio: 1920 / 1030;
+    }
+    .shot-media img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .45s; }
+    .shot:hover .shot-media img { transform: scale(1.035); }
+    .shot-media::after {
+      content: "⤢"; position: absolute; right: 10px; bottom: 10px;
+      width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center;
+      background: rgba(5, 10, 20, .8); border: 1px solid var(--border-strong);
+      color: var(--cyan); font-size: .9rem; opacity: 0; transition: opacity .25s;
+    }
+    .shot:hover .shot-media::after { opacity: 1; }
+
+    .shot-body { padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; }
+    .shot-tag {
+      font-family: var(--mono); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 9px;
+    }
+    .shot-body h3 { margin-bottom: 8px; }
+    .shot-body p { color: var(--text-2); font-size: .89rem; }
+
+    /* ---------------------------------------------------- lightbox - */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 150; display: none;
+      background: rgba(3, 7, 14, .94); backdrop-filter: blur(8px);
+      padding: clamp(16px, 4vw, 48px);
+      grid-template-rows: 1fr auto; gap: 24px;
+    }
+    .lightbox[open] { display: grid; }
+    .lightbox-stage { display: grid; place-items: center; min-height: 0; }
+    .lightbox-stage img {
+      max-width: 100%; max-height: 100%; width: auto; height: auto;
+      border-radius: 10px; border: 1px solid var(--border-strong); box-shadow: var(--shadow-lg);
+    }
+    .lightbox-bar {
+      display: flex; align-items: center; gap: 16px; justify-content: center;
+      max-width: 900px; margin: 0 auto; text-align: center;
+    }
+    /* Caption takes the slack so the arrows stay on the same row as the text. */
+    .lightbox-caption { flex: 1 1 auto; min-width: 0; }
+    .lb-btn { flex: 0 0 auto; }
+    .lightbox-caption h3 { font-size: 1.05rem; margin-bottom: 4px; }
+    .lightbox-caption p { color: var(--text-2); font-size: .88rem; }
+    .lb-btn {
+      width: 42px; height: 42px; border-radius: 11px; cursor: pointer;
+      background: rgba(148, 163, 184, .10); border: 1px solid var(--border-strong);
+      color: var(--text); font-size: 1.1rem; display: grid; place-items: center;
+      transition: background .2s, border-color .2s;
+    }
+    .lb-btn:hover { background: rgba(59, 158, 255, .18); border-color: var(--blue); }
+    .lb-close { position: absolute; top: 16px; right: 16px; }
+    .lb-count { font-family: var(--mono); font-size: .78rem; color: var(--muted); }
+
+    /* ---------------------------------------------------- ml panel - */
+    .ml-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 20px; }
+    .ml-card {
+      background: linear-gradient(165deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .ml-card-head {
+      padding: 22px 24px 18px; border-bottom: 1px solid var(--border);
+    }
+    .ml-card-head h3 { margin-bottom: 6px; }
+    .ml-card-head p { color: var(--text-2); font-size: .9rem; }
+    .ml-metrics { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .ml-metric { padding: 16px 12px; text-align: center; border-right: 1px solid var(--border); }
+    .ml-metric:last-child { border-right: 0; }
+    .ml-metric b {
+      display: block; font-family: var(--mono); font-size: 1.12rem; font-weight: 500; color: var(--cyan);
+    }
+    .ml-metric span { font-size: .72rem; color: var(--muted); }
+    .ml-foot {
+      padding: 14px 24px; border-top: 1px solid var(--border);
+      font-family: var(--mono); font-size: .76rem; color: var(--muted);
+    }
+
+    /* ---------------------------------------------------- tech ----- */
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; }
+    .tech-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .tech-card h3 { margin-bottom: 16px; display: flex; align-items: center; gap: 9px; font-size: 1rem; }
+    .tech-card h3 .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+    .tech-list { list-style: none; margin: 0; padding: 0; }
+    /* Label above value: keeps long values from ragging in a narrow column. */
+    .tech-list li {
+      display: grid; gap: 3px;
+      padding: 10px 0; border-bottom: 1px dashed var(--border);
+    }
+    .tech-list li:last-child { border-bottom: 0; }
+    .tech-list span { color: var(--muted); font-size: .78rem; }
+    .tech-list strong { font-family: var(--mono); font-weight: 500; color: var(--text); font-size: .84rem; }
+
+    /* ---------------------------------------------------- cta ------ */
+    .cta {
+      border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
+      padding: clamp(36px, 6vw, 60px); text-align: center;
+      background:
+        radial-gradient(700px 300px at 50% 0%, rgba(59, 158, 255, .16), transparent 70%),
+        linear-gradient(170deg, var(--surface-2), var(--surface));
+    }
+    .cta h2 { margin-bottom: 14px; }
+    .cta p { color: var(--text-2); max-width: 60ch; margin: 0 auto 28px; }
+    .cta .btn-row { justify-content: center; }
+    .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+
+    /* ---------------------------------------------------- footer --- */
+    .site-footer {
+      border-top: 1px solid var(--border); padding: 44px 0 56px;
+      background: rgba(5, 10, 20, .6);
+    }
+    .footer-grid {
+      display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center;
+    }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .footer-links a { color: var(--text-2); text-decoration: none; font-size: .9rem; }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-meta { color: var(--muted); font-size: .84rem; }
+
+    /* ---------------------------------------------------- motion --- */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important; transition-duration: .01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <!-- Enhanced Header -->
-        <div class="header-section fade-in">
-            <div class="project-badge">Applied Geophysics • Desktop Application</div>
-            <h1 class="main-title">DARKSPY - Petrophysics Analysis Suite</h1>
-            <p class="subtitle">
-                A comprehensive desktop application developed with Python and PyQt5 for advanced petrophysical well log analysis. DARKSPY provides geoscientists, engineers, and students with powerful tools to load, visualize, interpret, and analyze subsurface geological data through an intuitive graphical interface, streamlining complex workflows and enabling meaningful insights from well log data.
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">PA</span>
+        <span class="brand-name">PetroARX</span>
+        <span class="brand-ver">v1.0</span>
+      </a>
+      <nav class="site-nav" aria-label="Page sections">
+        <a href="#overview">Overview</a>
+        <a href="#demo">Demo</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#workflow" class="opt">Workflow</a>
+        <a href="#gallery">Interface</a>
+        <a href="#intelligence" class="opt">AI</a>
+        <a href="#stack" class="opt">Stack</a>
+        <a href="/" class="nav-home">← Portfolio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================ HERO ============ -->
+    <section class="hero" id="top">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <p class="hero-tagline">Petrophysics · Intelligence · Insight</p>
+            <h1>PetroARX<br><span class="accent">Interpretation Platform</span></h1>
+            <p class="hero-lede">
+              A desktop platform for well-log interpretation, built in Python and PyQt5. It takes a LAS file
+              from raw curves through quality control, formation evaluation and machine-learning analytics
+              to a defensible net-pay answer — in one workspace.
             </p>
-            
-            <div class="tech-stack">
-                <div class="tech-item">Python 3.x</div>
-                <div class="tech-item">PyQt5</div>
-                <div class="tech-item">Qt Designer</div>
-                <div class="tech-item">NumPy</div>
-                <div class="tech-item">Matplotlib</div>
-                <div class="tech-item">Pandas</div>
-                <div class="tech-item">SciPy</div>
-                <div class="tech-item">Lasio</div>
-                <div class="tech-item">Seaborn</div>
-                <div class="tech-item">Plotly</div>
-                <div class="tech-item">Scikit-learn</div>
+            <div class="pill-row">
+              <span class="pill hot">10+ modules</span>
+              <span class="pill">LAS 2.0 / 3.0 · CSV</span>
+              <span class="pill">Multi-well</span>
+              <span class="pill">AI analytics</span>
+              <span class="pill">3D wellbore</span>
             </div>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="#demo">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                Watch the walkthrough
+              </a>
+              <a class="btn btn-ghost" href="#gallery">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/></svg>
+                Explore the interface
+              </a>
+            </div>
+          </div>
+          <figure class="hero-shot">
+            <picture>
+              <source type="image/webp"
+                srcset="assets/img/petroarx-ui/splash-800.webp 800w, assets/img/petroarx-ui/splash-1536.webp 1536w"
+                sizes="(min-width: 940px) 52vw, 92vw">
+              <img src="assets/img/petroarx-ui/splash-1536.jpg"
+                srcset="assets/img/petroarx-ui/splash-800.jpg 800w, assets/img/petroarx-ui/splash-1536.jpg 1536w"
+                sizes="(min-width: 940px) 52vw, 92vw" width="1536" height="1028" fetchpriority="high"
+                alt="PetroARX start-up screen: the logo beside a stylised rig with coloured well-log curves running down through layered subsurface horizons.">
+            </picture>
+          </figure>
+        </div>
+      </div>
+    </section>
 
-            <div class="project-meta">
-                <div class="meta-item">
-                    <div class="meta-label">Institution</div>
-                    <div class="meta-value">IIT (ISM) Dhanbad</div>
-                </div>
-                <div class="meta-item">
-                    <div class="meta-label">Development Period</div>
-                    <div class="meta-value">Sept - Nov 2024</div>
-                </div>
-                <div class="meta-item">
-                    <div class="meta-label">Application Type</div>
-                    <div class="meta-value">Desktop GUI</div>
-                </div>
-                <div class="meta-item">
-                    <div class="meta-label">Programming Language</div>
-                    <div class="meta-value">Python</div>
-                </div>
-            </div>
+    <!-- ============================================ STAT BAND ====== -->
+    <section class="stat-band" aria-label="Platform at a glance">
+      <div class="wrap">
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-value">13</div>
+            <div class="stat-label">Interpretation tabs, dashboard to ELAN</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">150+</div>
+            <div class="stat-label">Public data sources in the downloader</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">92.4%</div>
+            <div class="stat-label">Facies classification accuracy, 6 classes</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Operating systems from one codebase</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ DEMO =========== -->
+    <section id="demo">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Walkthrough</p>
+          <h2>See a full interpretation run</h2>
+          <p class="section-desc">
+            A recorded session through the platform — loading a LAS file, running quality control,
+            computing shale volume, porosity and saturation, then reading the net-pay result.
+          </p>
         </div>
 
-        <!-- Features Overview -->
-        <div class="features-overview fade-in">
-            <div class="section-header">
-                <h2 class="section-title">Core Features & Capabilities</h2>
-                <p class="section-description">
-                    DARKSPY integrates multiple specialized modules for comprehensive petrophysical analysis
-                </p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Data Management System</h3>
-                    <p class="feature-description">
-                        Comprehensive data handling with support for industry-standard formats including LAS, CSV, and XLSX files with automated validation and quality control.
-                    </p>
-                    <ul class="feature-highlights">
-                        <li>LAS file format support</li>
-                        <li>CSV/XLSX import/export</li>
-                        <li>Automated data validation</li>
-                        <li>Header information parsing</li>
-                    </ul>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3 class="feature-title">Advanced Visualization</h3>
-                    <p class="feature-description">
-                        Multi-track well log displays, cross-plots, histograms, and formation evaluation charts with customizable scales and professional presentation quality.
-                    </p>
-                    <ul class="feature-highlights">
-                        <li>Multi-track log displays</li>
-                        <li>Cross-plot analysis</li>
-                        <li>Statistical histograms</li>
-                        <li>Customizable scaling</li>
-                    </ul>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔬</div>
-                    <h3 class="feature-title">Formation Evaluation</h3>
-                    <p class="feature-description">
-                        Comprehensive formation evaluation tools including V-shale analysis, porosity calculations, water saturation, and reservoir quality assessment.
-                    </p>
-                    <ul class="feature-highlights">
-                        <li>V-shale calculation</li>
-                        <li>Porosity analysis</li>
-                        <li>Water saturation (Archie's equation)</li>
-                        <li>Reservoir flagging</li>
-                    </ul>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3 class="feature-title">Quality Control</h3>
-                    <p class="feature-description">
-                        Advanced outlier detection using machine learning algorithms, data cleaning tools, and statistical analysis for reliable interpretations.
-                    </p>
-                    <ul class="feature-highlights">
-                        <li>Isolation Forest outlier detection</li>
-                        <li>Statistical analysis</li>
-                        <li>Data cleaning tools</li>
-                        <li>Quality control metrics</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="video-frame reveal" id="videoFrame">
+          <button class="video-poster" id="videoPoster" type="button"
+            aria-label="Play the PetroARX walkthrough video">
+            <picture>
+              <source type="image/webp"
+                srcset="assets/img/petroarx-ui/dashboard-1600.webp"
+                sizes="(min-width: 1240px) 1192px, 94vw">
+              <img src="assets/img/petroarx-ui/dashboard-1600.jpg" width="1600" height="858" loading="lazy"
+                decoding="async" alt="">
+            </picture>
+            <span class="play-badge">
+              <span class="play-ring" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+              <span class="play-label">Play walkthrough</span>
+              <span class="play-sub">PetroARX v1.0 · full session</span>
+            </span>
+          </button>
+          <div class="video-fallback" id="videoFallback">
+            <strong>Walkthrough recording coming soon</strong>
+            <p style="color: var(--text-2); font-size: .9rem; max-width: 46ch;">
+              The screen recording is still being produced. Every screen it will cover is
+              already captured in the interface gallery below.
+            </p>
+            <a class="btn btn-ghost" href="#gallery" style="margin-top: 6px;">Browse the interface instead</a>
+          </div>
+        </div>
+        <p class="video-note">
+          <span aria-hidden="true">↳</span>
+          <span>Drop the recording at <code>assets/video/petroarx-demo.mp4</code> and this player picks it up
+            automatically — no other change needed.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================ CAPABILITIES === -->
+    <section id="capabilities">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Capabilities</p>
+          <h2>What the platform does</h2>
+          <p class="section-desc">
+            Ten core modules, reachable from a single project workspace. Curves loaded once are
+            available to every calculation downstream.
+          </p>
         </div>
 
-        <!-- Screenshots Section -->
-        <div class="screenshots-section fade-in">
-            <div class="section-header">
-                <h2 class="section-title">Application Interface Gallery</h2>
-                <p class="section-description">
-                    Explore the comprehensive features and professional interface designed for petroleum engineering workflows
-                </p>
-            </div>
+        <div class="card-grid">
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 7a9 3 0 1018 0 9 3 0 10-18 0M3 7v10c0 1.66 4 3 9 3s9-1.34 9-3V7M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg></div>
+            <h3>Well data management</h3>
+            <p>Import and manage LAS 2.0/3.0 and CSV datasets with full curve metadata and unit validation,
+              organised into projects by field, basin and operator.</p>
+          </article>
 
-            <div class="filter-tabs">
-                <button class="tab-btn active" onclick="filterScreenshots('all')">All Features</button>
-                <button class="tab-btn" onclick="filterScreenshots('data')">Data Management</button>
-                <button class="tab-btn" onclick="filterScreenshots('visualization')">Visualization</button>
-                <button class="tab-btn" onclick="filterScreenshots('analysis')">Analysis Tools</button>
-                <button class="tab-btn" onclick="filterScreenshots('formation')">Formation Evaluation</button>
-            </div>
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+            <h3>Quality control engine</h3>
+            <p>Automated QC for missing values, outliers and spikes using IQR, Z-score and Isolation Forest,
+              with before/after comparison and a depth-indexed issues register.</p>
+          </article>
 
-            <div class="screenshots-grid">
-                <!-- Data Loading Interface -->
-                 
-                <div class="screenshot-card" data-category="all data" onclick="openModal('data-loading')">
-                    <div class="screenshot-image">
-                        <div class="placeholder-content">
-                            <div class="placeholder-icon">💾</div>
-                            <div class="placeholder-text">Data Loading Interface</div>
-                            <div class="placeholder-subtext">LAS/CSV File Import System</div>
-                        </div>
-                    </div>
-                    <div class="screenshot-content">
-                        <h3 class="screenshot-title">
-                            <div class="title-icon">💾</div>
-                            Data Loading & Import System
-                        </h3>
-                        <p class="screenshot-description">
-                            Professional data loading interface with drag-and-drop functionality, file format validation, and comprehensive header information display. Supports LAS, CSV, and XLSX formats with automated parsing.
-                        </p>
-                        <div class="feature-tags">
-                            <span class="feature-tag">LAS Format</span>
-                            <span class="feature-tag">CSV/XLSX Support</span>
-                            <span class="feature-tag">Drag & Drop</span>
-                            <span class="feature-tag">Header Parsing</span>
-                        </div>
-                        <div class="card-metrics">
-                            <div class="metric-item">
-                                <div class="metric-value">3+</div>
-                                <div class="metric-label">File Formats</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Auto</div>
-                                <div class="metric-label">Validation</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Real-time</div>
-                                <div class="metric-label">Preview</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M4 20V4M9 20V9M14 20v-7M19 20V6"/></svg></div>
+            <h3>Multi-track log viewer</h3>
+            <p>Configurable depth-track plots, triple-combo presets, crossplots, histograms, pair plots and
+              violin plots, all synchronised to the active depth range.</p>
+          </article>
 
-                <!-- Well Data Statistics -->
-                <div class="screenshot-card" data-category="all data analysis" onclick="openModal('data-stats')">
-                    <div class="screenshot-image">
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2l8 4.5v9L12 20l-8-4.5v-9z"/><path d="M12 20V11M4 6.5L12 11l8-4.5"/></svg></div>
+            <h3>3D wellbore visualisation</h3>
+            <p>Trajectories rendered as colour tubes with log ribbons, formation tops and perforations,
+              under full camera, lighting and cross-section control.</p>
+          </article>
 
-                        <div class="placeholder-content">
-                            <div class="placeholder-icon">📊</div>
-                            <div class="placeholder-text">Data Statistics Dashboard</div>
-                            <div class="placeholder-subtext">Comprehensive Statistical Analysis</div>
-                        </div>
-                    </div>
-                    <div class="screenshot-content">
-                        <h3 class="screenshot-title">
-                            <div class="title-icon">📊</div>
-                            Well Data Statistics Module
-                        </h3>
-                        <p class="screenshot-description">
-                            Detailed statistical analysis dashboard displaying data tables with real-time calculations including count, mean, standard deviation, percentiles, and data distribution metrics for all well log parameters.
-                        </p>
-                        <div class="feature-tags">
-                            <span class="feature-tag">Statistical Analysis</span>
-                            <span class="feature-tag">Data Tables</span>
-                            <span class="feature-tag">Percentiles</span>
-                            <span class="feature-tag">Distribution Analysis</span>
-                        </div>
-                        <div class="card-metrics">
-                            <div class="metric-item">
-                                <div class="metric-value">15+</div>
-                                <div class="metric-label">Statistics</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Real-time</div>
-                                <div class="metric-label">Updates</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Export</div>
-                                <div class="metric-label">Ready</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 8h14M7 13h10M9 18h6"/></svg></div>
+            <h3>Petrophysical modules</h3>
+            <p>Integrated shale volume, porosity, water saturation, permeability and net-pay workflows,
+              each with its own parameter panel and result summary.</p>
+          </article>
 
-                <!-- Formation Evaluation Interface -->
-                <div class="screenshot-card" data-category="all formation analysis" onclick="openModal('formation-eval')">
-                    <div class="screenshot-image">
-                        <picture><source type="image/webp" srcset="GUI-IMAGE/opt/vshale.webp"><img src="GUI-IMAGE/opt/vshale.jpg" alt="PetroARX shale volume computation panel with the resulting Vsh curve" width="1400" height="788" loading="lazy" decoding="async"></picture>   
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 00-4 4 3 3 0 00-1 5.83V17a3 3 0 006 0V3zM12 3a4 4 0 014 4 3 3 0 011 5.83V17a3 3 0 01-6 0"/></svg></div>
+            <h3>AI analytics</h3>
+            <p>Facies classification, missing-log prediction and ML-driven quality control, trained inside
+              the application with cross-validation and uncertainty reporting.</p>
+          </article>
 
-                        <div class="placeholder-content">
-                            <div class="placeholder-icon">🔬</div>
-                            <div class="placeholder-text">Formation Evaluation</div>
-                            <div class="placeholder-subtext">V-shale & Gamma Ray Analysis</div>
-                        </div>
-                    </div>
-                    <div class="screenshot-content">
-                        <h3 class="screenshot-title">
-                            <div class="title-icon">🔬</div>
-                            Formation Evaluation Module
-                        </h3>
-                        <p class="screenshot-description">
-                            Advanced formation evaluation interface featuring V-shale calculations, gamma ray analysis with percentile cutoffs, and real-time parameter adjustment for accurate lithology determination and reservoir characterization.
-                        </p>
-                        <div class="feature-tags">
-                            <span class="feature-tag">V-shale Calculation</span>
-                            <span class="feature-tag">Gamma Ray Analysis</span>
-                            <span class="feature-tag">Percentile Cutoffs</span>
-                            <span class="feature-tag">Real-time Processing</span>
-                        </div>
-                        <div class="card-metrics">
-                            <div class="metric-item">
-                                <div class="metric-value">Linear</div>
-                                <div class="metric-label">V-shale Model</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">P5-P95</div>
-                                <div class="metric-label">Percentiles</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Interactive</div>
-                                <div class="metric-label">Controls</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
+            <h3>Advanced interpretation</h3>
+            <p>Pore-pressure prediction, geomechanics analysis and image-log processing, plus multi-mineral
+              ELAN inversion with a least-squares solver.</p>
+          </article>
 
-                <!-- Multi-track Well Log Display -->
-                <div class="screenshot-card" data-category="all visualization" onclick="openModal('multitrack')">
-                    <div class="screenshot-image">
-                        <picture><source type="image/webp" srcset="GUI-IMAGE/opt/multiplot.webp"><img src="GUI-IMAGE/opt/multiplot.jpg" alt="PetroARX multi-track log display showing several well curves side by side" width="1400" height="788" loading="lazy" decoding="async"></picture>   
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg></div>
+            <h3>Open data downloader</h3>
+            <p>A curated, searchable index of 150+ public seismic, well-log, geological, satellite and
+              research datasets, filterable by category, access type and region.</p>
+          </article>
 
-                        <div class="placeholder-content">
-                            <div class="placeholder-icon">📈</div>
-                            <div class="placeholder-text">Multi-track Log Display</div>
-                            <div class="placeholder-subtext">Professional Well Log Visualization</div>
-                        </div>
-                    </div>
-                    <div class="screenshot-content">
-                        <h3 class="screenshot-title">
-                            <div class="title-icon">📈</div>
-                            Multi-track Well Log Visualization
-                        </h3>
-                        <p class="screenshot-description">
-                            Industry-standard multi-track well log display with gamma ray, resistivity, and porosity curves. Features customizable track layouts, depth correlation, and professional log presentation with color-coded parameters.
-                        </p>
-                        <div class="feature-tags">
-                            <span class="feature-tag">Multi-track Display</span>
-                            <span class="feature-tag">Depth Correlation</span>
-                            <span class="feature-tag">Color Coding</span>
-                            <span class="feature-tag">Professional Layout</span>
-                        </div>
-                        <div class="card-metrics">
-                            <div class="metric-item">
-                                <div class="metric-value">8+</div>
-                                <div class="metric-label">Log Curves</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Custom</div>
-                                <div class="metric-label">Scaling</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">HD</div>
-                                <div class="metric-label">Quality</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg></div>
+            <h3>Embedded Python console</h3>
+            <p>The active well is exposed as a DataFrame so any workflow the interface does not cover
+              can be scripted in place and run against live data.</p>
+          </article>
 
-                <!-- Reservoir Evaluation -->
-                <div class="screenshot-card" data-category="all formation analysis" onclick="openModal('reservoir-eval')">
-                    <div class="screenshot-image">
-                        <picture><source type="image/webp" srcset="GUI-IMAGE/opt/reservoir-flag.webp"><img src="GUI-IMAGE/opt/reservoir-flag.jpg" alt="PetroARX reservoir flag output marking net pay intervals along the well" width="1400" height="788" loading="lazy" decoding="async"></picture>   
+          <article class="card reveal">
+            <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></div>
+            <h3>Reporting and export</h3>
+            <p>Export cleaned curves, computed logs, QC registers and figures as PDF, PNG, SVG or CSV,
+              with an export-report action on every analysis tab.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-                        <div class="placeholder-content">
-                            <div class="placeholder-icon">🎯</div>
-                            <div class="placeholder-text">Reservoir Evaluation</div>
-                            <div class="placeholder-subtext">Multi-parameter Analysis</div>
-                        </div>
-                    </div>
-                    <div class="screenshot-content">
-                        <h3 class="screenshot-title">
-                            <div class="title-icon">🎯</div>
-                            Comprehensive Reservoir Evaluation
-                        </h3>
-                        <p class="screenshot-description">
-                            Advanced reservoir evaluation module displaying V-shale, water saturation, effective porosity, reservoir flagging, and net pay calculations with customizable cutoff values and real-time parameter adjustment.
-                        </p>
-                        <div class="feature-tags">
-                            <span class="feature-tag">Water Saturation</span>
-                            <span class="feature-tag">Effective Porosity</span>
-                            <span class="feature-tag">Reservoir Flagging</span>
-                            <span class="feature-tag">Net Pay Calculation</span>
-                        </div>
-                        <div class="card-metrics">
-                            <div class="metric-item">
-                                <div class="metric-value">5</div>
-                                <div class="metric-label">Parameters</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Custom</div>
-                                <div class="metric-label">Cutoffs</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Real-time</div>
-                                <div class="metric-label">Updates</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- ============================================ WORKFLOW ======= -->
+    <section id="workflow">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Workflow</p>
+          <h2>From raw LAS to net pay</h2>
+          <p class="section-desc">
+            The tab order mirrors the interpretation sequence, so the workspace itself carries the method.
+          </p>
+        </div>
+        <div class="flow reveal">
+          <div class="flow-step"><strong>Ingest</strong><span>LAS 2.0/3.0 and CSV, with unit validation</span></div>
+          <div class="flow-step"><strong>Inspect</strong><span>Coverage, null fraction, per-curve statistics</span></div>
+          <div class="flow-step"><strong>Quality control</strong><span>Statistical and Isolation Forest passes</span></div>
+          <div class="flow-step"><strong>Visualise</strong><span>Multi-track, crossplots, 3D trajectory</span></div>
+          <div class="flow-step"><strong>Shale volume</strong><span>Larionov, Clavier, Steiber or linear</span></div>
+          <div class="flow-step"><strong>Porosity</strong><span>Density, neutron and sonic, shale corrected</span></div>
+          <div class="flow-step"><strong>Saturation</strong><span>Archie from R<sub>t</sub> and PHIE</span></div>
+          <div class="flow-step"><strong>Net pay</strong><span>Cutoffs, pay flags and zone summaries</span></div>
+        </div>
+      </div>
+    </section>
 
-                <!-- Quality Control & Outlier Detection -->
-                <div class="screenshot-card" data-category="all analysis" onclick="openModal('outlier-detection')">
-                    <div class="screenshot-image">
-                         <picture><source type="image/webp" srcset="GUI-IMAGE/opt/outlier-detection.webp"><img src="GUI-IMAGE/opt/outlier-detection.jpg" alt="PetroARX quality-control view highlighting outlier readings detected in the log curves" width="1400" height="788" loading="lazy" decoding="async"></picture>   
-
-                        <div class="placeholder-content">
-                            <div class="placeholder-icon">🔍</div>
-                            <div class="placeholder-text">Outlier Detection</div>
-                            <div class="placeholder-subtext">Machine Learning QC</div>
-                        </div>
-                    </div>
-                    <div class="screenshot-content">
-                        <h3 class="screenshot-title">
-                            <div class="title-icon">🔍</div>
-                            Advanced Outlier Detection System
-                        </h3>
-                        <p class="screenshot-description">
-                            Machine learning-based outlier detection using Isolation Forest algorithm with interactive scatter plots, anomaly highlighting, and data quality assessment for reliable petrophysical interpretations.
-                        </p>
-                        <div class="feature-tags">
-                            <span class="feature-tag">Isolation Forest</span>
-                            <span class="feature-tag">ML-based QC</span>
-                            <span class="feature-tag">Interactive Plots</span>
-                            <span class="feature-tag">Anomaly Detection</span>
-                        </div>
-                        <div class="card-metrics">
-                            <div class="metric-item">
-                                <div class="metric-value">ML</div>
-                                <div class="metric-label">Algorithm</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Auto</div>
-                                <div class="metric-label">Detection</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Visual</div>
-                                <div class="metric-label">Feedback</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Statistical Analysis - Histograms -->
-                <div class="screenshot-card" data-category="all analysis visualization" onclick="openModal('histograms')">
-                    <div class="screenshot-image">
-                        <picture><source type="image/webp" srcset="GUI-IMAGE/opt/histogram.webp"><img src="GUI-IMAGE/opt/histogram.jpg" alt="PetroARX histogram panel showing the statistical distribution of a log curve" width="1400" height="788" loading="lazy" decoding="async"></picture>   
-
-                        <div class="placeholder-content">
-                            <div class="placeholder-icon">📊</div>
-                            <div class="placeholder-text">Statistical Histograms</div>
-                            <div class="placeholder-subtext">Distribution Analysis</div>
-                        </div>
-                    </div>
-                    <div class="screenshot-content">
-                        <h3 class="screenshot-title">
-                            <div class="title-icon">📊</div>
-                            Statistical Histogram Analysis
-                        </h3>
-                        <p class="screenshot-description">
-                            Professional histogram generation with customizable bin sizes, color schemes, and statistical overlays. Features distribution analysis for all well log parameters with export capabilities for reporting.
-                        </p>
-                        <div class="feature-tags">
-                            <span class="feature-tag">Custom Binning</span>
-                            <span class="feature-tag">Color Schemes</span>
-                            <span class="feature-tag">Distribution Analysis</span>
-                            <span class="feature-tag">Export Ready</span>
-                        </div>
-                        <div class="card-metrics">
-                            <div class="metric-item">
-                                <div class="metric-value">Custom</div>
-                                <div class="metric-label">Bin Size</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Multi</div>
-                                <div class="metric-label">Colors</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">HD</div>
-                                <div class="metric-label">Export</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Help & Documentation */
-                <div class="screenshot-card" data-category="all" onclick="openModal('help-system')">
-                    <div class="screenshot-image">
-                        <div class="placeholder-content">
-                            <div class="placeholder-icon">❓</div>
-                            <div class="placeholder-text">Help & Documentation</div>
-                            <div class="placeholder-subtext">Comprehensive User Guide</div>
-                        </div>
-                    </div>
-                    <div class="screenshot-content">
-                        <h3 class="screenshot-title">
-                            <div class="title-icon">❓</div>
-                            Integrated Help System
-                        </h3>
-                        <p class="screenshot-description">
-                            Comprehensive built-in help system with step-by-step guides, troubleshooting tips, feature descriptions, and contact information for seamless user experience and quick problem resolution.
-                        </p>
-                        <div class="feature-tags">
-                            <span class="feature-tag">User Guides</span>
-                            <span class="feature-tag">Troubleshooting</span>
-                            <span class="feature-tag">Feature Help</span>
-                            <span class="feature-tag">Contact Info</span>
-                        </div>
-                        <div class="card-metrics">
-                            <div class="metric-item">
-                                <div class="metric-value">Built-in</div>
-                                <div class="metric-label">Help</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Step-by-step</div>
-                                <div class="metric-label">Guides</div>
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-value">Support</div>
-                                <div class="metric-label">Contact</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- ============================================ GALLERY ======== -->
+    <section id="gallery">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Interface</p>
+          <h2>Every module, as it ships</h2>
+          <p class="section-desc">
+            Screens captured from PetroARX v1.0 running a real supercombo log suite over a
+            3,918–4,146 m interval. Select any screen to enlarge it.
+          </p>
         </div>
 
-        <!-- Technical Implementation Details -->
-        <div class="technical-details fade-in">
-            <div class="section-header">
-                <h2 class="section-title">Technical Implementation</h2>
-                <p class="section-description">
-                    Detailed breakdown of the technical architecture and implementation approach
-                </p>
-            </div>
-            <div class="details-grid">
-                <div class="detail-card">
-                    <h3 class="detail-title">🏗️ Architecture & Design</h3>
-                    <ul class="detail-list">
-                        <li><span>GUI Framework</span><strong>PyQt5</strong></li>
-                        <li><span>Design Tool</span><strong>Qt Designer</strong></li>
-                        <li><span>Architecture Pattern</span><strong>MVC</strong></li>
-                        <li><span>Code Structure</span><strong>Modular</strong></li>
-                        <li><span>UI Components</span><strong>Custom Widgets</strong></li>
-                    </ul>
-                </div>
-                <div class="detail-card">
-                    <h3 class="detail-title">📊 Data Processing</h3>
-                    <ul class="detail-list">
-                        <li><span>Data Handling</span><strong>Pandas</strong></li>
-                        <li><span>Numerical Computing</span><strong>NumPy</strong></li>
-                        <li><span>Statistical Analysis</span><strong>SciPy</strong></li>
-                        <li><span>LAS File Support</span><strong>Lasio</strong></li>
-                        <li><span>Machine Learning</span><strong>Scikit-learn</strong></li>
-                    </ul>
-                </div>
-                <div class="detail-card">
-                    <h3 class="detail-title">📈 Visualization Engine</h3>
-                    <ul class="detail-list">
-                        <li><span>Primary Plotting</span><strong>Matplotlib</strong></li>
-                        <li><span>Statistical Plots</span><strong>Seaborn</strong></li>
-                        <li><span>Interactive Charts</span><strong>Plotly</strong></li>
-                        <li><span>Custom Widgets</span><strong>PyQt5 Integration</strong></li>
-                        <li><span>Export Formats</span><strong>PNG, PDF, SVG</strong></li>
-                    </ul>
-                </div>
-                <div class="detail-card">
-                    <h3 class="detail-title">🔧 Key Features</h3>
-                    <ul class="detail-list">
-                        <li><span>File Support</span><strong>LAS, CSV, XLSX</strong></li>
-                        <li><span>Analysis Modules</span><strong>8+ Specialized Tools</strong></li>
-                        <li><span>Outlier Detection</span><strong>ML-based QC</strong></li>
-                        <li><span>Real-time Updates</span><strong>Dynamic Interface</strong></li>
-                        <li><span>Export Options</span><strong>Multiple Formats</strong></li>
-                    </ul>
-                </div>
-            </div>
+        <div class="filter-bar reveal" role="group" aria-label="Filter screens by category">
+          <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">All screens</button>
+          <button class="filter-btn" type="button" data-filter="data" aria-pressed="false">Data</button>
+          <button class="filter-btn" type="button" data-filter="qc" aria-pressed="false">Quality control</button>
+          <button class="filter-btn" type="button" data-filter="visualization" aria-pressed="false">Visualisation</button>
+          <button class="filter-btn" type="button" data-filter="petrophysics" aria-pressed="false">Petrophysics</button>
+          <button class="filter-btn" type="button" data-filter="ai" aria-pressed="false">AI &amp; ML</button>
+          <button class="filter-btn" type="button" data-filter="platform" aria-pressed="false">Platform</button>
         </div>
 
-        <!-- Professional Action Section -->
-        <div class="action-section fade-in">
-            <div class="action-content">
-                <h2 class="action-title">Access DARKSPY Resources</h2>
-                <p class="action-subtitle">
-                    Explore the complete desktop application, view source code implementation, or access comprehensive documentation and user guides
-                </p>
-                <div class="action-buttons">
-                    <a href="https://github.com/Ashraf-ISM/Petrophysics-Gui/tree/Product-Development" class="action-btn btn-primary" target="_blank">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                        View Source Code
-                    </a>
-                    <!-- TODO: replace with the real download URL when the build is published -->
-        <a href="#download" class="action-btn btn-secondary" aria-disabled="true"
-           onclick="alert('Download link will be available soon!'); return false;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/>
-                        </svg>
-                        Download Application
-                    </a>
-                    <a href="user-doc.html" class="action-btn btn-secondary" >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
-                        </svg>
-                        User Documentation
-                    </a>
-                </div>
+        <div class="shot-grid" id="shotGrid">
+          <article class="shot" data-cat="platform">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/dashboard-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/dashboard-1600.webp"
+              data-title="Project dashboard"
+              data-desc="Active well, depth range, data-integrity score and a dynamic log-availability radar, with quick actions into every major module."
+              aria-label="Enlarge screenshot: Project dashboard">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/dashboard-800.webp 800w, assets/img/petroarx-ui/dashboard-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/dashboard-800.jpg" srcset="assets/img/petroarx-ui/dashboard-800.jpg 800w, assets/img/petroarx-ui/dashboard-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="eager" decoding="async" alt="PetroARX dashboard showing active well summary cards, a gamma ray distribution plot and a log availability radar chart scoring the dataset at 98 percent.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Project workspace</p>
+              <h3>Project dashboard</h3>
+              <p>Active well, depth range, data-integrity score and a dynamic log-availability radar, with quick actions into every major module.</p>
             </div>
+          </article>
+          <article class="shot" data-cat="data">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/new-project-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/new-project-1600.webp"
+              data-title="New project"
+              data-desc="Project identity is captured first — field, basin, country and operator — so every well imported afterwards inherits that context."
+              aria-label="Enlarge screenshot: New project">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/new-project-800.webp 800w, assets/img/petroarx-ui/new-project-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/new-project-800.jpg" srcset="assets/img/petroarx-ui/new-project-800.jpg 800w, assets/img/petroarx-ui/new-project-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="eager" decoding="async" alt="PetroARX new project dialog with fields for project name, field name, basin, country and operator.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Project setup</p>
+              <h3>New project</h3>
+              <p>Project identity is captured first — field, basin, country and operator — so every well imported afterwards inherits that context.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="data">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/data-info-stats-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/data-info-stats-1600.webp"
+              data-title="Dataset overview and statistics"
+              data-desc="Depth range, sample count, curve count and average null percentage, backed by per-curve min, max, mean and standard deviation plus a coverage matrix."
+              aria-label="Enlarge screenshot: Dataset overview and statistics">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/data-info-stats-800.webp 800w, assets/img/petroarx-ui/data-info-stats-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/data-info-stats-800.jpg" srcset="assets/img/petroarx-ui/data-info-stats-800.jpg 800w, assets/img/petroarx-ui/data-info-stats-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX data information tab listing a 3918 to 4146 metre depth range, 1495 samples and 8 curves, with curve statistics and data coverage tables.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Dataset</p>
+              <h3>Dataset overview and statistics</h3>
+              <p>Depth range, sample count, curve count and average null percentage, backed by per-curve min, max, mean and standard deviation plus a coverage matrix.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="data">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/curve-metadata-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/curve-metadata-1600.webp"
+              data-title="Well data table and distributions"
+              data-desc="The full curve table with column rename and undo, alongside histogram and boxplot views of whichever curve is selected."
+              aria-label="Enlarge screenshot: Well data table and distributions">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/curve-metadata-800.webp 800w, assets/img/petroarx-ui/curve-metadata-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/curve-metadata-800.jpg" srcset="assets/img/petroarx-ui/curve-metadata-800.jpg 800w, assets/img/petroarx-ui/curve-metadata-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX well data table of depth, CALI, GR, RHOB, RT, TNPH, NPHI, TCMR and CMFF values above a caliper histogram and boxplot.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Dataset</p>
+              <h3>Well data table and distributions</h3>
+              <p>The full curve table with column rename and undo, alongside histogram and boxplot views of whichever curve is selected.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="data">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/data-downloader-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/data-downloader-1600.webp"
+              data-title="Open data downloader"
+              data-desc="A searchable index of 150+ verified public sources across seismic, well log, geological, satellite and research categories, filterable by access type and region."
+              aria-label="Enlarge screenshot: Open data downloader">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/data-downloader-800.webp 800w, assets/img/petroarx-ui/data-downloader-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/data-downloader-800.jpg" srcset="assets/img/petroarx-ui/data-downloader-800.jpg 800w, assets/img/petroarx-ui/data-downloader-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX data downloader listing public seismic datasets including Equinor Volve, Parihaka-3D, F3 Netherlands and Teapot Dome with access types and URLs.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Open data</p>
+              <h3>Open data downloader</h3>
+              <p>A searchable index of 150+ verified public sources across seismic, well log, geological, satellite and research categories, filterable by access type and region.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="qc">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/qc-statistical-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/qc-statistical-1600.webp"
+              data-title="Statistical quality control"
+              data-desc="Missing values, outliers, spikes and negatives are flagged per curve, with before-and-after histograms, boxplots and a depth-indexed issues table."
+              aria-label="Enlarge screenshot: Statistical quality control">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/qc-statistical-800.webp 800w, assets/img/petroarx-ui/qc-statistical-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/qc-statistical-800.jpg" srcset="assets/img/petroarx-ui/qc-statistical-800.jpg 800w, assets/img/petroarx-ui/qc-statistical-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX statistical quality control tab showing a neutron porosity log with flagged outliers and spikes, before and after histograms, and a detected issues table.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Quality control</p>
+              <h3>Statistical quality control</h3>
+              <p>Missing values, outliers, spikes and negatives are flagged per curve, with before-and-after histograms, boxplots and a depth-indexed issues table.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="qc">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/qc-ml-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/qc-ml-1600.webp"
+              data-title="Machine-learning quality control"
+              data-desc="Isolation Forest anomaly detection across multi-curve features, reporting an anomaly score against depth, per-feature contributions and an exportable anomaly register."
+              aria-label="Enlarge screenshot: Machine-learning quality control">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/qc-ml-800.webp 800w, assets/img/petroarx-ui/qc-ml-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/qc-ml-800.jpg" srcset="assets/img/petroarx-ui/qc-ml-800.jpg 800w, assets/img/petroarx-ui/qc-ml-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX machine learning quality control tab running Isolation Forest on a TCMR curve, with anomaly score versus depth, feature contribution bars and a detected anomalies table.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Quality control</p>
+              <h3>Machine-learning quality control</h3>
+              <p>Isolation Forest anomaly detection across multi-curve features, reporting an anomaly score against depth, per-feature contributions and an exportable anomaly register.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="visualization">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/multi-track-plot-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/multi-track-plot-1600.webp"
+              data-title="Multi-track log plot"
+              data-desc="Caliper, gamma ray, density, resistivity, neutron and magnetic resonance curves on synchronised depth tracks, from triple-combo or custom presets."
+              aria-label="Enlarge screenshot: Multi-track log plot">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/multi-track-plot-800.webp 800w, assets/img/petroarx-ui/multi-track-plot-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/multi-track-plot-800.jpg" srcset="assets/img/petroarx-ui/multi-track-plot-800.jpg 800w, assets/img/petroarx-ui/multi-track-plot-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX multi-track log plot with eight synchronised depth tracks for CALI, GR, RHOB, RT, TNPH, NPHI, TCMR and CMFF.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Log display</p>
+              <h3>Multi-track log plot</h3>
+              <p>Caliper, gamma ray, density, resistivity, neutron and magnetic resonance curves on synchronised depth tracks, from triple-combo or custom presets.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="visualization">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/3d-well-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/3d-well-1600.webp"
+              data-title="3D well trajectory viewer"
+              data-desc="The deviation path rendered as a colour tube carrying a gamma ray ribbon, with formation tops, a depth scale bar and full camera and lighting control."
+              aria-label="Enlarge screenshot: 3D well trajectory viewer">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/3d-well-800.webp 800w, assets/img/petroarx-ui/3d-well-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/3d-well-800.jpg" srcset="assets/img/petroarx-ui/3d-well-800.jpg 800w, assets/img/petroarx-ui/3d-well-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX 3D well module showing a deviated trajectory drawn as a rainbow coloured tube against a dark grid, with layer and annotation controls.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">3D</p>
+              <h3>3D well trajectory viewer</h3>
+              <p>The deviation path rendered as a colour tube carrying a gamma ray ribbon, with formation tops, a depth scale bar and full camera and lighting control.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="visualization">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/advanced-crossplot-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/advanced-crossplot-1600.webp"
+              data-title="Advanced crossplot studio"
+              data-desc="Density–neutron, Pickett, M-N and Buckles templates with sandstone, limestone and dolomite lines, gas-effect shading and a gamma ray colour axis."
+              aria-label="Enlarge screenshot: Advanced crossplot studio">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/advanced-crossplot-800.webp 800w, assets/img/petroarx-ui/advanced-crossplot-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/advanced-crossplot-800.jpg" srcset="assets/img/petroarx-ui/advanced-crossplot-800.jpg 800w, assets/img/petroarx-ui/advanced-crossplot-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX advanced crossplot window plotting neutron porosity against bulk density coloured by gamma ray, with lithology lines and a gas effect zone.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Crossplots</p>
+              <h3>Advanced crossplot studio</h3>
+              <p>Density–neutron, Pickett, M-N and Buckles templates with sandstone, limestone and dolomite lines, gas-effect shading and a gamma ray colour axis.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="visualization">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/pair-plot-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/pair-plot-1600.webp"
+              data-title="Pair plot and violin matrix"
+              data-desc="Cross-curve relationships across the whole log suite in one matrix, with histogram and violin alternatives for single-curve distributions."
+              aria-label="Enlarge screenshot: Pair plot and violin matrix">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/pair-plot-800.webp 800w, assets/img/petroarx-ui/pair-plot-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/pair-plot-800.jpg" srcset="assets/img/petroarx-ui/pair-plot-800.jpg 800w, assets/img/petroarx-ui/pair-plot-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX pair plot matrix of CALI, GR, RHOB and TNPH scatter panels coloured by depth.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Crossplots</p>
+              <h3>Pair plot and violin matrix</h3>
+              <p>Cross-curve relationships across the whole log suite in one matrix, with histogram and violin alternatives for single-curve distributions.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="petrophysics">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/vsh-calculation-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/vsh-calculation-1600.webp"
+              data-title="Shale volume"
+              data-desc="Sand and shale lines picked automatically by percentile, from the histogram peak or by hand, then transformed and summarised as net sand against high shale."
+              aria-label="Enlarge screenshot: Shale volume">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/vsh-calculation-800.webp 800w, assets/img/petroarx-ui/vsh-calculation-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/vsh-calculation-800.jpg" srcset="assets/img/petroarx-ui/vsh-calculation-800.jpg 800w, assets/img/petroarx-ui/vsh-calculation-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX shale volume tab with sand and shale line pickers at 22.59 and 154.26 API, a Vsh track, a gamma ray histogram and a result summary reporting 87.4 percent net sand.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Formation evaluation</p>
+              <h3>Shale volume</h3>
+              <p>Sand and shale lines picked automatically by percentile, from the histogram peak or by hand, then transformed and summarised as net sand against high shale.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="petrophysics">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/vsh-comparison-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/vsh-comparison-1600.webp"
+              data-title="Shale volume model comparison"
+              data-desc="Linear, Larionov Tertiary, Larionov Older, Clavier and Steiber overlaid on the same interval, so the choice of transform becomes an evidenced decision rather than a default."
+              aria-label="Enlarge screenshot: Shale volume model comparison">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/vsh-comparison-800.webp 800w, assets/img/petroarx-ui/vsh-comparison-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/vsh-comparison-800.jpg" srcset="assets/img/petroarx-ui/vsh-comparison-800.jpg 800w, assets/img/petroarx-ui/vsh-comparison-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX Vsh model comparison window overlaying five shale volume transforms against the gamma ray curve, with the theoretical model curves plotted alongside.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Formation evaluation</p>
+              <h3>Shale volume model comparison</h3>
+              <p>Linear, Larionov Tertiary, Larionov Older, Clavier and Steiber overlaid on the same interval, so the choice of transform becomes an evidenced decision rather than a default.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="petrophysics">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/porosity-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/porosity-1600.webp"
+              data-title="Porosity calculation"
+              data-desc="Density, neutron and sonic porosity derived from matrix and fluid properties, with optional shale correction and a combined effective-porosity track."
+              aria-label="Enlarge screenshot: Porosity calculation">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/porosity-800.webp 800w, assets/img/petroarx-ui/porosity-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/porosity-800.jpg" srcset="assets/img/petroarx-ui/porosity-800.jpg 800w, assets/img/petroarx-ui/porosity-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX porosity calculation tab with matrix and fluid parameter inputs beside gamma ray, density-neutron and effective porosity tracks.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Formation evaluation</p>
+              <h3>Porosity calculation</h3>
+              <p>Density, neutron and sonic porosity derived from matrix and fluid properties, with optional shale correction and a combined effective-porosity track.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="petrophysics">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/water-saturation-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/water-saturation-1600.webp"
+              data-title="Water saturation"
+              data-desc="Archie saturation from resistivity and effective porosity with tortuosity, cementation and saturation exponents, plus a data-quality panel that states its own assumptions."
+              aria-label="Enlarge screenshot: Water saturation">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/water-saturation-800.webp 800w, assets/img/petroarx-ui/water-saturation-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/water-saturation-800.jpg" srcset="assets/img/petroarx-ui/water-saturation-800.jpg 800w, assets/img/petroarx-ui/water-saturation-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX water saturation tab showing Archie parameters, gamma ray, resistivity and saturation tracks, an average Sw of 0.47 and 75 metres of net pay.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Formation evaluation</p>
+              <h3>Water saturation</h3>
+              <p>Archie saturation from resistivity and effective porosity with tortuosity, cementation and saturation exponents, plus a data-quality panel that states its own assumptions.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="petrophysics">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/formation-evaluation-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/formation-evaluation-1600.webp"
+              data-title="Formation evaluation and net pay"
+              data-desc="Gamma ray, shale volume, porosity and saturation computed together over the chosen interval, resolved into a pay-zone summary table and a net-pay flag overview."
+              aria-label="Enlarge screenshot: Formation evaluation and net pay">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/formation-evaluation-800.webp 800w, assets/img/petroarx-ui/formation-evaluation-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/formation-evaluation-800.jpg" srcset="assets/img/petroarx-ui/formation-evaluation-800.jpg 800w, assets/img/petroarx-ui/formation-evaluation-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX formation evaluation tab with four computed log tracks, a pay summary table and a net pay flag strip across the interval.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Formation evaluation</p>
+              <h3>Formation evaluation and net pay</h3>
+              <p>Gamma ray, shale volume, porosity and saturation computed together over the chosen interval, resolved into a pay-zone summary table and a net-pay flag overview.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="ai">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/facies-classification-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/facies-classification-1600.webp"
+              data-title="Facies classification"
+              data-desc="A Random Forest, XGBoost and SVM ensemble across six facies classes, with configurable train/test splits, balanced class weights, early stopping and a live training log."
+              aria-label="Enlarge screenshot: Facies classification">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/facies-classification-800.webp 800w, assets/img/petroarx-ui/facies-classification-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/facies-classification-800.jpg" srcset="assets/img/petroarx-ui/facies-classification-800.jpg 800w, assets/img/petroarx-ui/facies-classification-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX facies classification window on the model training step, showing training setup controls, a training pipeline table and a running training log.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Machine learning</p>
+              <h3>Facies classification</h3>
+              <p>A Random Forest, XGBoost and SVM ensemble across six facies classes, with configurable train/test splits, balanced class weights, early stopping and a live training log.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="ai">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/missing-log-prediction-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/missing-log-prediction-1600.webp"
+              data-title="Missing log prediction"
+              data-desc="An XGBoost regressor trained on complete wells reconstructs absent curves, reporting actual against predicted tracks, residual analysis and a 95% uncertainty band."
+              aria-label="Enlarge screenshot: Missing log prediction">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/missing-log-prediction-800.webp 800w, assets/img/petroarx-ui/missing-log-prediction-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/missing-log-prediction-800.jpg" srcset="assets/img/petroarx-ui/missing-log-prediction-800.jpg 800w, assets/img/petroarx-ui/missing-log-prediction-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX missing log prediction window with target log selection, input feature list, model configuration and training progress panels, plus residual and uncertainty plots.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Machine learning</p>
+              <h3>Missing log prediction</h3>
+              <p>An XGBoost regressor trained on complete wells reconstructs absent curves, reporting actual against predicted tracks, residual analysis and a 95% uncertainty band.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="platform">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/python-console-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/python-console-1600.webp"
+              data-title="Embedded Python console"
+              data-desc="The active well is exposed as a DataFrame and a data service, so bespoke calculations run in place against live project data."
+              aria-label="Enlarge screenshot: Embedded Python console">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/python-console-800.webp 800w, assets/img/petroarx-ui/python-console-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/python-console-800.jpg" srcset="assets/img/petroarx-ui/python-console-800.jpg 800w, assets/img/petroarx-ui/python-console-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX Python script console with an editor holding a sample script and a terminal output pane below it.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Extensibility</p>
+              <h3>Embedded Python console</h3>
+              <p>The active well is exposed as a DataFrame and a data service, so bespoke calculations run in place against live project data.</p>
+            </div>
+          </article>
+          <article class="shot" data-cat="platform">
+            <button class="shot-media" type="button"
+              data-full="assets/img/petroarx-ui/about-1600.jpg"
+              data-full-webp="assets/img/petroarx-ui/about-1600.webp"
+              data-title="In-app information center"
+              data-desc="Workflow guidance, technology notes and keyboard shortcuts, versioned against the build so the documentation cannot drift from the release."
+              aria-label="Enlarge screenshot: In-app information center">
+              <picture>
+                <source type="image/webp" srcset="assets/img/petroarx-ui/about-800.webp 800w, assets/img/petroarx-ui/about-1600.webp 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw">
+                <img src="assets/img/petroarx-ui/about-800.jpg" srcset="assets/img/petroarx-ui/about-800.jpg 800w, assets/img/petroarx-ui/about-1600.jpg 1600w" sizes="(min-width: 1240px) 384px, (min-width: 700px) 46vw, 92vw" width="800" height="429" loading="lazy" decoding="async" fetchpriority="low" alt="PetroARX information center dialog listing core capabilities including well data management, the quality control engine and petrophysical modules.">
+              </picture>
+            </button>
+            <div class="shot-body">
+              <p class="shot-tag">Documentation</p>
+              <h3>In-app information center</h3>
+              <p>Workflow guidance, technology notes and keyboard shortcuts, versioned against the build so the documentation cannot drift from the release.</p>
+            </div>
+          </article>
         </div>
+        <p class="video-note" style="margin-top: 22px;">
+          <span aria-hidden="true">↳</span>
+          <span>Reference dataset: a nine-curve supercombo suite (CALI, GR, RHOB, RT, TNPH, NPHI, TCMR, CMFF)
+            over 1,495 samples between 3,918.05 m and 4,145.74 m.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================ INTELLIGENCE === -->
+    <section id="intelligence">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">AI analytics</p>
+          <h2>Machine learning, inside the interpretation loop</h2>
+          <p class="section-desc">
+            Models are trained in the application against the loaded project, not bolted on afterwards —
+            so predictions, their cross-validated scores and their uncertainty all travel with the well.
+          </p>
+        </div>
+
+        <div class="ml-grid">
+          <article class="ml-card reveal">
+            <div class="ml-card-head">
+              <h3>Facies classification</h3>
+              <p>A Random Forest, XGBoost and SVM ensemble assigns electrofacies across six classes, with
+                balanced class weights, early stopping and per-fold validation scoring.</p>
+            </div>
+            <div class="ml-metrics">
+              <div class="ml-metric"><b>92.4%</b><span>Accuracy</span></div>
+              <div class="ml-metric"><b>0.91</b><span>F1 score</span></div>
+              <div class="ml-metric"><b>6</b><span>Facies classes</span></div>
+            </div>
+            <p class="ml-foot">Ensemble (RF + XGBoost + SVM) · 4,251 samples · 80/20 split</p>
+          </article>
+
+          <article class="ml-card reveal">
+            <div class="ml-card-head">
+              <h3>Missing log prediction</h3>
+              <p>An XGBoost regressor trained on complete wells reconstructs absent curves, returning actual
+                against predicted tracks, residual diagnostics and a 95% confidence band.</p>
+            </div>
+            <div class="ml-metrics">
+              <div class="ml-metric"><b>5</b><span>Training wells</span></div>
+              <div class="ml-metric"><b>15,368</b><span>Training samples</span></div>
+              <div class="ml-metric"><b>5-fold</b><span>Cross-validation</span></div>
+            </div>
+            <p class="ml-foot">XGBoost Regressor · 7 features · 95% prediction interval</p>
+          </article>
+
+          <article class="ml-card reveal">
+            <div class="ml-card-head">
+              <h3>Anomaly-based log QC</h3>
+              <p>Isolation Forest scores every sample against multi-curve features, ranking anomalies by
+                depth and reporting which curves drove each detection.</p>
+            </div>
+            <div class="ml-metrics">
+              <div class="ml-metric"><b>95%</b><span>QC score</span></div>
+              <div class="ml-metric"><b>69</b><span>Anomalies flagged</span></div>
+              <div class="ml-metric"><b>5%</b><span>Contamination</span></div>
+            </div>
+            <p class="ml-foot">Isolation Forest · multi-curve features · CSV export</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ STACK ========== -->
+    <section id="stack">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Engineering</p>
+          <h2>How it is built</h2>
+          <p class="section-desc">
+            A modular PyQt5 application over the scientific Python stack, packaged to run identically on
+            Windows, Linux and macOS.
+          </p>
+        </div>
+
+        <div class="tech-grid">
+          <article class="tech-card reveal">
+            <h3><span class="dot" aria-hidden="true"></span>Architecture</h3>
+            <ul class="tech-list">
+              <li><span>GUI framework</span><strong>PyQt5</strong></li>
+              <li><span>Layout tooling</span><strong>Qt Designer</strong></li>
+              <li><span>Pattern</span><strong>MVC, modular</strong></li>
+              <li><span>Scripting surface</span><strong>Embedded Python</strong></li>
+              <li><span>Platforms</span><strong>Windows · Linux · macOS</strong></li>
+            </ul>
+          </article>
+
+          <article class="tech-card reveal">
+            <h3><span class="dot" aria-hidden="true"></span>Data layer</h3>
+            <ul class="tech-list">
+              <li><span>LAS parsing</span><strong>lasio</strong></li>
+              <li><span>Tabular data</span><strong>pandas</strong></li>
+              <li><span>Numerics</span><strong>NumPy</strong></li>
+              <li><span>Statistics</span><strong>SciPy</strong></li>
+              <li><span>Formats</span><strong>LAS 2.0/3.0 · CSV · XLSX</strong></li>
+            </ul>
+          </article>
+
+          <article class="tech-card reveal">
+            <h3><span class="dot" aria-hidden="true"></span>Visualisation</h3>
+            <ul class="tech-list">
+              <li><span>Log tracks</span><strong>Matplotlib</strong></li>
+              <li><span>Statistical plots</span><strong>seaborn</strong></li>
+              <li><span>Interactive charts</span><strong>Plotly</strong></li>
+              <li><span>3D rendering</span><strong>Matplotlib 3D, Phong</strong></li>
+              <li><span>Figure export</span><strong>PNG · PDF · SVG</strong></li>
+            </ul>
+          </article>
+
+          <article class="tech-card reveal">
+            <h3><span class="dot" aria-hidden="true"></span>Machine learning</h3>
+            <ul class="tech-list">
+              <li><span>Core library</span><strong>scikit-learn</strong></li>
+              <li><span>Gradient boosting</span><strong>XGBoost</strong></li>
+              <li><span>Anomaly detection</span><strong>Isolation Forest</strong></li>
+              <li><span>Validation</span><strong>K-fold cross-validation</strong></li>
+              <li><span>Inversion solver</span><strong>Least-squares (NNLS)</strong></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ CTA ============ -->
+    <section id="resources">
+      <div class="wrap">
+        <div class="cta reveal">
+          <h2>Explore PetroARX</h2>
+          <p>
+            Read the user guide, browse the development repository, or get in touch for a walkthrough
+            of the platform against your own log suite.
+          </p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="user-doc.html">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+              User guide
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/Ashraf-ISM/Petrophysics-Gui/tree/Product-Development"
+              target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.54-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              Development repo
+            </a>
+            <a class="btn btn-ghost" href="mailto:ashraf.ism49@gmail.com?subject=PetroARX%20Demo%20Request">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+              Request a demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================ LIGHTBOX ========= -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+    <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Close viewer">&times;</button>
+    <div class="lightbox-stage">
+      <picture>
+        <source id="lbSource" type="image/webp" srcset="">
+        <img id="lbImage" src="" alt="">
+      </picture>
     </div>
-
-    <!-- Enhanced Modal -->
-    <div class="fullscreen-modal" id="fullscreenModal">
-        <div class="modal-content">
-            <div class="modal-close" onclick="closeModal()">&times;</div>
-            <img class="modal-image" id="modalImage" src="" alt="DARKSPY Application Screenshot">
-        </div>
+    <div class="lightbox-bar">
+      <button class="lb-btn" id="lbPrev" type="button" aria-label="Previous screen">&lsaquo;</button>
+      <div class="lightbox-caption">
+        <h3 id="lbTitle"></h3>
+        <p id="lbDesc"></p>
+        <p class="lb-count" id="lbCount"></p>
+      </div>
+      <button class="lb-btn" id="lbNext" type="button" aria-label="Next screen">&rsaquo;</button>
     </div>
+  </div>
 
-    <script>
-        // Screenshot data mapping to your actual screenshots
-        const screenshotData = {
-            'data-loading': 'GUI-IMAGE/opt/data-loading.jpg',
-            'data-stats': 'GUI-IMAGE/opt/well-data-stat.jpg',
-            // TODO: no formation-evaluation screenshot exists in GUI-IMAGE/ yet - add one and restore this entry,
-            'outlier-detection': 'GUI-IMAGE/opt/outlier-detection.jpg',
-            'histograms': 'GUI-IMAGE/opt/histogram.jpg',
-            'help-system': 'GUI-IMAGE/opt/help.jpg'
-        };
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <p style="font-weight: 700; margin-bottom: 4px;">PetroARX v1.0</p>
+          <p class="footer-meta">Developed by Md Ashraf Ali · IIT (ISM) Dhanbad</p>
+        </div>
+        <nav class="footer-links" aria-label="Related pages">
+          <a href="/">Portfolio home</a>
+          <a href="user-doc.html">User guide</a>
+          <a href="/html/thesis-earthquake-declustering/">Thesis research</a>
+          <a href="mailto:ashraf.ism49@gmail.com">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
 
-        // Enhanced filter functionality
-        function filterScreenshots(category) {
-            const buttons = document.querySelectorAll('.tab-btn');
-            const cards = document.querySelectorAll('.screenshot-card');
+  <script>
+    (function () {
+      'use strict';
 
-            // Update active button
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            // Filter cards with smooth animations
-            cards.forEach(card => {
-                const isVisible = category === 'all' || card.dataset.category.includes(category);
-                
-                if (isVisible) {
-                    card.style.display = 'block';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0) scale(1)';
-                    }, 50);
-                } else {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px) scale(0.95)';
-                    setTimeout(() => {
-                        if (card.style.opacity === '0') {
-                            card.style.display = 'none';
-                        }
-                    }, 300);
-                }
-            });
-        }
+      /* ---------------------------------------------- scroll progress */
+      var bar = document.getElementById('scrollProgress');
+      var ticking = false;
+      function updateProgress() {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+        bar.style.width = pct + '%';
+        ticking = false;
+      }
+      window.addEventListener('scroll', function () {
+        if (!ticking) { window.requestAnimationFrame(updateProgress); ticking = true; }
+      }, { passive: true });
+      updateProgress();
 
-        // Enhanced modal functionality
-        function openModal(screenshotId) {
-            const modal = document.getElementById('fullscreenModal');
-            const modalImage = document.getElementById('modalImage');
-            
-            modalImage.src = screenshotData[screenshotId];
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            
-            // Add fade-in animation
-            setTimeout(() => {
-                modal.style.opacity = '1';
-            }, 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('fullscreenModal');
-            modal.style.opacity = '0';
-            setTimeout(() => {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
-
-        // Enhanced scroll animations
-        function setupScrollAnimations() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-in').forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
+      /* ---------------------------------------------- reveal on scroll */
+      var revealables = document.querySelectorAll('.reveal');
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        Array.prototype.forEach.call(revealables, function (el) { el.classList.add('in'); });
+      } else {
+        var revealObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              revealObserver.unobserve(entry.target);
             }
-        });
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+        Array.prototype.forEach.call(revealables, function (el) { revealObserver.observe(el); });
+      }
 
-        // Modal background click
-        document.getElementById('fullscreenModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
+      /* ---------------------------------------------- nav active state */
+      var navLinks = document.querySelectorAll('.site-nav a[href^="#"]');
+      var sections = [];
+      Array.prototype.forEach.call(navLinks, function (link) {
+        var el = document.querySelector(link.getAttribute('href'));
+        if (el) { sections.push({ el: el, link: link }); }
+      });
+      if ('IntersectionObserver' in window && sections.length) {
+        var navObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            var match = sections.filter(function (s) { return s.el === entry.target; })[0];
+            if (!match) { return; }
+            if (entry.isIntersecting) {
+              navLinks.forEach(function (l) { l.classList.remove('current'); });
+              match.link.classList.add('current');
             }
-        });
+          });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        sections.forEach(function (s) { navObserver.observe(s.el); });
+      }
 
-        // Initialize enhanced features
-        document.addEventListener('DOMContentLoaded', function() {
-            setupScrollAnimations();
-            
-            // Staggered animations for screenshot cards
-            setTimeout(() => {
-                document.querySelectorAll('.screenshot-card').forEach((card, index) => {
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, index * 150);
-                });
-            }, 500);
+      /* ---------------------------------------------- demo video ----- */
+      var frame = document.getElementById('videoFrame');
+      var poster = document.getElementById('videoPoster');
+      var fallback = document.getElementById('videoFallback');
+      var VIDEO_SRC = 'assets/video/petroarx-demo.mp4';
 
-            // Enhanced hover effects
-            document.querySelectorAll('.screenshot-card, .feature-card').forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-8px)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-        });
+      if (poster && frame) {
+        function showFallback() {
+          poster.setAttribute('hidden', '');
+          fallback.classList.add('show');
+        }
 
-        // Smooth scrolling for internal links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+        function mountVideo() {
+          var video = document.createElement('video');
+          video.controls = true;
+          video.playsInline = true;
+          video.setAttribute('playsinline', '');
+          video.preload = 'auto';
+          video.setAttribute('poster', 'assets/img/petroarx-ui/dashboard-1600.jpg');
+          video.src = VIDEO_SRC;
+          video.addEventListener('error', function () {
+            if (video.parentNode) { video.parentNode.removeChild(video); }
+            showFallback();
+          });
+          poster.setAttribute('hidden', '');
+          frame.insertBefore(video, fallback);
+          var played = video.play();
+          // Autoplay with sound is blocked in most browsers; the controls still work.
+          if (played && typeof played.catch === 'function') { played.catch(function () {}); }
+        }
+
+        poster.addEventListener('click', function () {
+          poster.disabled = true;
+          // Probe first: never spin up the media pipeline for a file that is not there.
+          if (typeof window.fetch !== 'function') { mountVideo(); return; }
+          window.fetch(VIDEO_SRC, { method: 'HEAD' })
+            .then(function (res) { res.ok ? mountVideo() : showFallback(); })
+            .catch(function () { showFallback(); });
         });
-    </script>
+      }
+
+      /* ---------------------------------------------- gallery filter - */
+      var filterButtons = document.querySelectorAll('.filter-btn');
+      var shots = document.querySelectorAll('.shot');
+      Array.prototype.forEach.call(filterButtons, function (btn) {
+        btn.addEventListener('click', function () {
+          var want = btn.dataset.filter;
+          Array.prototype.forEach.call(filterButtons, function (b) {
+            b.setAttribute('aria-pressed', String(b === btn));
+          });
+          Array.prototype.forEach.call(shots, function (shot) {
+            var show = want === 'all' || shot.dataset.cat === want;
+            if (show) { shot.removeAttribute('hidden'); } else { shot.setAttribute('hidden', ''); }
+          });
+        });
+      });
+
+      /* ---------------------------------------------- lightbox ------- */
+      var lightbox = document.getElementById('lightbox');
+      var lbImage = document.getElementById('lbImage');
+      var lbSource = document.getElementById('lbSource');
+      var lbTitle = document.getElementById('lbTitle');
+      var lbDesc = document.getElementById('lbDesc');
+      var lbCount = document.getElementById('lbCount');
+      var lbClose = document.getElementById('lbClose');
+      var lbPrev = document.getElementById('lbPrev');
+      var lbNext = document.getElementById('lbNext');
+      var visibleTriggers = [];
+      var currentIndex = 0;
+      var lastFocused = null;
+
+      function collectVisible() {
+        visibleTriggers = Array.prototype.filter.call(
+          document.querySelectorAll('.shot'),
+          function (shot) { return !shot.hasAttribute('hidden'); }
+        ).map(function (shot) { return shot.querySelector('.shot-media'); });
+      }
+
+      function render(index) {
+        var trigger = visibleTriggers[index];
+        if (!trigger) { return; }
+        currentIndex = index;
+        lbSource.srcset = trigger.dataset.fullWebp;
+        lbImage.src = trigger.dataset.full;
+        lbImage.alt = trigger.querySelector('img').alt;
+        lbTitle.textContent = trigger.dataset.title;
+        lbDesc.textContent = trigger.dataset.desc;
+        lbCount.textContent = (index + 1) + ' of ' + visibleTriggers.length;
+        var multiple = visibleTriggers.length > 1;
+        lbPrev.hidden = !multiple;
+        lbNext.hidden = !multiple;
+      }
+
+      function openLightbox(trigger) {
+        collectVisible();
+        var index = visibleTriggers.indexOf(trigger);
+        if (index < 0) { return; }
+        lastFocused = trigger;
+        render(index);
+        lightbox.setAttribute('open', '');
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+      }
+
+      function closeLightbox() {
+        lightbox.removeAttribute('open');
+        document.body.style.overflow = '';
+        lbImage.src = '';
+        lbSource.srcset = '';
+        if (lastFocused) { lastFocused.focus(); }
+      }
+
+      function step(delta) {
+        if (!visibleTriggers.length) { return; }
+        var next = (currentIndex + delta + visibleTriggers.length) % visibleTriggers.length;
+        render(next);
+      }
+
+      Array.prototype.forEach.call(document.querySelectorAll('.shot-media'), function (trigger) {
+        trigger.addEventListener('click', function () { openLightbox(trigger); });
+      });
+
+      lbClose.addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', function () { step(-1); });
+      lbNext.addEventListener('click', function () { step(1); });
+      lightbox.addEventListener('click', function (event) {
+        if (event.target === lightbox) { closeLightbox(); }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (!lightbox.hasAttribute('open')) { return; }
+        if (event.key === 'Escape') { closeLightbox(); }
+        else if (event.key === 'ArrowLeft') { step(-1); }
+        else if (event.key === 'ArrowRight') { step(1); }
+        else if (event.key === 'Tab') {
+          // Keep focus inside the dialog while it is open.
+          var focusable = [lbClose, lbPrev, lbNext].filter(function (el) { return !el.hidden; });
+          var first = focusable[0];
+          var last = focusable[focusable.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault(); last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault(); first.focus();
+          }
+        }
+      });
+    }());
+  </script>
 </body>
+
 </html>
